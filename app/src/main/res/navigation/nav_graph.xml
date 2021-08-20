@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/runFragment">
+    <fragment
+        android:id="@+id/runFragment"
+        android:name="com.devapp.runningapp.ui.fragments.RunFragment"
+        android:label="RunFragment" />
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.devapp.runningapp.ui.fragments.StatisticsFragment"
+        android:label="StatisticsFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.devapp.runningapp.ui.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/setupFragment"
+        android:name="com.devapp.runningapp.ui.fragments.SetupFragment"
+        android:label="SetupFragment" />
+    <fragment
+        android:id="@+id/trackingFragment"
+        android:name="com.devapp.runningapp.ui.fragments.TrackingFragment"
+        android:label="TrackingFragment" />
+</navigation>
