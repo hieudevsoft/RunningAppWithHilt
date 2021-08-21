@@ -2,11 +2,24 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/runFragment">
+    app:startDestination="@id/setupFragment">
+
+    <action android:id="@+id/action_notification_to_trackingFragment"
+            app:destination="@id/trackingFragment"
+            app:launchSingleTop="true"/>
+
     <fragment
         android:id="@+id/runFragment"
         android:name="com.devapp.runningapp.ui.fragments.RunFragment"
-        android:label="RunFragment" />
+        android:label="RunFragment" >
+        <action
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            android:id="@+id/action_runFragment_to_trackingFragment"
+            app:destination="@id/trackingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.devapp.runningapp.ui.fragments.StatisticsFragment"
@@ -18,9 +31,25 @@
     <fragment
         android:id="@+id/setupFragment"
         android:name="com.devapp.runningapp.ui.fragments.SetupFragment"
-        android:label="SetupFragment" />
+        android:label="SetupFragment" >
+        <action
+            android:id="@+id/action_setupFragment_to_runFragment"
+            app:destination="@id/runFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
     <fragment
         android:id="@+id/trackingFragment"
         android:name="com.devapp.runningapp.ui.fragments.TrackingFragment"
-        android:label="TrackingFragment" />
+        android:label="TrackingFragment" >
+        <action
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            android:id="@+id/action_trackingFragment_to_runFragment"
+            app:destination="@id/runFragment" />
+    </fragment>
 </navigation>
