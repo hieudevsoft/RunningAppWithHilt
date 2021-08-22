@@ -10,8 +10,8 @@ class MainRepository @Inject constructor(
     val runDao: RunDao
 ){
 
-    suspend fun insertRun(run:Run) {
-        runDao.insertRun(run)
+    suspend fun insertRun(run:Run):Long {
+        return runDao.insertRun(run)
     }
     suspend fun delete(run: Run){
         runDao.delete(run)

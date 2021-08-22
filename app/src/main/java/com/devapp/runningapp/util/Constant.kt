@@ -22,4 +22,9 @@ object Constant {
     const val POLYLINE_COLOR = Color.BLUE
     const val POLYLINE_WIDTH = 10f
     const val DEFAULT_ZOOM_CAMERA = 18f
+
+    const val PREFERENCE_NAME ="pref_name"
+    const val KEY_NAME = "name"
+    const val KEY_WEIGHT = "weight"
+    const val KEY_IS_FIRST_TIME = "is_first_time"
 }

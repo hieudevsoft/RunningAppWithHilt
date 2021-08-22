@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Welcome!\nPlease enter your name and weight (kg)."
+            android:text="Welcome\nPlease enter the name and weight (kg)"
             android:textAlignment="center"
             android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/tilName"

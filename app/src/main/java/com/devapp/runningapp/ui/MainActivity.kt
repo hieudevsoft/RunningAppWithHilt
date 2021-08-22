@@ -1,6 +1,7 @@
 package com.devapp.runningapp.ui
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
+    @Inject
+    lateinit var preferences: SharedPreferences
     @Inject
     lateinit var runDao: RunDao
     private lateinit var binding:ActivityMainBinding
@@ -36,6 +38,8 @@ class MainActivity : AppCompatActivity() {
                 else->binding.bottomNavigationView.visibility = View.GONE
             }
         }
+        val isTheFirstTime = preferences.getBoolean(Constant.KEY_IS_FIRST_TIME,true)
+        if(!isTheFirstTime) navHostFragment.findNavController().navigate(R.id.action_main_to_runFragment)
     }
 
     override fun onNewIntent(intent: Intent?) {

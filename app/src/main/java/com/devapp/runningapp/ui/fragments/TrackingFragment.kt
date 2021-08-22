@@ -1,18 +1,22 @@
 package com.devapp.runningapp.ui.fragments
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import com.devapp.runningapp.R
 import com.devapp.runningapp.databinding.FragmentTrackingBinding
+import com.devapp.runningapp.db.Run
 import com.devapp.runningapp.services.Polyline
 import com.devapp.runningapp.services.TrackingService
 import com.devapp.runningapp.ui.viewmodels.MainViewModels
+import com.devapp.runningapp.util.Constant
 import com.devapp.runningapp.util.Constant.ACTION_PAUSE_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_START_OR_RESUME_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_STOP_SERVICE
@@ -22,15 +26,23 @@ import com.devapp.runningapp.util.Constant.POLYLINE_WIDTH
 import com.devapp.runningapp.util.TrackingUtils
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.lang.Math.round
+import java.util.*
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
+    @Inject
+    lateinit var preferences: SharedPreferences
     private var isTracking = false
     private var pathPoints = mutableListOf<Polyline>()
     private val mainViewModels: MainViewModels by viewModels()
@@ -72,6 +84,10 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
                 }.create()
             dialog.show()
         }
+        binding.btnFinishRun.setOnClickListener {
+            moveCameraWholeTracking()
+            endAndSaveTrackingToDb()
+        }
         subscribeToObservers()
     }
 
@@ -107,6 +123,44 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
                 )
             )
         }
+    }
+
+    fun moveCameraWholeTracking(){
+        val bounds = LatLngBounds.Builder()
+        pathPoints.forEach {
+            it.forEach {
+                bounds.include(it)
+            }
+        }
+        googleMap?.moveCamera(
+            CameraUpdateFactory.newLatLngBounds(
+                bounds.build(),
+                binding.mapView.width,
+                binding.mapView.height,
+                (binding.mapView.height*0.005f).roundToInt()
+            )
+        )
+    }
+
+    var weight = preferences.getInt(Constant.KEY_WEIGHT,50)
+    fun endAndSaveTrackingToDb(){
+        googleMap?.snapshot { bitmap->
+            val distanceInMeters = TrackingUtils.getDistanceForTracking(polylines = pathPoints)
+            val avgSpeedInKMH = (distanceInMeters / 1000f).roundToInt() /(currentTimeInMillis/1000/60/60).toFloat()
+            val timeStamp = Calendar.getInstance().timeInMillis
+            val caloriesBurned = round(distanceInMeters / 1000f) *weight
+            val run = Run(bitmap,timeStamp,avgSpeedInKMH,distanceInMeters.toInt(),currentTimeInMillis,caloriesBurned.toInt())
+            lifecycle.coroutineScope.launch(Dispatchers.Main) {
+                val result = mainViewModels.insert(run)
+                Timber.d(result.toString())
+                if(result>-1) Snackbar.make(
+                    binding.root,
+                    "Save tracking successfully~ ",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+            stopRun()
+      }
     }
 
     private fun updateTracking(isTracking: Boolean) {
