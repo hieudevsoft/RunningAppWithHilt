@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="run"
+            type="com.devapp.runningapp.db.Run" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                formatDate="@{run.timeStamp}"
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DATE"
+                android:textSize="20sp"
+                android:gravity="center" />
+
+            <TextView
+                formatTime="@{run.timeInRun}"
+                android:id="@+id/tvDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DURATION"
+                android:textSize="20sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tvAvgSpeed"
+                formatAvgSpeed="@{run.avgSpeedInKMH}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AVG SPEED"
+                android:textSize="20sp"
+                android:gravity="center" />
+
+            <TextView
+                formatDistance="@{run.distanceInMeters}"
+                android:id="@+id/tvDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DISTANCE"
+                android:textSize="20sp"
+                android:gravity="center" />
+
+            <TextView
+                formatCalories="@{run.caloriesBurned}"
+                android:id="@+id/tvCaloriesBurned"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CALORIES BURNED"
+                android:textSize="20sp"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

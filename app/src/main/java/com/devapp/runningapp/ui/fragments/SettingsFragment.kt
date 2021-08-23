@@ -34,11 +34,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val name = preferences.getString(Constant.KEY_NAME,"")
-        val weight = preferences.getInt(Constant.KEY_WEIGHT,0)
-        binding.etName.setText(name)
-        binding.etWeight.setText(if (weight==0) "" else weight.toString())
-
+        loadDataFromPreferenceApp()
         binding.btnApplyChanges.setOnClickListener {
             if(checkInputInformation())
                 Snackbar.make(
@@ -51,6 +47,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 else binding.etWeight.error = "Weight is require"
             }
         }
+    }
+
+    private fun loadDataFromPreferenceApp() {
+        val name = preferences.getString(Constant.KEY_NAME,"")
+        val weight = preferences.getInt(Constant.KEY_WEIGHT,0)
+        binding.etName.setText(name)
+        binding.etWeight.setText(if (weight==0) "" else weight.toString())
     }
 
 

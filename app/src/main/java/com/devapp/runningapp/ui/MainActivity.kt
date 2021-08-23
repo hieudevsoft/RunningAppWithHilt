@@ -32,14 +32,14 @@ class MainActivity : AppCompatActivity() {
         navigateToTrackingFragmentIfNeeded(intent)
         navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHostFragment.navController)
+        binding.bottomNavigationView.setOnItemReselectedListener {}
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id){
                 R.id.settingsFragment,R.id.runFragment,R.id.statisticsFragment->binding.bottomNavigationView.visibility = View.VISIBLE
                 else->binding.bottomNavigationView.visibility = View.GONE
             }
         }
-        val isTheFirstTime = preferences.getBoolean(Constant.KEY_IS_FIRST_TIME,true)
-        if(!isTheFirstTime) navHostFragment.findNavController().navigate(R.id.action_main_to_runFragment)
+
     }
 
     override fun onNewIntent(intent: Intent?) {

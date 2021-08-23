@@ -32,8 +32,6 @@ import javax.inject.Named
 
 @AndroidEntryPoint
 class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCallbacks {
-
-
     private val mainViewModels:MainViewModels by viewModels()
     private var _binding: FragmentRunBinding?=null
     private val binding get() = _binding!!
@@ -45,8 +43,6 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Timber.d(value1.toInt().toString())
-        Timber.d(value2.toInt().toString())
         _binding = FragmentRunBinding.inflate(inflater, container, false)
         return binding.root!!
     }

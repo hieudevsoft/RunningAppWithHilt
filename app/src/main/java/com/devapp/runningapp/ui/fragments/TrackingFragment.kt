@@ -1,5 +1,6 @@
 package com.devapp.runningapp.ui.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -41,8 +42,6 @@ import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
-    @Inject
-    lateinit var preferences: SharedPreferences
     private var isTracking = false
     private var pathPoints = mutableListOf<Polyline>()
     private val mainViewModels: MainViewModels by viewModels()
@@ -66,29 +65,34 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         binding.btnToggleRun.setOnClickListener {
             toggleRun()
         }
+
+        if(savedInstanceState!=null){
+            val cancelDialog = parentFragmentManager.findFragmentByTag("CANCEL_TRACKING_DIALOG") as CancelTrackingDialog?
+            cancelDialog?.apply {
+                setYesListener {
+                    stopRun()
+                }
+            }
+        }
+
         binding.mapView.getMapAsync {
             googleMap = it
             addAllPolyline()
         }
         binding.btnCancelTracking.setOnClickListener {
-            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-                .setTitle("Cancel Tracking?")
-                .setMessage("Are you sure to cancel the current tracking and delete all data ?")
-                .setIcon(R.drawable.ic_delete)
-                .setPositiveButton("YES") { _, _ ->
-                    stopRun()
-                }
-                .setNegativeButton("NO") { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                    dialogInterface.cancel()
-                }.create()
-            dialog.show()
+           showDialogCancelTracking()
         }
         binding.btnFinishRun.setOnClickListener {
             moveCameraWholeTracking()
             endAndSaveTrackingToDb()
         }
         subscribeToObservers()
+    }
+
+    private fun showDialogCancelTracking() {
+        CancelTrackingDialog().apply {
+            setYesListener { stopRun() }
+        }.show(parentFragmentManager,"CANCEL_TRACKING_DIALOG")
     }
 
     private fun stopRun() {
@@ -142,13 +146,14 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         )
     }
 
-    var weight = preferences.getInt(Constant.KEY_WEIGHT,50)
+    @set:Inject
+    var weight = 80
     fun endAndSaveTrackingToDb(){
         googleMap?.snapshot { bitmap->
             val distanceInMeters = TrackingUtils.getDistanceForTracking(polylines = pathPoints)
-            val avgSpeedInKMH = (distanceInMeters / 1000f).roundToInt() /(currentTimeInMillis/1000/60/60).toFloat()
+            val avgSpeedInKMH = ((distanceInMeters / 1000f) /(currentTimeInMillis/(1000f*60f*60f))*10f).roundToInt()/10f
             val timeStamp = Calendar.getInstance().timeInMillis
-            val caloriesBurned = round(distanceInMeters / 1000f) *weight
+            val caloriesBurned = round(distanceInMeters / 1000f) * weight
             val run = Run(bitmap,timeStamp,avgSpeedInKMH,distanceInMeters.toInt(),currentTimeInMillis,caloriesBurned.toInt())
             lifecycle.coroutineScope.launch(Dispatchers.Main) {
                 val result = mainViewModels.insert(run)
@@ -165,10 +170,10 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
-        if (!isTracking) {
+        if (!isTracking && currentTimeInMillis>0L) {
             binding.btnToggleRun.text = "Start"
             binding.btnFinishRun.visibility = View.VISIBLE
-        } else {
+        } else if(isTracking){
             binding.btnToggleRun.text = "Stop"
             binding.btnFinishRun.visibility = View.GONE
             binding.btnCancelTracking.visibility = View.VISIBLE

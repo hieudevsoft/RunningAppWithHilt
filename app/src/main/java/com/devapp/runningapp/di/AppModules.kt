@@ -2,9 +2,11 @@ package com.devapp.runningapp.di
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import com.devapp.runningapp.db.RunDao
 import com.devapp.runningapp.db.RunDatabase
 import com.devapp.runningapp.util.Constant
+import com.devapp.runningapp.util.Constant.KEY_WEIGHT
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +31,9 @@ object AppModules {
     }
 
     @Provides
-    fun providePreferenceApp(@ApplicationContext context:Context) = context.getSharedPreferences(Constant.PREFERENCE_NAME,MODE_PRIVATE)
+    fun providePreferenceApp(@ApplicationContext context:Context): SharedPreferences = context.getSharedPreferences(Constant.PREFERENCE_NAME,MODE_PRIVATE)
 
+    @Provides
+    fun provideWeight(sharedPref: SharedPreferences) = sharedPref.getInt(KEY_WEIGHT, 80)
 }
 

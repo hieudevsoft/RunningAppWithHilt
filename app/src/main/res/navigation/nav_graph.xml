@@ -4,11 +4,6 @@
     android:id="@+id/nav_graph.xml"
     app:startDestination="@id/setupFragment">
 
-    <action android:id="@+id/action_main_to_runFragment"
-        app:destination="@id/runFragment"
-        app:enterAnim="@android:anim/slide_in_left"
-        app:exitAnim="@android:anim/slide_out_right"
-        app:launchSingleTop="true"/>
 
     <action android:id="@+id/action_notification_to_trackingFragment"
             app:destination="@id/trackingFragment"
