@@ -8,4 +8,19 @@
     </string-array>
     <string name="app_name">Tracking App</string>
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">AIzaSyBoOe9qGN3jMI0_AecKK19kAlpS9PxVMVo</string>
+    <string name="onboard_introduce_title_1">Theo dõi tập luyện</string>
+    <string name="onboard_introduce_content_1">Dễ dàng phân tích dữ liệu tập luyện</string>
+    <string name="onboard_introduce_title_2">Giao diện thân thiện</string>
+    <string name="onboard_introduce_content_2">Giao diện dễ dàng sử dụng , không gây khó khăn</string>
+    <string name="onboard_introduce_title_3">Tiện ích mở rộng</string>
+    <string name="onboard_introduce_content_3">Có thể tắt ứng dụng mà không gây cản trở trong việc tập luyện</string>
+    <string name="login">Login</string>
+    <string name="next">Next</string>
+    <string name="can_not_null">You cannot leave this field empty</string>
+    <string name="login_account">Login Account</string>
+    <string name="account_not_correct">Wrong password or email. Please try again.</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="no_account">Do not have an account?</string>
 </resources>

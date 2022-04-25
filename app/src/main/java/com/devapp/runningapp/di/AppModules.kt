@@ -7,6 +7,7 @@ import com.devapp.runningapp.db.RunDao
 import com.devapp.runningapp.db.RunDatabase
 import com.devapp.runningapp.util.Constant
 import com.devapp.runningapp.util.Constant.KEY_WEIGHT
+import com.devapp.runningapp.util.SharedPreferenceHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,6 +33,9 @@ object AppModules {
 
     @Provides
     fun providePreferenceApp(@ApplicationContext context:Context): SharedPreferences = context.getSharedPreferences(Constant.PREFERENCE_NAME,MODE_PRIVATE)
+
+    @Provides
+    fun provideSharedPreferenceApp(@ApplicationContext context:Context): SharedPreferenceHelper = SharedPreferenceHelper(context)
 
     @Provides
     fun provideWeight(sharedPref: SharedPreferences) = sharedPref.getInt(KEY_WEIGHT, 80)

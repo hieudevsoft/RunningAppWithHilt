@@ -12,4 +12,29 @@
     <color name="colorBgSettings">#31749b</color>
     <color name="md_blue_800">#1396E3</color>
     <color name="md_blue_700">#1F70D6</color>
+    <color name="colorBackgroundDay">#FAFAFA</color>
+    <color name="colorGray">#9E9E9E</color>
+    <color name="colorGray_2">#BDBDBD</color>
+    <color name="colorGray_3">#D4DAD0</color>
+    <color name="colorGray_4">#CFE0E0E0</color>
+    <color name="colorGray_5">#E8F5E9</color>
+    <color name="colorGray_6">#cbcbcb</color>
+    <color name="colorGray_7">#99CBCBCB</color>
+    <color name="colorGray_8">#FAFAFA</color>
+    <color name="colorGray_9">#999999</color>
+    <color name="colorGray_10">#4A4C54</color>
+    <color name="colorGray_11">#e8e8e8</color>
+    <color name="colorGray_12">#757575</color>
+    <color name="colorGray_13">#888888</color>
+    <color name="colorGray_14">#F4F4F4</color>
+    <color name="colorPrimary">#78AB4F</color>
+    <color name="colorAccent">#FABE0E</color>
+    <color name="colorText_Day_2">#616161</color>
+    <color name="colorText_Night_2">#EEEEEE</color>
+    <color name="colorRed">#EF5350</color>
+    <color name="colorRed_2">#A84551</color>
+    <color name="colorRed_3">#EF4824</color>
+    <color name="colorRed_4">#FF001E</color>
+    <color name="colorRed_5">#DC4E41</color>
+
 </resources>

@@ -34,6 +34,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures{
+        viewBinding true
         dataBinding true
     }
 }
@@ -105,6 +106,8 @@ dependencies {
 
     // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+
+    //Dot indicator
+    implementation 'com.tbuonomo:dotsindicator:4.2'
 }

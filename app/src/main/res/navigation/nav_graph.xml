@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/setupFragment">
-
+    app:startDestination="@id/fragmentSplash">
 
     <action android:id="@+id/action_notification_to_trackingFragment"
             app:destination="@id/trackingFragment"
@@ -12,6 +12,7 @@
     <fragment
         android:id="@+id/runFragment"
         android:name="com.devapp.runningapp.ui.fragments.RunFragment"
+        tools:layout="@layout/fragment_run"
         android:label="RunFragment" >
         <action
             app:enterAnim="@android:anim/slide_in_left"
@@ -22,14 +23,17 @@
             app:destination="@id/trackingFragment" />
     </fragment>
     <fragment
+        tools:layout="@layout/fragment_statistics"
         android:id="@+id/statisticsFragment"
         android:name="com.devapp.runningapp.ui.fragments.StatisticsFragment"
         android:label="StatisticsFragment" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.devapp.runningapp.ui.fragments.SettingsFragment"
+        tools:layout="@layout/fragment_settings"
         android:label="SettingsFragment" />
     <fragment
+        tools:layout="@layout/fragment_setup"
         android:id="@+id/setupFragment"
         android:name="com.devapp.runningapp.ui.fragments.SetupFragment"
         android:label="SetupFragment" >
@@ -44,6 +48,7 @@
     <fragment
         android:id="@+id/trackingFragment"
         android:name="com.devapp.runningapp.ui.fragments.TrackingFragment"
+        tools:layout="@layout/fragment_setup"
         android:label="TrackingFragment" >
         <action
             app:enterAnim="@android:anim/slide_in_left"
@@ -53,4 +58,22 @@
             android:id="@+id/action_trackingFragment_to_runFragment"
             app:destination="@id/runFragment" />
     </fragment>
+    <fragment
+        tools:layout="@layout/fragment_splash"
+        android:id="@+id/fragmentSplash"
+        android:name="com.devapp.runningapp.ui.fragments.FragmentSplash"
+        android:label="FragmentSplash" >
+        <action
+            app:enterAnim="@anim/slide_in_right_300"
+            app:exitAnim="@anim/slide_out_right_300"
+            app:popUpToInclusive="false"
+            app:popUpTo="@layout/fragment_login"
+            android:id="@+id/action_fragmentSplash_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_login"
+        android:id="@+id/fragmentLogin"
+        android:name="com.devapp.runningapp.ui.fragments.FragmentLogin"
+        android:label="FragmentLogin" />
 </navigation>

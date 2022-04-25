@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/bg_black_stroke_dp8.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/custom_background_border_grey_sdp6.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_back.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_email.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_email_red.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_google.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_password.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_password_red.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_user.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_warning.xml" value="0.263" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_splash.xml" value="0.25" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_onboarding_introduce.xml" value="0.33" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_view_login.xml" value="0.3489583333333333" />
+        <entry key="app/src/main/res/layout/fragment_run.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_tracking.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_run.xml" value="0.16875" />
+        <entry key="app/src/main/res/layout/marker_view.xml" value="0.16875" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
