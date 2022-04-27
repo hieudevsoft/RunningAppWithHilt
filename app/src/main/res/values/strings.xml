@@ -7,7 +7,7 @@
         <item>Calories Burned</item>
     </string-array>
     <string name="app_name">Tracking App</string>
-    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">AIzaSyBoOe9qGN3jMI0_AecKK19kAlpS9PxVMVo</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBoOe9qGN3jMI0_AecKK19kAlpS9PxVMVo</string>
     <string name="onboard_introduce_title_1">Theo dõi tập luyện</string>
     <string name="onboard_introduce_content_1">Dễ dàng phân tích dữ liệu tập luyện</string>
     <string name="onboard_introduce_title_2">Giao diện thân thiện</string>
@@ -23,4 +23,12 @@
     <string name="password">Password</string>
     <string name="login_with_google">Login with Google</string>
     <string name="no_account">Do not have an account?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signup_account">Signup Account</string>
+    <string name="your_name">Your name</string>
+    <string name="day_of_birth">Day of birth</string>
+    <string name="confirm_password">Cofirm password</string>
+    <string name="register">Register</string>
+    <string name="agree_term_and_condition">"You agree to the terms and conditions"</string>
 </resources>

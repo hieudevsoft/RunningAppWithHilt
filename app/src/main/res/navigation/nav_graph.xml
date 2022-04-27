@@ -75,5 +75,17 @@
         tools:layout="@layout/fragment_login"
         android:id="@+id/fragmentLogin"
         android:name="com.devapp.runningapp.ui.fragments.FragmentLogin"
-        android:label="FragmentLogin" />
+        android:label="FragmentLogin" >
+        <action
+            app:enterAnim="@anim/slide_in_right_300"
+            app:exitAnim="@anim/slide_out_right_300"
+            app:popUpToInclusive="false"
+            android:id="@+id/action_fragmentLogin_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.devapp.runningapp.ui.fragments.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
 </navigation>

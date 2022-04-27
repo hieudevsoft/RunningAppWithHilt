@@ -4,9 +4,7 @@
     xmlns:autofit="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
-    >
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/layout_panda_signin"
@@ -137,6 +135,7 @@
                     android:layout_toEndOf="@id/cb_policy_login"
                     android:fontFamily="@font/svn_avo"
                     android:lineSpacingExtra="6dp"
+                    android:text="@string/agree_term_and_condition"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </RelativeLayout>

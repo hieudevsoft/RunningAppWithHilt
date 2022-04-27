@@ -1,14 +1,9 @@
 package com.devapp.runningapp.ui.fragments
 
 import android.content.Context
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
 import com.devapp.runningapp.R
-import com.devapp.runningapp.databinding.MarkerViewBinding
-import com.devapp.runningapp.db.Run
+import com.devapp.runningapp.model.Run
 import com.devapp.runningapp.util.TrackingUtils
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry

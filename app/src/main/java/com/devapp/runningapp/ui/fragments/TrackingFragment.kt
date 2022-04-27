@@ -1,8 +1,6 @@
 package com.devapp.runningapp.ui.fragments
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +11,10 @@ import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import com.devapp.runningapp.R
 import com.devapp.runningapp.databinding.FragmentTrackingBinding
-import com.devapp.runningapp.db.Run
+import com.devapp.runningapp.model.Run
 import com.devapp.runningapp.services.Polyline
 import com.devapp.runningapp.services.TrackingService
 import com.devapp.runningapp.ui.viewmodels.MainViewModels
-import com.devapp.runningapp.util.Constant
 import com.devapp.runningapp.util.Constant.ACTION_PAUSE_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_START_OR_RESUME_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_STOP_SERVICE
@@ -28,7 +25,6 @@ import com.devapp.runningapp.util.TrackingUtils
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +32,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Math.round
 import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -154,7 +149,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             val avgSpeedInKMH = ((distanceInMeters / 1000f) /(currentTimeInMillis/(1000f*60f*60f))*10f).roundToInt()/10f
             val timeStamp = Calendar.getInstance().timeInMillis
             val caloriesBurned = round(distanceInMeters / 1000f) * weight
-            val run = Run(bitmap,timeStamp,avgSpeedInKMH,distanceInMeters.toInt(),currentTimeInMillis,caloriesBurned.toInt())
+            val run = Run(bitmap,timeStamp,avgSpeedInKMH,distanceInMeters.toInt(),currentTimeInMillis,caloriesBurned.toInt(),null)
             lifecycle.coroutineScope.launch(Dispatchers.Main) {
                 val result = mainViewModels.insert(run)
                 Timber.d(result.toString())

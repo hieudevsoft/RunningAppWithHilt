@@ -1,17 +1,14 @@
 package com.devapp.runningapp.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.*
-import com.devapp.runningapp.db.Run
+import com.devapp.runningapp.model.Run
 import com.devapp.runningapp.repositories.MainRepository
 import com.devapp.runningapp.util.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 @HiltViewModel
 class MainViewModels @Inject constructor(

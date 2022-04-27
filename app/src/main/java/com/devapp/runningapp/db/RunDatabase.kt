@@ -2,6 +2,7 @@ package com.devapp.runningapp.db
 
 import android.content.Context
 import androidx.room.*
+import com.devapp.runningapp.model.Run
 
 
 @Database(entities = [Run::class],version = 1,exportSchema = false)

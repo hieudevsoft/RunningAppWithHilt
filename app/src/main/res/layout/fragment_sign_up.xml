@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundDay"
+    tools:context=".ui.fragments.SignUpFragment">
+
+    <FrameLayout
+        android:id="@+id/layout_panda_signup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent=".3"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_login" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_panda_singup" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/margin_18"
+            android:src="@drawable/ic_back"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:tint="@color/white" />
+    </FrameLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_panda_signup">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_30"
+                android:layout_marginBottom="@dimen/margin_6"
+                android:fontFamily="@font/svn_avo_bold"
+                android:text="@string/signup_account"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_warning_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_30"
+                android:drawableStart="@drawable/ic_warning"
+                android:drawablePadding="@dimen/margin_10"
+                android:fontFamily="@font/svn_avo_bold"
+                android:text="@string/account_not_correct"
+                android:textColor="@color/colorRed_3"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:ignore="UseCompatTextViewDrawableXml" />
+
+            <com.devapp.runningapp.ui.widgets.LoginItemView
+                android:id="@+id/item_name_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_30"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:inputType="text"
+                app:item_asterisk="true"
+                app:item_hint="@string/your_name"
+                app:item_icon="@drawable/ic_user"
+                app:item_icon_red="@drawable/ic_user_red" />
+
+            <com.devapp.runningapp.ui.widgets.LoginItemView
+                android:id="@+id/item_email_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_30"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:inputType="textEmailAddress"
+                app:item_asterisk="true"
+                app:item_hint="@string/email"
+                app:item_icon="@drawable/ic_email"
+                app:item_icon_red="@drawable/ic_email_red" />
+
+            <com.devapp.runningapp.ui.widgets.LoginItemView
+                android:id="@+id/item_birthday_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_30"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:focusable="false"
+                android:inputType="text"
+                app:item_asterisk="false"
+                app:item_hint="@string/day_of_birth"
+                app:item_icon="@drawable/ic_calendar"
+                app:item_icon_red="@drawable/ic_calendar_red" />
+
+
+            <com.devapp.runningapp.ui.widgets.LoginItemView
+                android:id="@+id/item_password_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_30"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:inputType="textPassword"
+                app:item_asterisk="true"
+                app:item_hint="@string/password"
+                app:item_icon="@drawable/ic_password"
+                app:item_icon_red="@drawable/ic_password_red" />
+
+
+            <com.devapp.runningapp.ui.widgets.LoginItemView
+                android:id="@+id/item_confirm_password_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_30"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:inputType="textPassword"
+                app:item_asterisk="true"
+                app:item_hint="@string/confirm_password"
+                app:item_icon="@drawable/ic_password"
+                app:item_icon_red="@drawable/ic_password_red" />
+
+
+            <RelativeLayout
+                android:id="@+id/layout_policy_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_30"
+                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginRight="@dimen/margin_30"
+                android:layout_marginBottom="@dimen/margin_16">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_policy_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:buttonTint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_policy_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/cb_policy_register"
+                    android:fontFamily="@font/svn_avo"
+                    android:text="@string/agree_term_and_condition"
+                    android:lineSpacingExtra="@dimen/margin_6"
+                    android:textColor="@color/colorText_Day_2"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_16"
+                app:layout_constraintWidth_percent="0.66">
+
+                <ProgressBar
+                    android:id="@+id/pb_register_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/PrimaryStyle"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_register"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/btn_register" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_register"
+                    style="@style/AppWidget.Button.Default"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/svn_avo_bold"
+                    android:text="@string/register"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

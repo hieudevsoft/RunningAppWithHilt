@@ -1,20 +1,19 @@
 package com.devapp.runningapp.ui.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.devapp.runningapp.R
-import com.devapp.runningapp.databinding.FragmentLoginBinding
-import com.devapp.runningapp.util.AnimationHelper
-import com.devapp.runningapp.util.VoidCallback
+import com.devapp.runningapp.databinding.FragmentSignUpBinding
+import com.devapp.runningapp.databinding.FragmentSplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentLogin: Fragment(R.layout.fragment_login) {
-    private var _binding : FragmentLoginBinding ? =null
+class SignUpFragment : Fragment() {
+    private var _binding:FragmentSignUpBinding?=null
     private val binding get() = _binding!!
     private var isInitialized = false
     override fun onCreateView(
@@ -23,7 +22,7 @@ class FragmentLogin: Fragment(R.layout.fragment_login) {
         savedInstanceState: Bundle?
     ): View {
         try {
-            if(_binding==null) _binding = FragmentLoginBinding.inflate(layoutInflater,container,false)
+            if(_binding==null) _binding = FragmentSignUpBinding.inflate(layoutInflater,container,false)
             else (binding.root.parent as ViewGroup).removeView(binding.root)
         }catch (e:Exception){
 
@@ -35,18 +34,14 @@ class FragmentLogin: Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
         if(!isInitialized){
             isInitialized = true
-            binding.apply {
-                btnBack.setOnClickListener {
-                    findNavController().popBackStack()
-                }
-                btnRegisterNow.setOnClickListener {
-                    AnimationHelper.scaleAnimation(it,object:VoidCallback{
-                        override fun execute() {
-                            findNavController().navigate(FragmentLoginDirections.actionFragmentLoginToSignUpFragment())
-                        }
+            initUI()
+        }
+    }
 
-                    },0.96f)
-                }
+    private fun initUI(){
+        binding.apply {
+            btnBack.setOnClickListener {
+                findNavController().popBackStack()
             }
         }
     }
@@ -55,5 +50,4 @@ class FragmentLogin: Fragment(R.layout.fragment_login) {
         super.onDestroy()
         _binding=null
     }
-
 }

@@ -1,13 +1,14 @@
 package com.devapp.runningapp.db
 
 import androidx.room.*
+import com.devapp.runningapp.model.Run
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RunDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRun(run:Run):Long
+    suspend fun insertRun(run: Run):Long
 
     @Delete
     suspend fun delete(run: Run)

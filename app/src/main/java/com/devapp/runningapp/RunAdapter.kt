@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.devapp.runningapp.databinding.ItemRunBinding
-import com.devapp.runningapp.db.Run
+import com.devapp.runningapp.model.Run
 
 
 class RunAdapter():RecyclerView.Adapter<RunAdapter.ViewHolder>() {
