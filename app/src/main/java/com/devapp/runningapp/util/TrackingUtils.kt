@@ -1,9 +1,12 @@
 package com.devapp.runningapp.util
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.location.Location
 import android.os.Build
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.devapp.runningapp.services.Polylines
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.TimeUnit
@@ -63,5 +66,29 @@ object TrackingUtils {
                 "${if(minutes < 10) "0" else ""}$minutes:" +
                 "${if(seconds < 10) "0" else ""}$seconds:" +
                 "${if(milliseconds < 10) "0" else ""}$milliseconds"
+    }
+
+    fun View.toGone() {
+        this.visibility = View.GONE
+    }
+
+    fun View.toVisible(){
+        this.visibility = View.VISIBLE
+    }
+
+    fun View.invisible(){
+        this.visibility = View.INVISIBLE
+    }
+
+    fun Activity.hideSoftKeyboard() {
+        val inputMethodManager = this.getSystemService(
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
+        if (inputMethodManager.isAcceptingText) {
+            inputMethodManager.hideSoftInputFromWindow(
+                this.currentFocus!!.windowToken,
+                0
+            )
+        }
     }
 }

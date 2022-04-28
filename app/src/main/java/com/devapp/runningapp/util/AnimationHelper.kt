@@ -34,6 +34,19 @@ object AnimationHelper {
             .start()
     }
 
+    fun shakeAnimation(context: Context?, view: View, animationListener: VoidCallback?) {
+        AnimationUtils.loadAnimation(context, R.anim.shake).apply {
+            setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {}
+                override fun onAnimationEnd(animation: Animation) {
+                    animationListener?.execute()
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {}
+            })
+            view.startAnimation(this)
+        }
+    }
 
     fun fadeIn(view: View?, animationListener: VoidCallback?, duration: Long) {
         if (view == null) {

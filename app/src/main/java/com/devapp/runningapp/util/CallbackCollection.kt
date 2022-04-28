@@ -28,7 +28,10 @@ interface String2Callback {
     fun execute(string1: String, string2: String)
 }
 
-
 interface BooleanCallback {
     fun execute(boolean: Boolean)
+}
+
+interface DateCallback {
+    fun execute(day: Int?, month: Int?, year: Int?)
 }
