@@ -17,55 +17,35 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
-
     @Inject
     lateinit var preferences: SharedPreferences
     private var _binding: FragmentSettingsBinding?=null
     private val binding get() = _binding!!
-
+    private var hasInitializedRootView = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentSettingsBinding.inflate(inflater,container,false)
-        return binding.root!!
+    ): View {
+        try {
+            if(_binding==null) _binding = FragmentSettingsBinding.inflate(inflater,container,false)
+            else (binding.root.parent as ViewGroup).removeView(binding.root)
+        }catch (e:Exception){
+
+        }
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadDataFromPreferenceApp()
-        binding.btnApplyChanges.setOnClickListener {
-            if(checkInputInformation())
-                Snackbar.make(
-                    binding.root,
-                    "Update Successfully",
-                    Snackbar.LENGTH_LONG
-                ).show()
-            else {
-                if(binding.etName.text.toString().isEmpty()) binding.etName.error = "Name is require"
-                else binding.etWeight.error = "Weight is require"
-            }
-        }
+        if (hasInitializedRootView) return
+        hasInitializedRootView = true
+        initView()
     }
 
-    private fun loadDataFromPreferenceApp() {
-        val name = preferences.getString(Constant.KEY_NAME,"")
-        val weight = preferences.getInt(Constant.KEY_WEIGHT,0)
-        binding.etName.setText(name)
-        binding.etWeight.setText(if (weight==0) "" else weight.toString())
-    }
+    private fun initView(){
 
-
-    fun checkInputInformation():Boolean{
-        val name = binding.etName.text.toString()
-        val weight = binding.etWeight.text.toString()
-        if(name.isEmpty()||weight.isEmpty()) return false
-        preferences.edit()
-            .putString(Constant.KEY_NAME,name)
-            .putInt(Constant.KEY_WEIGHT,weight.toInt())
-            .apply()
-        return true
     }
 
     override fun onDestroy() {
@@ -73,8 +53,4 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onDestroy()
     }
 
-    override fun onDestroyView() {
-        _binding =null
-        super.onDestroyView()
-    }
 }

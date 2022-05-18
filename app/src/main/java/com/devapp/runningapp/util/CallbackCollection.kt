@@ -1,5 +1,7 @@
 package com.devapp.runningapp.util
 
+import com.devapp.runningapp.model.SettingTypes
+
 interface VoidCallback {
     fun execute()
 }
@@ -34,4 +36,11 @@ interface BooleanCallback {
 
 interface DateCallback {
     fun execute(day: Int?, month: Int?, year: Int?)
+}
+
+interface SettingListener {
+    fun itemSwitchExecute(type: SettingTypes, isChecked: Boolean)
+    fun itemClickListener(type: SettingTypes)
+    fun goUrl(url: String)
+    fun logOutListener()
 }

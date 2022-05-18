@@ -13,17 +13,34 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.core.util.PatternsCompat
-import androidx.core.util.PatternsCompat.EMAIL_ADDRESS
+import androidx.core.util.PatternsCompat.*
+import androidx.core.view.get
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.devapp.runningapp.R
 import com.devapp.runningapp.databinding.FragmentSignUpBinding
+import com.devapp.runningapp.model.ResourceNetwork
+import com.devapp.runningapp.model.user.Gender
+import com.devapp.runningapp.model.user.UserProfile
+import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.widgets.DatePickerView
+import com.devapp.runningapp.ui.widgets.DialogLoading
 import com.devapp.runningapp.util.AnimationHelper
+import com.devapp.runningapp.util.AppHelper.toJson
 import com.devapp.runningapp.util.DateCallback
 import com.devapp.runningapp.util.NetworkHelper
 import com.devapp.runningapp.util.TrackingUtils.hideSoftKeyboard
+import com.devapp.runningapp.util.TrackingUtils.toGone
+import com.devapp.runningapp.util.TrackingUtils.toVisible
 import com.devapp.runningapp.util.VoidCallback
+import com.devapp.runningapp.util.firebase.FirebaseAuthClient
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.flow.collect
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,16 +48,18 @@ import java.util.regex.Pattern
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
+    val TAG = "SignUpFragment"
+    private val firebaseViewModel:FirebaseViewModel by viewModels()
     private var _binding:FragmentSignUpBinding?=null
     private val binding get() = _binding!!
     private var isInitialized = false
     private var datePickerView: DatePickerView? = null
-    private var isShowKeyboard = false
     private var dayOfBirth: Int = 0
     private var monthOfBirth: Int = 0
     private var yearOfBirth: Int = 0
     private var signInStatus = 0
     private var isLoading = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,6 +81,7 @@ class SignUpFragment : Fragment() {
             initUI()
         }
     }
+
 
     private fun initUI(){
         binding.apply {
@@ -130,7 +150,7 @@ class SignUpFragment : Fragment() {
                             return
                         }
 
-                        if (PatternsCompat.EMAIL_ADDRESS.matcher((itemEmailRegister.getContent().trim())).matches())
+                        if (!PatternsCompat.EMAIL_ADDRESS.matcher((itemEmailRegister.getContent().trim())).matches())
                          {
                             AnimationHelper.shakeAnimation(context, itemEmailRegister.getViewContent(), object : VoidCallback {
                                     override fun execute() {
@@ -213,9 +233,29 @@ class SignUpFragment : Fragment() {
 
                             isLoading = true
                             signInStatus = 1
-                            btnRegister.visibility = View.INVISIBLE
-                            pbRegisterRegister.visibility = View.VISIBLE
+                            btnRegister.toGone()
+                            pbRegisterRegister.toVisible()
                             //call API register
+                            lifecycleScope.launchWhenResumed {
+                                FirebaseAuthClient.getInstance(Firebase.auth).registerWithEmailAndPassword(binding.itemEmailRegister.getContent(),binding.itemPasswordRegister.getContent(),{
+                                    firebaseUser ->
+                                    val userProfile = UserProfile()
+                                    firebaseUser?.let {
+                                        userProfile.uid = it.uid
+                                        userProfile.email = it.email?:""
+                                        userProfile.password = binding.itemPasswordRegister.getContent()
+                                        userProfile.phoneNumber = it.phoneNumber?:""
+                                        userProfile.userName = it.displayName?:""
+                                        userProfile.gender = Gender.OTHER
+                                        userProfile.dob = binding.itemBirthdayRegister.getContent()
+                                        userProfile.image= if(it.photoUrl==null) "" else it.photoUrl.toString()
+                                        firebaseViewModel.getStateFlowAdUser(userProfile)
+                                    }?:StyleableToast.makeText(requireContext(),getString(R.string.fail_register),R.style.toast_error)
+                                    loginWithEmailAndGetResponseAddUserProfile()
+                                }){
+                                    StyleableToast.makeText(requireContext(),getString(R.string.no_connect),R.style.toast_error)
+                                }
+                            }
                         } else {
                             tvWarningRegister.apply {
                                 visibility = View.VISIBLE
@@ -246,6 +286,45 @@ class SignUpFragment : Fragment() {
             itemEmailRegister.addTextChangedListener(textWatcher)
             itemPasswordRegister.addTextChangedListener(textWatcher)
             itemConfirmPasswordRegister.addTextChangedListener(textWatcher)
+        }
+    }
+
+    private fun loginWithEmailAndGetResponseAddUserProfile() {
+        lifecycleScope.launchWhenStarted {
+            firebaseViewModel.stateFlowAddUser.collect(){
+                when(it){
+                    is ResourceNetwork.Loading->{
+                        DialogLoading.show(requireContext())
+                    }
+
+                    is ResourceNetwork.Success->{
+                        DialogLoading.hide()
+                        it.data?.let {
+                            FirebaseAuthClient.getInstance(Firebase.auth).loginWithEmailAndPassword(it["email"] as String,it["password"] as String,{
+                                it?.let {
+                                    binding.apply {
+                                        btnRegister.toVisible()
+                                        pbRegisterRegister.toGone()
+                                    }
+                                    Log.d(TAG, "loginWithEmailAndGetResponseAddUserProfile: $it")
+                                    findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSetupFragment(it.toJson()))
+                                }
+                            }){
+                                StyleableToast.makeText(requireContext(),it.toString(),R.style.toast_error)
+                            }
+                        }?:StyleableToast.makeText(requireContext(),getString(R.string.please_try_again),R.style.toast_error)
+                    }
+
+                    is ResourceNetwork.Error->{
+                        DialogLoading.hide()
+                        StyleableToast.makeText(requireContext(),it.message,R.style.toast_error)
+                    }
+
+                    else->{
+
+                    }
+                }
+            }
         }
     }
 

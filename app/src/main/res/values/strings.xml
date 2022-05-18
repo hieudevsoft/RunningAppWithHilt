@@ -6,7 +6,7 @@
         <item>Average Speed</item>
         <item>Calories Burned</item>
     </string-array>
-    <string name="app_name">Tracking App</string>
+    <string name="app_name">Runn</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBoOe9qGN3jMI0_AecKK19kAlpS9PxVMVo</string>
     <string name="onboard_introduce_title_1">Theo dõi tập luyện</string>
     <string name="onboard_introduce_content_1">Dễ dàng phân tích dữ liệu tập luyện</string>
@@ -31,6 +31,7 @@
     <string name="confirm_password">Cofirm password</string>
     <string name="register">Register</string>
     <string name="agree_term_and_condition">"You don't agree to the terms and conditions"</string>
+    <string name="remember_account">Remember account?</string>
     <string name="ok">Ok</string>
     <string name="login_agree_text">I argee with the &lt;a href="https://eupgroup.net/apps/heyjapan/terms.html">Terms and conditions&lt;/a></string>
     <string name="invalid_email">Email invalidate</string>
@@ -38,5 +39,23 @@
     <string name="invalid_password">Password must contain at least 6 characters</string>
     <string name="match_submit_password">The password does not match</string>
     <string name="no_connect">Internet connection failed. \n Please check your internet settings.</string>
+    <string name="fail_register">Register account failure</string>
+    <string name="please_try_again">Please try again...</string>
+    <string name="welcome">Welcome %s\nPlease enter the weight (kg)</string>
+    <string name="your_weight">Your weight</string>
+    <string name="create_now">Create an account</string>
+    <string name="setting">Setting</string>
+    <string name="log_out">Logout</string>
+    <string name="version_app">Application version</string>
+    <string name="account">Account</string>
+    <string name="overview">Overview</string>
+    <string name="support">Support</string>
+    <string name="device_language">Device language</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="reminder">Reminder</string>
+    <string name="policy">Policy</string>
+    <string name="feedback">Feedback</string>
+    <string name="tell_friend">Tell friend</string>
+    <string name="rate">Rate</string>
 
 </resources>

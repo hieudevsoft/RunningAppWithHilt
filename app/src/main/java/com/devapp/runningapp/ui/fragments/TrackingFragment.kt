@@ -15,6 +15,7 @@ import com.devapp.runningapp.model.Run
 import com.devapp.runningapp.services.Polyline
 import com.devapp.runningapp.services.TrackingService
 import com.devapp.runningapp.ui.viewmodels.MainViewModels
+import com.devapp.runningapp.ui.widgets.CancelTrackingDialog
 import com.devapp.runningapp.util.Constant.ACTION_PAUSE_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_START_OR_RESUME_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_STOP_SERVICE

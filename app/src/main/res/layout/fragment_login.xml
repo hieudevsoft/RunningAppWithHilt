@@ -135,7 +135,7 @@
                     android:layout_toEndOf="@id/cb_policy_login"
                     android:fontFamily="@font/svn_avo"
                     android:lineSpacingExtra="6dp"
-                    android:text="@string/agree_term_and_condition"
+                    android:text="@string/remember_account"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </RelativeLayout>

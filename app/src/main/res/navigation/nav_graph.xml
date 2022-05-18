@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/fragmentSplash">
+    app:startDestination="@id/splashFragment">
 
     <action android:id="@+id/action_notification_to_trackingFragment"
             app:destination="@id/trackingFragment"
@@ -44,11 +44,14 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <argument
+            android:name="user"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/trackingFragment"
         android:name="com.devapp.runningapp.ui.fragments.TrackingFragment"
-        tools:layout="@layout/fragment_setup"
+        tools:layout="@layout/fragment_tracking"
         android:label="TrackingFragment" >
         <action
             app:enterAnim="@android:anim/slide_in_left"
@@ -60,32 +63,47 @@
     </fragment>
     <fragment
         tools:layout="@layout/fragment_splash"
-        android:id="@+id/fragmentSplash"
-        android:name="com.devapp.runningapp.ui.fragments.FragmentSplash"
+        android:id="@+id/splashFragment"
+        android:name="com.devapp.runningapp.ui.fragments.SplashFragment"
         android:label="FragmentSplash" >
         <action
             app:enterAnim="@anim/slide_in_right_300"
             app:exitAnim="@anim/slide_out_right_300"
             app:popUpToInclusive="false"
             app:popUpTo="@layout/fragment_login"
-            android:id="@+id/action_fragmentSplash_to_fragmentLogin"
-            app:destination="@id/fragmentLogin" />
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_login"
-        android:id="@+id/fragmentLogin"
-        android:name="com.devapp.runningapp.ui.fragments.FragmentLogin"
+        android:id="@+id/loginFragment"
+        android:name="com.devapp.runningapp.ui.fragments.LoginFragment"
         android:label="FragmentLogin" >
         <action
             app:enterAnim="@anim/slide_in_right_300"
             app:exitAnim="@anim/slide_out_right_300"
             app:popUpToInclusive="false"
-            android:id="@+id/action_fragmentLogin_to_signUpFragment"
+            android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right_300"
+            app:exitAnim="@anim/slide_out_right_300"
+            app:popUpToInclusive="true"
+            app:popUpTo="@layout/fragment_setup"
+            android:id="@+id/action_loginFragment_to_setupFragment"
+            app:destination="@id/setupFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.devapp.runningapp.ui.fragments.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            app:enterAnim="@anim/slide_in_right_300"
+            app:exitAnim="@anim/slide_out_right_300"
+            app:popUpToInclusive="true"
+            app:popUpTo="@layout/fragment_setup"
+            android:id="@+id/action_signUpFragment_to_setupFragment"
+            app:destination="@id/setupFragment" />
+    </fragment>
 </navigation>

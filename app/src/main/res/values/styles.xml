@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    <style name="toast_thanks">-->
+<!--        <item name="stTextBold">false</item>-->
+<!--        <item name="stTextColor">#fff</item>-->
+<!--        <item name="stFont">@font/svn_avo_bold</item>-->
+<!--        <item name="stTextSize">13sp</item>-->
+<!--        <item name="stColorBackground">@color/colorPrimary</item>-->
+<!--        <item name="stSolidBackground">true</item>-->
+<!--        <item name="stIconStart">@drawable/ic_thanks</item>-->
+<!--        <item name="stLength">SHORT</item>-->
+<!--        <item name="stGravity">center</item>-->
+<!--        <item name="stRadius">30dp</item>-->
+<!--    </style>-->
+
+    <style name="toast_success">
+        <item name="stTextBold">false</item>
+        <item name="stTextColor">#fff</item>
+        <item name="stFont">@font/svn_avo_bold</item>
+        <item name="stTextSize">13sp</item>
+        <item name="stColorBackground">@color/colorPrimary</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_tick</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">center</item>
+        <item name="stRadius">30dp</item>
+    </style>
+
+    <style name="toast_internet">
+        <item name="stTextBold">false</item>
+        <item name="stTextColor">#fff</item>
+        <item name="stFont">@font/svn_avo_bold</item>
+        <item name="stTextSize">11sp</item>
+        <item name="stColorBackground">@color/colorAccent</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_wifi</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">center</item>
+        <item name="stRadius">30dp</item>
+    </style>
+
+    <style name="toast_error">
+        <item name="stTextBold">false</item>
+        <item name="stTextColor">#fff</item>
+        <item name="stFont">@font/svn_avo_bold</item>
+        <item name="stTextSize">11sp</item>
+        <item name="stColorBackground">@color/colorRed</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_warning_2</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">center</item>
+        <item name="stRadius">30dp</item>
+    </style>
+</resources>

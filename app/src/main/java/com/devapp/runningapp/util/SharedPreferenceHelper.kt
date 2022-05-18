@@ -12,4 +12,8 @@ class SharedPreferenceHelper @Inject constructor(@ApplicationContext context: Co
     var isShowOnBoarding:Boolean
         get() = pref.getBoolean("IS_SHOW_ONBOARDING",true)
         set(value) = pref.edit().putBoolean("IS_SHOW_ONBOARDING",value).apply()
+
+    var isNightMode:Boolean
+        get() = pref.getBoolean("IS_NIGHT_MODE",true)
+        set(value) = pref.edit().putBoolean("IS_NIGHT_MODE",value).apply()
 }

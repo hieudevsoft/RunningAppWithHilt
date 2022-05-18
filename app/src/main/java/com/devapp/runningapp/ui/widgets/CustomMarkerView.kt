@@ -1,4 +1,4 @@
-package com.devapp.runningapp.ui.fragments
+package com.devapp.runningapp.ui.widgets
 
 import android.content.Context
 import android.widget.TextView

@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import com.devapp.runningapp.R
 import com.devapp.runningapp.databinding.FragmentStatisticsBinding
 import com.devapp.runningapp.ui.viewmodels.StatisticsViewModel
+import com.devapp.runningapp.ui.widgets.CustomMarkerView
 import com.devapp.runningapp.util.TrackingUtils
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData

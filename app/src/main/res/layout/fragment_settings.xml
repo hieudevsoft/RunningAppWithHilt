@@ -1,90 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <data>
-
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/colorBgSettings"
-        android:padding="16dp"
+    <com.google.android.material.appbar.AppBarLayout
+        android:fitsSystemWindows="true"
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-        <com.google.android.material.textfield.TextInputLayout
-            app:hintTextColor="@color/mainColor_100"
-            app:boxStrokeColor="@color/mainColor_100"
-            android:layout_margin="20dp"
-            android:id="@+id/tilName"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar"
             android:layout_width="match_parent"
-            app:endIconMode="clear_text"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="?android:attr/actionBarSize">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_gravity="center"
-                android:textCursorDrawable="@null"
-                android:id="@+id/etName"
-                android:layout_width="match_parent"
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Your Name"
-                android:inputType="textPersonName" />
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:fontFamily="@font/svn_avo_bold"
+                android:text="@string/setting"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/size_title" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            app:boxStrokeColor="@color/mainColor_100"
-            app:hintTextColor="@color/mainColor_100"
-            app:endIconMode="clear_text"
-            android:id="@+id/tilWeight"
-            android:layout_width="match_parent"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="@+id/tilName"
-            app:layout_constraintTop_toBottomOf="@+id/tilName">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_more"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/app_bar"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/margin_24"
+        android:paddingTop="@dimen/margin_8"
+        android:paddingBottom="@dimen/margin_36" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:textCursorDrawable="@null"
-                android:layout_gravity="center"
-                android:id="@+id/etWeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Your Weight"
-                android:ems="10"
-                android:inputType="numberDecimal" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnApplyChanges"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Apply Changes"
-            app:rippleColor="@color/white"
-            android:padding="10dp"
-            android:background="@color/mainColor_200"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilWeight" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</RelativeLayout>

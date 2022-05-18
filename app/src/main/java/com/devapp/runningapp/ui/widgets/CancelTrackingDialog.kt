@@ -1,4 +1,4 @@
-package com.devapp.runningapp.ui.fragments
+package com.devapp.runningapp.ui.widgets
 
 import android.app.Dialog
 import android.os.Bundle

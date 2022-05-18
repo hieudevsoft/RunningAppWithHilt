@@ -181,8 +181,8 @@
                     android:layout_centerInParent="true"
                     android:layout_toEndOf="@id/cb_policy_register"
                     android:fontFamily="@font/svn_avo"
-                    android:text="@string/agree_term_and_condition"
                     android:lineSpacingExtra="@dimen/margin_6"
+                    android:text="@string/agree_term_and_condition"
                     android:textColor="@color/colorText_Day_2"
                     android:textSize="12sp" />
             </RelativeLayout>

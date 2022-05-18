@@ -2,15 +2,14 @@ package com.devapp.runningapp.ui.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.devapp.runningapp.R
@@ -18,19 +17,19 @@ import com.devapp.runningapp.adapters.OnBoardingIntroduceAdapter
 import com.devapp.runningapp.databinding.FragmentSplashBinding
 import com.devapp.runningapp.model.OnBoardingIntroduceItem
 import com.devapp.runningapp.util.AnimationHelper
-import com.devapp.runningapp.util.IntCallback
 import com.devapp.runningapp.util.SharedPreferenceHelper
 import com.devapp.runningapp.util.VoidCallback
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FragmentSplash: Fragment(R.layout.fragment_splash) {
+class SplashFragment : Fragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferenceHelper
-    private var _binding : FragmentSplashBinding ? =null
+    private var _binding : FragmentSplashBinding? =null
     private val binding get() = _binding!!
     private var introduceList:List<OnBoardingIntroduceItem> = listOf()
+    private var hasInitializedRootView = false
     override fun onAttach(context: Context) {
         super.onAttach(context)
         introduceList = listOf(
@@ -54,10 +53,12 @@ class FragmentSplash: Fragment(R.layout.fragment_splash) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if(_binding==null)
-        _binding = FragmentSplashBinding.inflate(inflater,container,false)
-        else{
-            (binding.root.parent as ViewGroup).removeView(binding.root)
+        try {
+            if(_binding==null)
+                _binding = FragmentSplashBinding.inflate(inflater,container,false)
+            else{ (binding.root.parent as ViewGroup).removeView(binding.root) }
+        }catch (e:Exception){
+
         }
         return binding.root
     }
@@ -66,6 +67,8 @@ class FragmentSplash: Fragment(R.layout.fragment_splash) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(hasInitializedRootView) return
+        hasInitializedRootView = true
         binding.apply {
             rvIntroduce.adapter = OnBoardingIntroduceAdapter(requireContext(), introduceList)
             viewIndicator.setViewPager(rvIntroduce)
@@ -106,7 +109,7 @@ class FragmentSplash: Fragment(R.layout.fragment_splash) {
                 AnimationHelper.scaleAnimation(it, object : VoidCallback {
                     override fun execute() {
                         if (currentPage == 2) {
-                            findNavController().navigate(FragmentSplashDirections.actionFragmentSplashToFragmentLogin())
+                            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
                         } else binding.rvIntroduce.setCurrentItem(++currentPage, true)
                     }
                 }, 0.96f)
@@ -118,6 +121,7 @@ class FragmentSplash: Fragment(R.layout.fragment_splash) {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupAutoPager() {
+        Log.d("SignUpFragment", "onViewCreated: initView")
         timer = object : CountDownTimer(2000, 1500) {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
@@ -147,8 +151,8 @@ class FragmentSplash: Fragment(R.layout.fragment_splash) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding==null
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding=null
     }
 }
