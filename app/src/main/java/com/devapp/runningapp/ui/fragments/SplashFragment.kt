@@ -101,6 +101,7 @@ class SplashFragment : Fragment() {
                             timer!!.cancel()
                             timer = null
                         }
+                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
                     }
                 }, 0.96f)
             }
@@ -109,6 +110,7 @@ class SplashFragment : Fragment() {
                 AnimationHelper.scaleAnimation(it, object : VoidCallback {
                     override fun execute() {
                         if (currentPage == 2) {
+                            sharedPreferences.isShowOnBoarding = false
                             findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
                         } else binding.rvIntroduce.setCurrentItem(++currentPage, true)
                     }
@@ -121,7 +123,6 @@ class SplashFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupAutoPager() {
-        Log.d("SignUpFragment", "onViewCreated: initView")
         timer = object : CountDownTimer(2000, 1500) {
             override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {

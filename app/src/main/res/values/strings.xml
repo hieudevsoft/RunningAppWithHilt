@@ -7,6 +7,10 @@
         <item>Calories Burned</item>
     </string-array>
     <string name="app_name">Runn</string>
+    <string name="content_notify">Hey you, it\'s time  to study!</string>
+    <string name="content_study_reminder">Be persistent!</string>
+    <string name="turn_on_reminders">Turn on reminders</string>
+    <string name="turn_off_reminders">Turn off reminders</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBoOe9qGN3jMI0_AecKK19kAlpS9PxVMVo</string>
     <string name="onboard_introduce_title_1">Theo dõi tập luyện</string>
     <string name="onboard_introduce_content_1">Dễ dàng phân tích dữ liệu tập luyện</string>
@@ -57,5 +61,8 @@
     <string name="feedback">Feedback</string>
     <string name="tell_friend">Tell friend</string>
     <string name="rate">Rate</string>
+    <string name="share_with">Share with</string>
+    <string name="practice_reminder">Practice reminder</string>
+    <string name="save">Save</string>
 
 </resources>

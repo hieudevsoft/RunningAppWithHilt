@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- hour -->
+        <NumberPicker
+            android:id="@+id/hour"
+            android:layout_width="70dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:layout_marginRight="@dimen/margin_4"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:theme="@style/AppTheme.Picker" />
+
+        <!-- minute -->
+        <NumberPicker
+            android:id="@+id/minute"
+            android:layout_width="70dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:layout_marginRight="@dimen/margin_4"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:theme="@style/AppTheme.Picker" />
+
+    </LinearLayout>
+
+    <!-- AM / PM -->
+    <Button
+        android:id="@+id/amPm"
+        style="?android:attr/textAppearanceLargeInverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_4"
+        android:layout_marginTop="43dip"
+        android:layout_marginRight="@dimen/margin_4"
+        android:paddingStart="20dip"
+        android:paddingEnd="20dip"
+        android:textColor="@android:color/primary_text_light_nodisable" />
+
+</LinearLayout>

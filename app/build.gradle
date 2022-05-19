@@ -130,4 +130,7 @@ dependencies {
 
     //Loading dialog
     implementation 'com.github.yash786agg:AnimatedLoadingIndicator:v1.3'
+
+    //Event bus
+    implementation 'org.greenrobot:eventbus:3.2.0'
 }

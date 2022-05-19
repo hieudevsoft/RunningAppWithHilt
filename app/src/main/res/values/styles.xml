@@ -1,18 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!--    <style name="toast_thanks">-->
-<!--        <item name="stTextBold">false</item>-->
-<!--        <item name="stTextColor">#fff</item>-->
-<!--        <item name="stFont">@font/svn_avo_bold</item>-->
-<!--        <item name="stTextSize">13sp</item>-->
-<!--        <item name="stColorBackground">@color/colorPrimary</item>-->
-<!--        <item name="stSolidBackground">true</item>-->
-<!--        <item name="stIconStart">@drawable/ic_thanks</item>-->
-<!--        <item name="stLength">SHORT</item>-->
-<!--        <item name="stGravity">center</item>-->
-<!--        <item name="stRadius">30dp</item>-->
-<!--    </style>-->
+    <style name="WhiteStyle">
+        <item name="colorAccent">#FFFFFF</item>
+    </style>
+
+    <style name="top_top_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/topTopAnimation</item>
+    </style>
+
+    <style name="topTopAnimation">
+        <item name="android:windowEnterAnimation">@anim/top_down_300</item>
+        <item name="android:windowExitAnimation">@anim/top_up_300</item>
+    </style>
+
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="toast_reminder_on">
+        <item name="stTextBold">false</item>
+        <item name="stTextColor">#fff</item>
+        <item name="stFont">@font/svn_avo_bold</item>
+        <item name="stTextSize">13sp</item>
+        <item name="stColorBackground">#78AB4F</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_tick_2</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">center</item>
+        <item name="stRadius">30dp</item>
+    </style>
+
+    <style name="toast_reminder_off">
+        <item name="stTextBold">false</item>
+        <item name="stTextColor">#fff</item>
+        <item name="stFont">@font/svn_avo_bold</item>
+        <item name="stTextSize">13sp</item>
+        <item name="stColorBackground">@color/colorGray</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/ic_tick_2</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">center</item>
+        <item name="stRadius">30dp</item>
+    </style>
+
 
     <style name="toast_success">
         <item name="stTextBold">false</item>

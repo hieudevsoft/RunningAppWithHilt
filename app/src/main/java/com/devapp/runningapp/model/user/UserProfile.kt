@@ -1,13 +1,23 @@
 package com.devapp.runningapp.model.user
 
+import com.google.gson.annotations.SerializedName
+
 data class UserProfile(
+    @SerializedName(value = "uid")
     override var uid:String="",
+    @SerializedName(value = "email")
     override var email:String="",
+    @SerializedName(value = "password")
     override var password:String="",
+    @SerializedName(value = "phoneNumber")
     var phoneNumber:String?=null,
+    @SerializedName(value = "userName")
     var userName:String?=null,
-    var gender:Gender=Gender.FEMALE,
+    @SerializedName(value = "gender")
+    var gender:Gender=Gender.OTHER,
+    @SerializedName(value = "dob")
     var dob:String?=null,
+    @SerializedName(value = "image")
     var image:String?=null,
 ):BaseUser(uid,email,password){
     fun toMap():Map<String,Any?>{

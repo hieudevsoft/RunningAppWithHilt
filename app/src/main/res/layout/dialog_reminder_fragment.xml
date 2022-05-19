@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_time"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp">
+
+    <RelativeLayout
+        android:id="@+id/layout_card_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGray">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_16"
+            android:fontFamily="@font/svn_avo"
+            android:gravity="center"
+            android:text="@string/practice_reminder"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize22" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
+            android:fontFamily="@font/svn_avo_bold"
+            android:text="00:00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize20" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/sc_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_time"
+            app:track="@drawable/track_selecter_day"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
+            android:checked="true"
+            android:theme="@style/WhiteStyle" />
+
+        <View
+            android:id="@+id/line_time"
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tv_time"
+            android:layout_alignStart="@id/timePicker"
+            android:layout_alignEnd="@id/timePicker"
+            android:layout_marginTop="@dimen/margin_8"
+            android:background="@color/white" />
+
+        <com.devapp.runningapp.ui.widgets.TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line_time"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/margin_24"
+            android:layout_marginRight="@dimen/margin_24" />
+
+        <View
+            android:id="@+id/bg_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/timePicker"
+            android:layout_alignBottom="@id/timePicker"
+            android:background="@android:color/transparent"
+            android:visibility="gone" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/timePicker"
+            android:layout_alignStart="@id/timePicker"
+            android:layout_alignEnd="@+id/timePicker"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_24">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/svn_avo_bold"
+                android:gravity="center_horizontal"
+                android:paddingTop="@dimen/margin_8"
+                android:paddingBottom="@dimen/margin_10"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize14" />
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
+
+

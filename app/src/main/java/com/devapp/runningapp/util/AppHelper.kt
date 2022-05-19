@@ -1,6 +1,10 @@
 package com.devapp.runningapp.util
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.DisplayMetrics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -18,5 +22,28 @@ object AppHelper {
 
     fun <T> String.fromJson(): List<T> {
         return Gson().fromJson(this, object: TypeToken<List<T>>(){}.type) as List<T>
+    }
+
+    fun goStore(activity: Activity) {
+        var appPackageName = ""
+        try {
+            appPackageName = activity.packageName // getPackageName() from Context or Activity object
+            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+            return
+        } catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        }
+        goUrl(activity, "https://play.google.com/store/apps/details?id=$appPackageName")
+    }
+
+    fun goUrl(activity: Activity, url: String) {
+        var webpage = Uri.parse(url)
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            webpage = Uri.parse("http://$url")
+        }
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        if (intent.resolveActivity(activity.packageManager) != null) activity.startActivity(intent)
     }
 }
