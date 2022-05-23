@@ -6,12 +6,14 @@
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/bg_black_stroke_dp8.xml" value="0.263" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/custom_background_border_grey_sdp6.xml" value="0.263" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/custom_background_fill_green.xml" value="0.239" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/custom_background_rounded_top.xml" value="0.2485" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_account.xml" value="0.3205" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_arrow_right.xml" value="0.3205" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_back.xml" value="0.263" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_calendar.xml" value="0.2485" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_calendar_red.xml" value="0.2485" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_cancel.xml" value="0.2155" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_close.xml" value="0.2485" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_email.xml" value="0.263" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_email_red.xml" value="0.263" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/drawable/ic_google.xml" value="0.263" />
@@ -34,12 +36,14 @@
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/activity_main.xml" value="0.1956521739130435" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/dialog_reminder_fragment.xml" value="0.33" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_run.xml" value="0.25" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_settings.xml" value="0.36041666666666666" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_setup.xml" value="0.25" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_sign_up.xml" value="0.25" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_splash.xml" value="0.25" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_splash2.xml" value="0.2015625" />
-        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_tracking.xml" value="0.26614583333333336" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_statistics.xml" value="0.36041666666666666" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_tracking.xml" value="0.25" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_onboarding_introduce.xml" value="0.33" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_setting_arrow.xml" value="0.36041666666666666" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_setting_description.xml" value="0.36041666666666666" />

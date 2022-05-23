@@ -4,22 +4,24 @@ import com.google.gson.annotations.SerializedName
 
 data class UserProfile(
     @SerializedName(value = "uid")
-    override var uid:String="",
+    var uid:String="",
     @SerializedName(value = "email")
-    override var email:String="",
+    var email:String="",
     @SerializedName(value = "password")
-    override var password:String="",
+    var password:String="",
     @SerializedName(value = "phoneNumber")
     var phoneNumber:String?=null,
     @SerializedName(value = "userName")
     var userName:String?=null,
+    @SerializedName(value = "weight")
+    var weight:String?=null,
     @SerializedName(value = "gender")
     var gender:Gender=Gender.OTHER,
     @SerializedName(value = "dob")
     var dob:String?=null,
     @SerializedName(value = "image")
     var image:String?=null,
-):BaseUser(uid,email,password){
+){
     fun toMap():Map<String,Any?>{
         return hashMapOf(
             "uid" to uid,
@@ -27,6 +29,7 @@ data class UserProfile(
             "password" to password,
             "phoneNumber" to phoneNumber,
             "userName" to userName,
+            "weight" to weight,
             "gender" to gender.name,
             "dob" to dob,
             "image" to image
@@ -42,5 +45,6 @@ data class UserProfile(
         if(map["gender"]!=null) this.gender = Gender.valueOf(map["gender"].toString())
         if(map["dob"]!=null) this.dob = map["dob"].toString()
         if(map["image"]!=null) this.image = map["image"].toString()
+        if(map["weight"]!=null) this.weight = map["weight"].toString()
     }
 }

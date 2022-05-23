@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.util.PatternsCompat
 import androidx.core.util.PatternsCompat.*
@@ -36,11 +37,13 @@ import com.devapp.runningapp.util.TrackingUtils.toVisible
 import com.devapp.runningapp.util.VoidCallback
 import com.devapp.runningapp.util.firebase.FirebaseAuthClient
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.tasks.await
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -239,19 +242,26 @@ class SignUpFragment : Fragment() {
                             lifecycleScope.launchWhenResumed {
                                 FirebaseAuthClient.getInstance(Firebase.auth).registerWithEmailAndPassword(binding.itemEmailRegister.getContent(),binding.itemPasswordRegister.getContent(),{
                                     firebaseUser ->
-                                    val userProfile = UserProfile()
-                                    firebaseUser?.let {
-                                        userProfile.uid = it.uid
-                                        userProfile.email = it.email?:""
-                                        userProfile.password = binding.itemPasswordRegister.getContent()
-                                        userProfile.phoneNumber = it.phoneNumber?:""
-                                        userProfile.userName = it.displayName?:""
-                                        userProfile.gender = Gender.OTHER
-                                        userProfile.dob = binding.itemBirthdayRegister.getContent()
-                                        userProfile.image= if(it.photoUrl==null) "" else it.photoUrl.toString()
-                                        firebaseViewModel.getStateFlowAdUser(userProfile)
-                                    }?:StyleableToast.makeText(requireContext(),getString(R.string.fail_register),R.style.toast_error)
-                                    loginWithEmailAndGetResponseAddUserProfile()
+                                    Log.d(TAG, "execute: $firebaseUser")
+                                    val profileUpdate = UserProfileChangeRequest.Builder().setDisplayName(binding.itemNameRegister.getContent()).setPhotoUri("https://t4.ftcdn.net/jpg/00/23/72/59/360_F_23725944_W2aSrg3Kqw3lOmU4IAn7iXV88Rnnfch1.jpg".toUri()).build()
+                                    firebaseUser?.updateProfile(profileUpdate)
+                                        ?.addOnCompleteListener {
+                                            if(it.isSuccessful){
+                                                val userProfile = UserProfile()
+                                                firebaseUser.let {
+                                                    userProfile.uid = it.uid
+                                                    userProfile.email = it.email?:""
+                                                    userProfile.password = binding.itemPasswordRegister.getContent()
+                                                    userProfile.phoneNumber = it.phoneNumber?:""
+                                                    userProfile.userName = it.displayName?:""
+                                                    userProfile.gender = Gender.OTHER
+                                                    userProfile.dob = binding.itemBirthdayRegister.getContent()
+                                                    userProfile.image= if(it.photoUrl==null) "" else it.photoUrl.toString()
+                                                    firebaseViewModel.getStateFlowAdUser(userProfile)
+                                                }
+                                                loginWithEmailAndGetResponseAddUserProfile()
+                                            } else StyleableToast.makeText(requireContext(),getString(R.string.please_try_again),R.style.toast_error)
+                                        }
                                 }){
                                     StyleableToast.makeText(requireContext(),getString(R.string.no_connect),R.style.toast_error)
                                 }

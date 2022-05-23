@@ -63,6 +63,13 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        FirebaseAuthClient.getInstance(Firebase.auth).getCurrentUser()?.let {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSetupFragment(it.toJson()))
+        }
+    }
+
     private fun initView() {
         setupViewLogin()
         binding.apply {
@@ -137,8 +144,10 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                             }
                             loginWithEmailAndGetResponseAddUserProfile()
                         } else {
-                            tvWarningLogin.visibility = View.VISIBLE
+                            tvWarningLogin.toVisible()
                             tvWarningLogin.text = requireContext().getString(R.string.no_connect)
+                            btnLogin.toVisible()
+                            pbLogin.toGone()
                         }
                     }
                 }, 0.96f)
@@ -188,6 +197,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
     private fun loginWithEmailAndGetResponseAddUserProfile() {
         lifecycleScope.launchWhenStarted {
             FirebaseAuthClient.getInstance(Firebase.auth).loginWithEmailAndPassword(binding.itemEmailLogin.getContent(),binding.itemPasswordLogin.getContent(),{
+                Log.d(TAG, "loginWithEmailAndGetResponseAddUserProfile: before")
                 it?.let {
                     binding.apply {
                         btnLogin.toVisible()

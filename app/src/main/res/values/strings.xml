@@ -42,7 +42,7 @@
     <string name="invalid_date_of_birth">Invalid date of birth</string>
     <string name="invalid_password">Password must contain at least 6 characters</string>
     <string name="match_submit_password">The password does not match</string>
-    <string name="no_connect">Internet connection failed. \n Please check your internet settings.</string>
+    <string name="no_connect">Internet connection failed. \nPlease check your internet settings.</string>
     <string name="fail_register">Register account failure</string>
     <string name="please_try_again">Please try again...</string>
     <string name="welcome">Welcome %s\nPlease enter the weight (kg)</string>

@@ -8,10 +8,11 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/mainColor_100"
+        android:background="@drawable/img_home"
         android:padding="12dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <Spinner
             android:id="@+id/spFilter"
             android:layout_width="wrap_content"
@@ -43,21 +44,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spFilter" />
+            app:layout_constraintTop_toBottomOf="@+id/fab" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_black"
-            app:backgroundTint="@color/colorAccent"
+            app:backgroundTint="@color/colorPrimary"
             app:fabSize="normal"
-            app:tint="@color/purple_500"
+            app:tint="@color/white"
             app:rippleColor="@android:color/white"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:contentDescription="Add Back" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

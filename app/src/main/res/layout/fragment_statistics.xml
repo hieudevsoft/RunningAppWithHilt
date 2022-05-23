@@ -9,12 +9,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/md_blue_700">
+        android:background="@color/colorPrimary">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvTotalDistanceInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:fontFamily="@font/svn_avo_bold"
             android:text="Total Distance"
             app:layout_constraintBottom_toTopOf="@+id/tvAverageSpeedInfo"
             app:layout_constraintEnd_toEndOf="@+id/tvTotalDistance"
@@ -27,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0km"
+            app:fontFamily="@font/svn_avo_bold"
             android:textSize="40sp"
             app:layout_constraintBottom_toTopOf="@+id/tvTotalDistanceInfo"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,6 +38,7 @@
             android:id="@+id/tvTotalTimeInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:fontFamily="@font/svn_avo_bold"
             android:text="Total Time"
             app:layout_constraintBottom_toTopOf="@+id/tvTotalCaloriesInfo"
             app:layout_constraintEnd_toEndOf="@+id/tvTotalTime"
@@ -48,6 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00:00"
+            app:fontFamily="@font/svn_avo_bold"
             android:textSize="40sp"
             app:layout_constraintBottom_toTopOf="@+id/tvTotalTimeInfo"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -61,6 +65,7 @@
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="@+id/tvTotalCalories"
             app:layout_constraintHorizontal_bias="0.5"
+            app:fontFamily="@font/svn_avo_bold"
             app:layout_constraintStart_toStartOf="@+id/tvTotalCalories"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0kcal"
+            app:fontFamily="@font/svn_avo_bold"
             android:textSize="40sp"
             app:layout_constraintBottom_toTopOf="@+id/tvTotalCaloriesInfo"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -79,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Average Speed"
+            app:fontFamily="@font/svn_avo_bold"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="@+id/tvAverageSpeed"
             app:layout_constraintHorizontal_bias="0.5"
@@ -90,6 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0km/h"
+            app:fontFamily="@font/svn_avo_bold"
             android:textSize="40sp"
             app:layout_constraintBottom_toTopOf="@+id/tvAverageSpeedInfo"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7017784" />
+            app:layout_constraintGuide_percent="0.7" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -115,6 +123,9 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="80dp"
+            android:layout_marginHorizontal="24dp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvAverageSpeedInfo" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import com.devapp.runningapp.model.user.UserProfile
 import com.devapp.runningapp.util.AnimationHelper
 import com.devapp.runningapp.util.AppHelper.fromJson
 import com.devapp.runningapp.util.Constant
+import com.devapp.runningapp.util.SharedPreferenceHelper
 import com.devapp.runningapp.util.VoidCallback
 import com.google.firebase.firestore.auth.User
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +26,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SetupFragment : Fragment(R.layout.fragment_setup){
     @Inject
-    lateinit var preferences : SharedPreferences
+    lateinit var prefs : SharedPreferenceHelper
     private var _binding:FragmentSetupBinding?=null
     private val binding get() = _binding!!
     private var hasInitRootView = false
@@ -55,7 +56,17 @@ class SetupFragment : Fragment(R.layout.fragment_setup){
     private fun initView() {
         val user = args.user.fromJson<UserProfile>(UserProfile::class.java)
         binding.apply {
-            preferences.getString(Constant.KEY_NAME,"")?.let { etName.setContent(it) }?: user.userName?.let { etName.setContent(it) }
+            prefs.nameUser.let {
+                if (it != null) {
+                    etName.setContent(it)
+                } else user.userName?.let { etName.setContent(it) }
+            }
+            prefs.weightUser.let {
+                if (it != null) {
+                    etWeight.setContent(it)
+                } else user.weight?.let { etWeight.setContent(it) }
+            }
+            tvWelcome.text = String.format(getString(R.string.welcome),etName.getContent())
             btnContinue.setOnClickListener {
                 AnimationHelper.scaleAnimation(it,object : VoidCallback{
                     override fun execute() {
@@ -76,11 +87,8 @@ class SetupFragment : Fragment(R.layout.fragment_setup){
         val name = binding.etName.getContent()
         val weight = binding.etWeight.getContent()
         if(name.isEmpty()||weight.isEmpty()) return false
-        preferences.edit()
-            .putString(Constant.KEY_NAME,name)
-            .putInt(Constant.KEY_WEIGHT,weight.toInt())
-            .putBoolean(Constant.KEY_IS_FIRST_TIME,false)
-            .apply()
+        prefs.nameUser = name
+        prefs.weightUser = weight
         return true
     }
 
@@ -89,8 +97,4 @@ class SetupFragment : Fragment(R.layout.fragment_setup){
         super.onDestroy()
     }
 
-    override fun onDestroyView() {
-        _binding =null
-        super.onDestroyView()
-    }
 }

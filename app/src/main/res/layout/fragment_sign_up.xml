@@ -196,8 +196,8 @@
 
                 <ProgressBar
                     android:id="@+id/pb_register_register"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:theme="@style/PrimaryStyle"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/btn_register"

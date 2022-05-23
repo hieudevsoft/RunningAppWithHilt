@@ -6,7 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.DisplayMetrics
+import com.google.gson.ExclusionStrategy
+import com.google.gson.FieldAttributes
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
 object AppHelper {
@@ -14,7 +17,18 @@ object AppHelper {
         return dp * (this.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
-    fun Any.toJson() = Gson().toJson(this)
+    fun Any.toJson() = GsonBuilder().excludeFieldsWithoutExposeAnnotation().setExclusionStrategies(object:ExclusionStrategy{
+        override fun shouldSkipField(f: FieldAttributes?): Boolean {
+            if(f?.name=="netAmountPcy")
+                return true
+            return false
+        }
+
+        override fun shouldSkipClass(clazz: Class<*>?): Boolean {
+            return false
+        }
+
+    }).create().toJson(this)
 
     fun <T> String.fromJson(clazz: Class<*>): T {
         return Gson().fromJson(this, clazz) as T

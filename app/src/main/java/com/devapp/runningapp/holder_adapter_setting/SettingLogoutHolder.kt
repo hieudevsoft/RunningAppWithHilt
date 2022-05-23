@@ -25,7 +25,7 @@ class SettingLogOutHolder(
     }
 
     fun setData(context: Context, isNightMode: Boolean) {
-        binding.btnLogOut.background = if (isNightMode) DrawableHelper.rectangle(context, R.color.colorGray, 30f)
+        binding.btnLogOut.background = if (isNightMode) DrawableHelper.rectangle(context, R.color.colorGray_3, 30f)
             else DrawableHelper.rectangle(context, R.color.white, 30f)
     }
 

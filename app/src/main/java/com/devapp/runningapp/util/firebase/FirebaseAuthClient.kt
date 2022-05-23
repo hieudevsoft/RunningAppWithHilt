@@ -49,4 +49,6 @@ class FirebaseAuthClient private constructor(private val auth: FirebaseAuth){
     }
 
     fun signOut() = auth.signOut()
+
+
 }

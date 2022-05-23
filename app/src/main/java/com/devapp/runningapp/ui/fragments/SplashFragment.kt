@@ -140,8 +140,7 @@ class SplashFragment : Fragment() {
                 }
                 timer!!.start()
             }
-        }
-        (timer as CountDownTimer).start()
+        }.start()
 
         binding.rvIntroduce.setOnTouchListener { _: View?, event: MotionEvent ->
             when (event.action) {
@@ -155,5 +154,10 @@ class SplashFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding=null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        timer?.cancel()
     }
 }

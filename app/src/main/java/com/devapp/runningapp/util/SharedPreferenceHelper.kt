@@ -37,6 +37,14 @@ class SharedPreferenceHelper @Inject constructor(@ApplicationContext context: Co
         get() = pref.getString("CONTENT_NOTIFY", "") ?: ""
         set(value) = pref.edit().putString("CONTENT_NOTIFY", value).apply()
 
+    var nameUser: String?
+        get() = pref.getString("NAME_USER", "Bro") ?: ""
+        set(value) = pref.edit().putString("NAME_USER", value).apply()
+
+    var weightUser: String
+        get() = pref.getString("WEIGHT_USER", "") ?: ""
+        set(value) = pref.edit().putString("WEIGHT_USER", value).apply()
+
     var nextTimeNotify: Long // nextTime notify Remind
         get() = pref.getLong("NEXT_TIME_NOTIFY", 0)
         set(value) = pref.edit().putLong("NEXT_TIME_NOTIFY", value).apply()
