@@ -19,7 +19,6 @@ object Constant {
     const val LOCATION_UPDATE_INTERVAL = 5000L
     const val FASTEST_LOCATION_UPDATE_INTERVAL = 2000L
 
-    const val POLYLINE_COLOR = Color.BLUE
     const val POLYLINE_WIDTH = 10f
     const val DEFAULT_ZOOM_CAMERA = 18f
 

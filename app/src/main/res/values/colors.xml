@@ -36,5 +36,6 @@
     <color name="colorRed_3">#EF4824</color>
     <color name="colorRed_4">#FF001E</color>
     <color name="colorRed_5">#DC4E41</color>
+    <color name="color_bg_dark">#192225</color>
 
 </resources>

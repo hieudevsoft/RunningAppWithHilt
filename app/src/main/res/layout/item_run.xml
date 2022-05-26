@@ -10,93 +10,196 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginVertical="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
        >
-
-        <ImageView
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_iv_run"
+            app:cardCornerRadius="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintHeight_percent=".3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:cardUseCompatPadding="true"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            android:layout_width="0dp"
+            android:layout_height="220dp">
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/ivRunImage"
             loadingImageFromBitmap="@{run.img}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="220dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_home"
+            app:riv_corner_radius="10dp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ly_date"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/card_iv_run"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/card_iv_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvDate"
+                formatDate="@{run.timeStamp}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/svn_avo_bold"
+                android:text="12-12-2020"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tv_des_date"
             formatDate="@{run.timeStamp}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-black"
-            android:text="DATE"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvTime"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivRunImage" />
+            android:fontFamily="@font/svn_avo"
+            android:text="Date"
+            android:textColor="@color/colorGray_6"
+            android:textSize="11sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ly_time"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/ly_distance"
+            app:layout_constraintStart_toStartOf="@id/ly_distance"
+            app:layout_constraintEnd_toEndOf="@id/ly_avg_speed"
+            app:layout_constraintBottom_toTopOf="@id/ly_avg_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvTime"
+            android:id="@+id/tv_duration"
             formatTime="@{run.timeInRun}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-black"
-            android:text="TIME"
+            android:fontFamily="@font/svn_avo_bold"
+            android:text="32:12"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvDistance"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvDate"
-            app:layout_constraintTop_toBottomOf="@+id/ivRunImage" />
+            />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvDistance"
-            formatDistance="@{run.distanceInMeters}"
+            android:id="@+id/tv_des_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-black"
-            android:text="DISTANCE"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvAvgSpeed"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvTime"
-            app:layout_constraintTop_toBottomOf="@+id/ivRunImage" />
+            android:fontFamily="@font/svn_avo"
+            android:text="Duration"
+            android:textColor="@color/colorGray_6"
+            android:textSize="11sp"
+            />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvAvgSpeed"
-            formatAvgSpeed="@{run.avgSpeedInKMH}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-black"
-            android:text="AVGSPEED"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvCalories"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvDistance"
-            app:layout_constraintTop_toBottomOf="@+id/ivRunImage" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvCalories"
-            formatCalories="@{run.caloriesBurned}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-black"
-            android:text="CALORIES"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ly_distance"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/card_iv_run"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvAvgSpeed"
-            app:layout_constraintTop_toBottomOf="@+id/ivRunImage" />
+            app:layout_constraintTop_toBottomOf="@id/ly_date"
+            app:layout_constraintBottom_toTopOf="@id/ly_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvDistance"
+                formatDistance="@{run.distanceInMeters}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/svn_avo_bold"
+                android:text="11,35 km"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_des_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/svn_avo"
+            android:text="Distance"
+            android:textColor="@color/colorGray_6"
+            android:textSize="11sp"
+             />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ly_avg_speed"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@id/ly_calories"
+            app:layout_constraintEnd_toEndOf="@id/ly_calories"
+            app:layout_constraintBottom_toTopOf="@id/ly_calories"
+            app:layout_constraintTop_toBottomOf="@id/ly_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_avg_speed"
+                formatAvgSpeed="@{run.avgSpeedInKMH}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/svn_avo_bold"
+                android:text="7:20km/h"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_des_avg_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/svn_avo"
+                android:text="Avg Speed"
+                android:textColor="@color/colorGray_6"
+                android:textSize="11sp"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ly_calories"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/card_iv_run"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/card_iv_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvCalories"
+                formatCalories="@{run.caloriesBurned}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/svn_avo_bold"
+                android:text="112kcal"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_des_calories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/svn_avo"
+                android:text="Calories"
+                android:textColor="@color/colorGray_6"
+                android:textSize="11sp"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

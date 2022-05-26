@@ -4,13 +4,18 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Base64
 import android.util.DisplayMetrics
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import java.io.ByteArrayOutputStream
+
 
 object AppHelper {
     fun Context.convertDpToPixel(dp: Float): Float {
@@ -60,4 +65,17 @@ object AppHelper {
         val intent = Intent(Intent.ACTION_VIEW, webpage)
         if (intent.resolveActivity(activity.packageManager) != null) activity.startActivity(intent)
     }
+
+    fun encodeToBase64(image: Bitmap): String? {
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.PNG, 90, baos)
+        val b: ByteArray = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
+    }
+
+    fun decodeBase64(input: String?): Bitmap? {
+        val decodedByte = Base64.decode(input, 0)
+        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+    }
+
 }

@@ -133,4 +133,10 @@ dependencies {
 
     //Event bus
     implementation 'org.greenrobot:eventbus:3.2.0'
+
+    //Rounded image view
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    //PhtoView
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }

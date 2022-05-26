@@ -1,65 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@drawable/img_home"
-        android:padding="12dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorGray_5">
 
-        <Spinner
-            android:id="@+id/spFilter"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:closeIcon="@drawable/ic_close"
+            app:searchIcon="@drawable/ic_round_search"
+            android:theme="@style/WhiteCursorSearchView"
+            android:background="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/filter_options"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/fab"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/fab">
 
-        <TextView
-            android:fontFamily="sans-serif-black"
-            android:textColor="@color/black"
-            android:id="@+id/tvFilterBy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sort by:"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/spFilter"
-            app:layout_constraintEnd_toStartOf="@+id/spFilter"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/tvFilterBy"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_sort" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            xmlns:tools="http://schemas.android.com/tools"
-            tools:listitem="@layout/item_run"
+            <Spinner
+                android:id="@+id/spFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/filter_options"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/rvRuns"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:padding="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fab" />
+            app:layout_constraintTop_toBottomOf="@+id/fab"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_run" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginEnd="32dp"
+            android:contentDescription="Add Back"
             android:src="@drawable/ic_add_black"
             app:backgroundTint="@color/colorPrimary"
             app:fabSize="normal"
-            app:tint="@color/white"
-            app:rippleColor="@android:color/white"
-            android:layout_marginEnd="32dp"
-
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:contentDescription="Add Back" />
+            app:layout_constraintTop_toBottomOf="@id/search_view"
+            app:rippleColor="@android:color/white"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="32dp"
+            android:contentDescription="rank"
+            android:src="@drawable/ic_rank"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
+            app:layout_constraintStart_toEndOf="@id/fab"
+            app:layout_constraintTop_toTopOf="@id/fab"
+            app:rippleColor="@android:color/white"
+            app:tint="@color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.coroutineScope
@@ -20,7 +21,6 @@ import com.devapp.runningapp.util.Constant.ACTION_PAUSE_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_START_OR_RESUME_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_STOP_SERVICE
 import com.devapp.runningapp.util.Constant.DEFAULT_ZOOM_CAMERA
-import com.devapp.runningapp.util.Constant.POLYLINE_COLOR
 import com.devapp.runningapp.util.Constant.POLYLINE_WIDTH
 import com.devapp.runningapp.util.TrackingUtils
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -187,7 +187,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         if (pathPoints.isNotEmpty()) {
             for (polyline in pathPoints) {
                 val polylineOptions = PolylineOptions().apply {
-                    color(POLYLINE_COLOR)
+                    color(ContextCompat.getColor(requireContext(),R.color.colorPrimary))
                     width(POLYLINE_WIDTH)
                     addAll(polyline)
                 }
@@ -207,7 +207,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             val preLatLng = pathPoints.last()[pathPoints.last().size - 2]
             val lastLatLng = pathPoints.last().last()
             val polylineOptions = PolylineOptions().apply {
-                color(POLYLINE_COLOR)
+                color(ContextCompat.getColor(requireContext(),R.color.colorPrimary))
                 width(POLYLINE_WIDTH)
                 add(preLatLng)
                 add(lastLatLng)
@@ -257,12 +257,16 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        binding.mapView.onSaveInstanceState(outState)
+        try {
+            if(_binding!=null) binding.mapView.onSaveInstanceState(outState)
+        }catch (e:Exception){
+
+        }
     }
 
-    override fun onDestroyView() {
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
-        super.onDestroyView()
     }
 
 }

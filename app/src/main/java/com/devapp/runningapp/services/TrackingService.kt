@@ -84,10 +84,10 @@ class TrackingService : LifecycleService() {
         super.onCreate()
         currentNotificationBuilder = baseNotificationBuilder
         postInitialValue()
-        isTracking.observe(this,{
+        isTracking.observe(this) {
             updateLocationTracking(it)
             updateTrackingNotification(it)
-        })
+        }
     }
 
     private fun updateTrackingNotification(isTracking: Boolean){
@@ -102,12 +102,15 @@ class TrackingService : LifecycleService() {
             PendingIntent.getService(this,3,resumeIntent,PendingIntent.FLAG_UPDATE_CURRENT)
         }
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val joinAppIntent = Intent(this,MainActivity::class.java)
+        joinAppIntent.action = ACTION_TO_TRACKING_INTENT
+        val trackingIntent = PendingIntent.getActivity(this,4,joinAppIntent,PendingIntent.FLAG_UPDATE_CURRENT)
         currentNotificationBuilder.javaClass.getDeclaredField("mActions").apply {
             isAccessible = true
             set(currentNotificationBuilder,ArrayList<NotificationCompat.Action>())
         }
         if(!isServiceKill){
-            currentNotificationBuilder = baseNotificationBuilder.addAction(R.drawable.ic_pause,actionText,pendingIntent)
+            currentNotificationBuilder = baseNotificationBuilder.addAction(R.drawable.ic_pause,actionText,pendingIntent).setContentIntent(trackingIntent)
             notificationManager.notify(NOTIFICATION_ID,currentNotificationBuilder.build())
         }
     }
@@ -208,6 +211,7 @@ class TrackingService : LifecycleService() {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback)
         }
     }
+
 
     val locationCallback = object: LocationCallback() {
         override fun onLocationResult(p0: LocationResult?) {

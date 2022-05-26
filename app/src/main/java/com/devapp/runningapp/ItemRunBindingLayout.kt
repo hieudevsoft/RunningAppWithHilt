@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.devapp.runningapp.util.TrackingUtils
+import com.makeramen.roundedimageview.RoundedImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -12,7 +13,7 @@ object ItemRunBindingLayout {
 
     @BindingAdapter("loadingImageFromBitmap")
     @JvmStatic
-    fun loadingImageFromBitmap(imageView:ImageView,bitmap: Bitmap){
+    fun loadingImageFromBitmap(imageView:RoundedImageView,bitmap: Bitmap){
         imageView.setImageBitmap(bitmap)
     }
 

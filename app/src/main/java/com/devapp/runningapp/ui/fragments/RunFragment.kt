@@ -3,39 +3,33 @@ package com.devapp.runningapp.ui.fragments
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devapp.runningapp.R
-import com.devapp.runningapp.RunAdapter
+import com.devapp.runningapp.adapters.RunAdapter
 import com.devapp.runningapp.databinding.FragmentRunBinding
+import com.devapp.runningapp.ui.MainActivity
 import com.devapp.runningapp.ui.viewmodels.MainViewModels
 import com.devapp.runningapp.util.Constant.REQUEST_CODE_PERMISSION
 import com.devapp.runningapp.util.SortType
 import com.devapp.runningapp.util.TrackingUtils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Named
+
 
 @AndroidEntryPoint
 class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCallbacks {
     private val mainViewModels:MainViewModels by viewModels()
     private var _binding: FragmentRunBinding?=null
     private val binding get() = _binding!!
-    private lateinit var requestPermissionResult: ActivityResultLauncher<String>
     private lateinit var runAdapter: RunAdapter
 
     override fun onCreateView(
@@ -47,8 +41,8 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
         return binding.root!!
     }
 
-    fun setupRecyclerView() = binding.rvRuns.apply {
-        runAdapter = RunAdapter()
+    private fun setupRecyclerView() = binding.rvRuns.apply {
+        runAdapter = RunAdapter(childFragmentManager)
         adapter = runAdapter
         layoutManager = LinearLayoutManager(requireContext())
     }
@@ -60,6 +54,7 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
             findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
         }
 
+        setUpSearchView()
 
         binding.spFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
@@ -82,11 +77,15 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
 
         }
         setupRecyclerView()
-            mainViewModels.getAllRuns.observe(viewLifecycleOwner,{
-                Log.d("RunFragment", "onViewCreated: $it")
+        mainViewModels.getAllRuns.observe(viewLifecycleOwner){
                 runAdapter.submitList(it)
-        })
+        }
 
+    }
+
+    private fun setUpSearchView() {
+        val searchAutoComplete = binding.searchView.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)
+        searchAutoComplete.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
     }
 
     private fun requestPermission(){
