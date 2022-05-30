@@ -17,10 +17,13 @@ import com.devapp.runningapp.adapters.RunAdapter
 import com.devapp.runningapp.databinding.FragmentRunBinding
 import com.devapp.runningapp.ui.MainActivity
 import com.devapp.runningapp.ui.viewmodels.MainViewModels
+import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
 import com.devapp.runningapp.util.Constant.REQUEST_CODE_PERMISSION
+import com.devapp.runningapp.util.NetworkHelper
 import com.devapp.runningapp.util.SortType
 import com.devapp.runningapp.util.TrackingUtils
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.muddz.styleabletoast.StyleableToast
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -51,6 +54,10 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
         super.onViewCreated(view, savedInstanceState)
         requestPermission()
         binding.fab.setOnClickListener {
+            if(!NetworkHelper.isInternetConnected(requireContext())){
+                showToastNotConnectInternet()
+                return@setOnClickListener
+            }
             findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
         }
 

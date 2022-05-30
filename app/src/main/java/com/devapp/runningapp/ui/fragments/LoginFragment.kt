@@ -21,8 +21,10 @@ import com.devapp.runningapp.model.ResourceNetwork
 import com.devapp.runningapp.ui.MainActivity
 import com.devapp.runningapp.ui.widgets.DialogLoading
 import com.devapp.runningapp.util.AnimationHelper
+import com.devapp.runningapp.util.AppHelper.showStyleableToast
 import com.devapp.runningapp.util.AppHelper.toJson
 import com.devapp.runningapp.util.NetworkHelper
+import com.devapp.runningapp.util.SharedPreferenceHelper
 import com.devapp.runningapp.util.TrackingUtils.toGone
 import com.devapp.runningapp.util.TrackingUtils.toVisible
 import com.devapp.runningapp.util.VoidCallback
@@ -40,7 +42,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
     private val binding get() = _binding!!
     private var isInitialized = false
     private var isLoading = false
-    val TAG = "LoginFragment"
+    private val sharedPreferenceHelper:SharedPreferenceHelper by lazy { SharedPreferenceHelper(requireContext()) }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -197,19 +199,18 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
     private fun loginWithEmailAndGetResponseAddUserProfile() {
         lifecycleScope.launchWhenStarted {
             FirebaseAuthClient.getInstance(Firebase.auth).loginWithEmailAndPassword(binding.itemEmailLogin.getContent(),binding.itemPasswordLogin.getContent(),{
-                Log.d(TAG, "loginWithEmailAndGetResponseAddUserProfile: before")
                 it?.let {
                     binding.apply {
                         btnLogin.toVisible()
                         pbLogin.toGone()
                     }
                     isLoading = false
-                    Log.d(TAG, "loginWithEmailAndGetResponseAddUserProfile: $it")
+                    sharedPreferenceHelper.accessUid = it.uid
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSetupFragment(it.toJson()))
                 }
             }){
                 isLoading = false
-                StyleableToast.makeText(requireContext(),it.toString(),R.style.toast_error)
+                showStyleableToast(it.toString(),false)
             }
         }
     }

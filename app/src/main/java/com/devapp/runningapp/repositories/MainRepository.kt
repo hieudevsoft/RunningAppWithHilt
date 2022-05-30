@@ -5,9 +5,7 @@ import com.devapp.runningapp.db.RunDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MainRepository @Inject constructor(
-    val runDao: RunDao
-){
+class MainRepository @Inject constructor(val runDao: RunDao){
 
     suspend fun insertRun(run: Run):Long {
         return runDao.insertRun(run)

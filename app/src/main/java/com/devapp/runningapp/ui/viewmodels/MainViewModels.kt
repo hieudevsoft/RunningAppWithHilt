@@ -47,8 +47,7 @@ class MainViewModels @Inject constructor(
             SortType.DATE ->getAllRunSortByDate.value?.let { getAllRuns.value = it }
             SortType.TIME ->getAllRunsSortedByTime.value?.let { getAllRuns.value = it }
             SortType.SPEED ->getAllRunsSortedByAvgSpeed.value?.let { getAllRuns.value = it }
-            SortType.DISTANCE ->{ getAllRunsSortedDistance.value?.let {
-                    getAllRuns.value = it} }
+            SortType.DISTANCE ->{ getAllRunsSortedDistance.value?.let { getAllRuns.value = it} }
             SortType.CALORIES ->getAllRunsSortedByCaloriesBurned.value?.let { getAllRuns.value = it }
         }.also { this.sortType = sortType }
 

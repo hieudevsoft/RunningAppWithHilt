@@ -28,6 +28,8 @@ import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.widgets.DatePickerView
 import com.devapp.runningapp.ui.widgets.DialogLoading
 import com.devapp.runningapp.util.AnimationHelper
+import com.devapp.runningapp.util.AppHelper.showStyleableToast
+import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
 import com.devapp.runningapp.util.AppHelper.toJson
 import com.devapp.runningapp.util.DateCallback
 import com.devapp.runningapp.util.NetworkHelper
@@ -260,10 +262,10 @@ class SignUpFragment : Fragment() {
                                                     firebaseViewModel.getStateFlowAdUser(userProfile)
                                                 }
                                                 loginWithEmailAndGetResponseAddUserProfile()
-                                            } else StyleableToast.makeText(requireContext(),getString(R.string.please_try_again),R.style.toast_error)
+                                            } else showStyleableToast(getString(R.string.please_try_again),false)
                                         }
                                 }){
-                                    StyleableToast.makeText(requireContext(),getString(R.string.no_connect),R.style.toast_error)
+                                    showToastNotConnectInternet()
                                 }
                             }
                         } else {
@@ -320,14 +322,14 @@ class SignUpFragment : Fragment() {
                                     findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSetupFragment(it.toJson()))
                                 }
                             }){
-                                StyleableToast.makeText(requireContext(),it.toString(),R.style.toast_error)
+                                showStyleableToast(it.toString(),false)
                             }
-                        }?:StyleableToast.makeText(requireContext(),getString(R.string.please_try_again),R.style.toast_error)
+                        }?:showStyleableToast(getString(R.string.please_try_again),false)
                     }
 
                     is ResourceNetwork.Error->{
                         DialogLoading.hide()
-                        StyleableToast.makeText(requireContext(),it.message,R.style.toast_error)
+                        showStyleableToast(it.message?:"Opps",false)
                     }
 
                     else->{

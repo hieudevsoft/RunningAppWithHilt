@@ -48,4 +48,8 @@ class SharedPreferenceHelper @Inject constructor(@ApplicationContext context: Co
     var nextTimeNotify: Long // nextTime notify Remind
         get() = pref.getLong("NEXT_TIME_NOTIFY", 0)
         set(value) = pref.edit().putLong("NEXT_TIME_NOTIFY", value).apply()
+
+    var accessUid: String?
+        get() = pref.getString("ACCESS_UID", "") ?: ""
+        set(value) = pref.edit().putString("ACCESS_UID", value).apply()
 }

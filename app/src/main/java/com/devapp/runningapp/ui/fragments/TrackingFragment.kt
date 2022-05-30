@@ -1,58 +1,73 @@
 package com.devapp.runningapp.ui.fragments
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import com.devapp.runningapp.R
 import com.devapp.runningapp.databinding.FragmentTrackingBinding
+import com.devapp.runningapp.model.ResourceNetwork
 import com.devapp.runningapp.model.Run
 import com.devapp.runningapp.services.Polyline
 import com.devapp.runningapp.services.TrackingService
+import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.viewmodels.MainViewModels
 import com.devapp.runningapp.ui.widgets.CancelTrackingDialog
+import com.devapp.runningapp.ui.widgets.DialogLoading
+import com.devapp.runningapp.util.AppHelper.showStyleableToast
+import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
 import com.devapp.runningapp.util.Constant.ACTION_PAUSE_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_START_OR_RESUME_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_STOP_SERVICE
 import com.devapp.runningapp.util.Constant.DEFAULT_ZOOM_CAMERA
 import com.devapp.runningapp.util.Constant.POLYLINE_WIDTH
+import com.devapp.runningapp.util.NetworkHelper
+import com.devapp.runningapp.util.SharedPreferenceHelper
 import com.devapp.runningapp.util.TrackingUtils
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
+import com.shashank.sony.fancydialoglib.Animation
+import com.shashank.sony.fancydialoglib.FancyAlertDialog
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.lang.Math.round
+import kotlinx.coroutines.withContext
 import java.util.*
-import javax.inject.Inject
 import kotlin.math.roundToInt
+
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private var isTracking = false
     private var pathPoints = mutableListOf<Polyline>()
-    private val mainViewModels: MainViewModels by viewModels()
+    private val mainViewModels: MainViewModels by activityViewModels()
+    private val firebaseViewModel: FirebaseViewModel by activityViewModels()
     private var marker: Marker? = null
     private var _binding: FragmentTrackingBinding? = null
     private val binding get() = _binding!!
     private var googleMap: GoogleMap? = null
     private var currentTimeInMillis = 0L
+    private lateinit var run:Run
+    private val sharedPreferenceHelper:SharedPreferenceHelper by lazy { SharedPreferenceHelper(requireContext()) }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentTrackingBinding.inflate(inflater, container, false)
-        return binding.root!!
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,20 +113,63 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
 
     private fun subscribeToObservers() {
-        TrackingService.isTracking.observe(viewLifecycleOwner, {
+        TrackingService.isTracking.observe(viewLifecycleOwner) {
             updateTracking(it)
-        })
-        TrackingService.pathPoints.observe(viewLifecycleOwner, {
+        }
+        TrackingService.pathPoints.observe(viewLifecycleOwner) {
             pathPoints = it
             addLatestPolyline()
             moveCameraLatestPoint()
-        })
-        TrackingService.timeRunInMillis.observe(viewLifecycleOwner, {
+        }
+        TrackingService.timeRunInMillis.observe(viewLifecycleOwner) {
             currentTimeInMillis = it
             if (currentTimeInMillis > 0) binding.btnCancelTracking.visibility = View.VISIBLE
             val timeInFormatted = TrackingUtils.getFormattedStopWatchTime(currentTimeInMillis, true)
             binding.tvTimer.text = timeInFormatted
-        })
+        }
+
+        lifecycle.coroutineScope.launchWhenResumed {
+            firebaseViewModel.stateFlowAddImageToFirestore.collect(){
+                when(it){
+                    is ResourceNetwork.Loading->{
+                        DialogLoading.show(requireContext())
+                    }
+
+                    is ResourceNetwork.Success->{
+                        firebaseViewModel.getStateFlowAddRunInformation(run)
+                    }
+
+                    is ResourceNetwork.Error->{
+                        DialogLoading.hide()
+                        showStyleableToast(it.message?:"Opps",false)
+                    }
+                }
+            }
+        }
+
+        lifecycle.coroutineScope.launchWhenResumed {
+            firebaseViewModel.stateFlowAddRunInformation.collect(){
+                when(it){
+                    is ResourceNetwork.Loading->{
+                    }
+
+                    is ResourceNetwork.Success->{
+                        DialogLoading.hide()
+                        lifecycle.coroutineScope.launch(Dispatchers.Main) {
+                            val result = withContext(Dispatchers.IO) {
+                                mainViewModels.insert(run)
+                            }
+                            if(result>-1) showStyleableToast("Save tracking successfully~ ",true)
+                        }
+                    }
+
+                    is ResourceNetwork.Error->{
+                        DialogLoading.hide()
+                        showStyleableToast(it.message?:"Opps",false)
+                    }
+                }
+            }
+        }
     }
 
     private fun moveCameraLatestPoint() {
@@ -142,25 +200,41 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         )
     }
 
-    @set:Inject
-    var weight = 80
-    fun endAndSaveTrackingToDb(){
+    private fun endAndSaveTrackingToDb(){
         googleMap?.snapshot { bitmap->
             val distanceInMeters = TrackingUtils.getDistanceForTracking(polylines = pathPoints)
             val avgSpeedInKMH = ((distanceInMeters / 1000f) /(currentTimeInMillis/(1000f*60f*60f))*10f).roundToInt()/10f
             val timeStamp = Calendar.getInstance().timeInMillis
-            val caloriesBurned = round(distanceInMeters / 1000f) * weight
-            val run = Run(bitmap,timeStamp,avgSpeedInKMH,distanceInMeters.toInt(),currentTimeInMillis,caloriesBurned.toInt(),null)
-            lifecycle.coroutineScope.launch(Dispatchers.Main) {
-                val result = mainViewModels.insert(run)
-                Timber.d(result.toString())
-                if(result>-1) Snackbar.make(
-                    binding.root,
-                    "Save tracking successfully~ ",
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
-            stopRun()
+            val mph = avgSpeedInKMH/1.61
+            val MET:Float = if(mph<=6) 10f else if(mph<=10) 13.5f else 20f
+            val caloriesBurned = (distanceInMeters / 1000f).roundToInt() * sharedPreferenceHelper.weightUser.toFloat() * MET
+            if(sharedPreferenceHelper.accessUid.isNullOrEmpty()) return@snapshot
+            run = Run(bitmap,timeStamp,avgSpeedInKMH,distanceInMeters.toInt(),currentTimeInMillis, caloriesBurned.roundToInt(), sharedPreferenceHelper.accessUid!!)
+            if(NetworkHelper.isInternetConnected(requireContext())){
+                FancyAlertDialog.Builder
+                    .with(requireContext())
+                    .setTitle("Quit")
+                    .setBackgroundColorRes(R.color.colorPrimary)
+                    .setMessage("Do you really want to Exit ?")
+                    .setNegativeBtnText("Cancel")
+                    .setPositiveBtnBackgroundRes(R.color.black)
+                    .setPositiveBtnText("Yes")
+                    .setNegativeBtnBackgroundRes(R.color.colorRed_5)
+                    .setAnimation(Animation.POP)
+                    .isCancellable(true)
+                    .setIcon(R.drawable.ic_run, View.VISIBLE)
+                    .onPositiveClicked { dialog: Dialog? ->
+                        if(run.img==null || run.id.isEmpty()) {
+                            showStyleableToast(getString(R.string.please_try_again),false)
+                            return@onPositiveClicked
+                        }
+                        stopRun()
+                        firebaseViewModel.getStateAddImageToFireStore(run.id,run.img!!)
+                    }
+                    .onNegativeClicked {}
+                    .build()
+                    .show()
+            } else showToastNotConnectInternet()
       }
     }
 

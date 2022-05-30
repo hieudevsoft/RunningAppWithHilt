@@ -14,6 +14,7 @@ import com.devapp.runningapp.databinding.FragmentSetupBinding
 import com.devapp.runningapp.model.user.UserProfile
 import com.devapp.runningapp.util.AnimationHelper
 import com.devapp.runningapp.util.AppHelper.fromJson
+import com.devapp.runningapp.util.AppHelper.showStyleableToast
 import com.devapp.runningapp.util.Constant
 import com.devapp.runningapp.util.SharedPreferenceHelper
 import com.devapp.runningapp.util.VoidCallback
@@ -75,7 +76,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup){
                             findNavController().navigate(R.id.action_setupFragment_to_runFragment)
                         }
                         else {
-                            StyleableToast.makeText(requireContext(),"Please fill the fields",R.style.toast_error)
+                            showStyleableToast("Please fill the fields",false)
                         }
                     }
                 },0.96f)
@@ -86,9 +87,15 @@ class SetupFragment : Fragment(R.layout.fragment_setup){
     private fun checkInputInformation():Boolean{
         val name = binding.etName.getContent()
         val weight = binding.etWeight.getContent()
-        if(name.isEmpty()||weight.isEmpty()) return false
-        prefs.nameUser = name
-        prefs.weightUser = weight
+        try {
+            if(name.isEmpty()||weight.isEmpty()) return false
+            weight.toFloat()
+            prefs.nameUser = name
+            prefs.weightUser = weight
+        }catch (e:Exception){
+            showStyleableToast("Weight format is not valid",false)
+            return false
+        }
         return true
     }
 

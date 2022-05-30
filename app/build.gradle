@@ -139,4 +139,7 @@ dependencies {
 
     //PhtoView
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    //FancyAlertDialog
+    implementation 'com.github.Shashank02051997:FancyAlertDialog-Android:0.2'
 }
