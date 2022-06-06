@@ -3,6 +3,7 @@ package com.devapp.runningapp.ui.fragments
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -26,6 +28,7 @@ import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.viewmodels.SharedViewModel
 import com.devapp.runningapp.ui.widgets.CancelTrackingDialog
 import com.devapp.runningapp.util.*
+import com.devapp.runningapp.util.AppHelper.getColorContextCompat
 import com.devapp.runningapp.util.AppHelper.setOnClickWithScaleListener
 import com.devapp.runningapp.util.AppHelper.showStyleableToast
 import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
@@ -54,7 +57,8 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
     private var stringBuilder = StringBuilder()
     private var currentWeatherFeature = 0
     private var isFirstGetApi = true
-    private lateinit var onEndTrackingCallBack:LongCallback
+    private lateinit var mPathPoints :MutableList<Polyline>
+    private lateinit var onEndTrackingCallBack:EndTrackingCallBack
     private val sharedPreferenceHelper:SharedPreferenceHelper by lazy { SharedPreferenceHelper(context=requireContext()) }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -79,14 +83,6 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
         super.onViewCreated(view, savedInstanceState)
         if(hasInitializedRootView) return
         hasInitializedRootView = true
-        if(savedInstanceState!=null){
-            val cancelDialog = parentFragmentManager.findFragmentByTag("CANCEL_TRACKING_DIALOG") as CancelTrackingDialog?
-            cancelDialog?.apply {
-                setYesListener {
-                    stopRun()
-                }
-            }
-        }
         onSetupView()
         subscriberObserver()
     }
@@ -160,9 +156,9 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
                 if(NetworkHelper.isInternetConnected(requireContext())){
                     FancyAlertDialog.Builder
                         .with(requireContext())
-                        .setTitle("Quit")
+                        .setTitle("Finish")
                         .setBackgroundColorRes(R.color.colorPrimary)
-                        .setMessage("Do you really want to Exit ?")
+                        .setMessage("Do you really want to finish ?")
                         .setNegativeBtnText("Cancel")
                         .setPositiveBtnBackgroundRes(R.color.black)
                         .setPositiveBtnText("Yes")
@@ -172,7 +168,7 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
                         .setIcon(R.drawable.ic_run, View.VISIBLE)
                         .onPositiveClicked { dialog: Dialog? ->
                             stopRun()
-                            onEndTrackingCallBack.execute(currentTimeInMillis)
+                            onEndTrackingCallBack.execute(currentTimeInMillis,mPathPoints)
                         }
                         .onNegativeClicked {}
                         .build()
@@ -188,51 +184,72 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
     }
 
     private fun changeModeWeatherFeature(currentWeatherFeature: Int) {
-        if(!isFirstGetApi) return
+        if(isFirstGetApi) return
         when(currentWeatherFeature){
             0->{
                 binding.tvTemperature.apply {
                     text = "$currentTemp°C"
-                    setCompoundDrawables(ResourcesCompat.getDrawable(resources,R.drawable.ic_sunny,null),null,null,null)
+                    setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(resources,R.drawable.ic_sunny,null),null,null,null)
+                    ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(getColorContextCompat(R.color.color_bg_dark_1)))
                 }
             }
 
             1->{
                 binding.tvTemperature.apply {
                     text = "$currentTemp°C"
-                    setCompoundDrawables(ResourcesCompat.getDrawable(resources,R.drawable.ic_feels_like,null),null,null,null)
+                    setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(resources,R.drawable.ic_feels_like,null),null,null,null)
+                    ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(getColorContextCompat(R.color.colorBgSettings)))
+
                 }
             }
 
             2->{
                 binding.tvTemperature.apply {
                     text = "${currentHumidity}atm"
-                    setCompoundDrawables(ResourcesCompat.getDrawable(resources,R.drawable.ic_water,null),null,null,null)
+                    setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(resources,R.drawable.ic_water,null),null,null,null)
+                    ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(getColorContextCompat(R.color.colorPrimary)))
+
                 }
             }
 
             else->{
                 binding.tvTemperature.apply {
                     text = "${currentSpeedWind}km/h"
-                    setCompoundDrawables(ResourcesCompat.getDrawable(resources,R.drawable.ic_cloud,null),null,null,null)
+                    setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(resources,R.drawable.ic_cloud,null),null,null,null)
+                    ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(getColorContextCompat(R.color.colorPrimaryDark)))
+
                 }
             }
         }
     }
 
-    fun setOnEndTrackingCallBack(callBack:LongCallback){
+    fun setOnEndTrackingCallBack(callBack:EndTrackingCallBack){
         this.onEndTrackingCallBack = callBack
     }
 
     private fun showDialogCancelTracking() {
-        CancelTrackingDialog().apply {
-            setYesListener { stopRun() }
-        }.show(parentFragmentManager,"CANCEL_TRACKING_DIALOG")
+        FancyAlertDialog.Builder
+            .with(requireContext())
+            .setTitle("Cancel")
+            .setBackgroundColorRes(R.color.colorRed_5)
+            .setMessage("Do you really want to cancel ?")
+            .setNegativeBtnText("Cancel")
+            .setPositiveBtnBackgroundRes(R.color.colorPrimary)
+            .setPositiveBtnText("Yes")
+            .setNegativeBtnBackgroundRes(R.color.colorBgSettings)
+            .setAnimation(Animation.SIDE)
+            .isCancellable(true)
+            .setIcon(R.drawable.ic_warning_2, View.VISIBLE)
+            .onPositiveClicked { dialog: Dialog? ->
+                stopRun()
+            }
+            .onNegativeClicked {}
+            .build()
+            .show()
     }
 
     private fun stopRun() {
         sendCommandToService(Constant.ACTION_STOP_SERVICE)
-        if (requireParentFragment() is ViewPagerTrackingFragment) (requireParentFragment() as ViewPagerTrackingFragment).navigateToRunFragment()
     }
 
     private fun toggleRun() {
@@ -259,9 +276,9 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
     }
 
     override fun execute(pathPoins: MutableList<Polyline>) {
+        mPathPoints = pathPoins
         val distanceInMeters = TrackingUtils.getDistanceForTracking(polylines = pathPoins)
         val avgSpeedInKMH = ((distanceInMeters / 1000f) /(currentTimeInMillis/(1000f*60f*60f))*10f).roundToInt()/10f
-        Calendar.getInstance().timeInMillis
         val mph = avgSpeedInKMH/1.61
         val MET:Float = if(mph<=6) 2f else if(mph<=10) 6f else 10f
         val caloriesBurned = String.format("%.2f",(distanceInMeters/1000)*sharedPreferenceHelper.weightUser.toFloat() * MET)

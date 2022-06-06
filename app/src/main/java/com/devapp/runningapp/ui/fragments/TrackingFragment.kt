@@ -1,18 +1,14 @@
 package com.devapp.runningapp.ui.fragments
 
-import android.app.Dialog
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
-import androidx.navigation.fragment.findNavController
 import com.devapp.runningapp.R
 import com.devapp.runningapp.databinding.FragmentTrackingBinding
 import com.devapp.runningapp.model.ResourceNetwork
@@ -21,13 +17,9 @@ import com.devapp.runningapp.services.Polyline
 import com.devapp.runningapp.services.TrackingService
 import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.viewmodels.MainViewModels
-import com.devapp.runningapp.ui.widgets.CancelTrackingDialog
 import com.devapp.runningapp.ui.widgets.DialogLoading
 import com.devapp.runningapp.util.AppHelper.showStyleableToast
 import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
-import com.devapp.runningapp.util.Constant.ACTION_PAUSE_SERVICE
-import com.devapp.runningapp.util.Constant.ACTION_START_OR_RESUME_SERVICE
-import com.devapp.runningapp.util.Constant.ACTION_STOP_SERVICE
 import com.devapp.runningapp.util.Constant.DEFAULT_ZOOM_CAMERA
 import com.devapp.runningapp.util.Constant.POLYLINE_WIDTH
 import com.devapp.runningapp.util.NetworkHelper
@@ -43,6 +35,7 @@ import com.shashank.sony.fancydialoglib.FancyAlertDialog
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -59,6 +52,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     private val binding get() = _binding!!
     private var googleMap: GoogleMap? = null
     private lateinit var run:Run
+    private lateinit var runFirebase:Run
     private val sharedPreferenceHelper:SharedPreferenceHelper by lazy { SharedPreferenceHelper(requireContext()) }
     private lateinit var runCallBack: RunCallBack
     override fun onCreateView(
@@ -87,7 +81,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             moveCameraLatestPoint()
         }
 
-        lifecycle.coroutineScope.launchWhenResumed {
+        lifecycle.coroutineScope.launchWhenCreated {
             firebaseViewModel.stateFlowAddImageToFirestore.collect(){
                 when(it){
                     is ResourceNetwork.Loading->{
@@ -95,37 +89,42 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
                     }
 
                     is ResourceNetwork.Success->{
-                        firebaseViewModel.getStateFlowAddRunInformation(run)
+                        firebaseViewModel.getStateFlowAddRunInformation(runFirebase)
                     }
 
                     is ResourceNetwork.Error->{
                         DialogLoading.hide()
                         showStyleableToast(it.message?:"Opps",false)
                     }
+
+                    else->{}
                 }
             }
         }
 
-        lifecycle.coroutineScope.launchWhenResumed {
+        lifecycle.coroutineScope.launchWhenCreated {
             firebaseViewModel.stateFlowAddRunInformation.collect(){
                 when(it){
                     is ResourceNetwork.Loading->{
                     }
 
                     is ResourceNetwork.Success->{
+                        Log.d("TAG", "subscribeToObservers: $runFirebase")
                         DialogLoading.hide()
-                        lifecycle.coroutineScope.launch(Dispatchers.Main) {
-                            val result = withContext(Dispatchers.IO) {
+                            val result = withContext(Dispatchers.Main) {
                                 mainViewModels.insert(run)
                             }
                             if(result>-1) showStyleableToast("Save tracking successfully~ ",true)
-                        }
+                        delay(1000)
+                        (requireParentFragment() as ViewPagerTrackingFragment).navigateToRunFragment()
                     }
 
                     is ResourceNetwork.Error->{
                         DialogLoading.hide()
                         showStyleableToast(it.message?:"Opps",false)
                     }
+
+                    else->{}
                 }
             }
         }
@@ -159,21 +158,27 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         )
     }
 
-    fun endAndSaveTrackingToDb(currentTimeInMillis:Long){
+    fun endAndSaveTrackingToDb(currentTimeInMillis:Long,mPathPoints:MutableList<Polyline>){
+        if(!NetworkHelper.isInternetConnected(requireContext())){
+            requireContext().showToastNotConnectInternet()
+            return
+        }
         googleMap?.snapshot { bitmap->
-            val distanceInMeters = TrackingUtils.getDistanceForTracking(polylines = pathPoints)
+            val distanceInMeters = TrackingUtils.getDistanceForTracking(polylines = mPathPoints)
             val avgSpeedInKMH = ((distanceInMeters / 1000f) /(currentTimeInMillis/(1000f*60f*60f))*10f).roundToInt()/10f
+            Log.d("TAG", "endAndSaveTrackingToDb: $mPathPoints $distanceInMeters $avgSpeedInKMH $currentTimeInMillis")
             val timeStamp = Calendar.getInstance().timeInMillis
             val mph = avgSpeedInKMH/1.61
-            val MET:Float = if(mph<=6) 10f else if(mph<=10) 13.5f else 20f
-            val caloriesBurned = (distanceInMeters / 1000f).roundToInt() * sharedPreferenceHelper.weightUser.toFloat() * MET
+            val MET:Float = if(mph<=6) 2f else if(mph<=10) 6f else 10f
+            val caloriesBurned = String.format("%.2f",(distanceInMeters/1000)*sharedPreferenceHelper.weightUser.toFloat() * MET).toFloat().toInt()
             if(sharedPreferenceHelper.accessUid.isNullOrEmpty()) return@snapshot
-            run = Run(bitmap,timeStamp,avgSpeedInKMH,distanceInMeters.toInt(),currentTimeInMillis, caloriesBurned.roundToInt(), sharedPreferenceHelper.accessUid!!)
-            if(run.img==null || run.id.isEmpty()) {
+            run = Run(bitmap,timeStamp,avgSpeedInKMH,distanceInMeters.toInt(),currentTimeInMillis, caloriesBurned, sharedPreferenceHelper.accessUid!!)
+            runFirebase = Run(null,timeStamp,avgSpeedInKMH,distanceInMeters.toInt(),currentTimeInMillis, caloriesBurned, sharedPreferenceHelper.accessUid!!)
+            if(run.img==null || run.uid!!.isEmpty()) {
                 showStyleableToast(getString(R.string.please_try_again),false)
                 return@snapshot
             }
-            firebaseViewModel.getStateAddImageToFireStore(run.id,run.img!!)
+            firebaseViewModel.getStateAddImageToFireStore(run.uid!!,run.img!!,run.timeStamp!!)
       }
     }
 
@@ -187,11 +192,6 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
                 }
                 googleMap?.addPolyline(polylineOptions)
             }
-//            googleMap?.addMarker(MarkerOptions()
-//                .position(pathPoints.last().last())
-//                .title("Right here...")
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
-//            )
         }
     }
 

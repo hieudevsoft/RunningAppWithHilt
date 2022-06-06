@@ -2,6 +2,8 @@ package com.devapp.runningapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -11,6 +13,8 @@ import com.devapp.runningapp.R
 import com.devapp.runningapp.databinding.ItemRunBinding
 import com.devapp.runningapp.model.Run
 import com.devapp.runningapp.ui.dialog.bsdf.ViewPhotosBSDF
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class RunAdapter(private val fm:FragmentManager):RecyclerView.Adapter<RunAdapter.ViewHolder>() {
@@ -53,4 +57,5 @@ class RunAdapter(private val fm:FragmentManager):RecyclerView.Adapter<RunAdapter
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
+
 }

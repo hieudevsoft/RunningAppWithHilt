@@ -14,7 +14,7 @@ class DialogLoading {
         private lateinit var progressDialog: Dialog
         fun show(context: Context){
             if(!::progressDialog.isInitialized) progressDialog = Dialog(context)
-            progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            //progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             progressDialog.setContentView(R.layout.custom_dialog_progress)
             val progressTv = progressDialog.findViewById(R.id.progress_tv) as TextView
             progressTv.text = context.resources.getString(R.string.loading)

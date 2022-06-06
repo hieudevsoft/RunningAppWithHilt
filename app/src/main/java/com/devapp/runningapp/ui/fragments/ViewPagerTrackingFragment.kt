@@ -13,14 +13,15 @@ import androidx.viewpager2.widget.ViewPager2
 import com.devapp.runningapp.R
 import com.devapp.runningapp.adapters.ViewPager2Adapter
 import com.devapp.runningapp.databinding.FragmentViewPagerTrackingBinding
+import com.devapp.runningapp.services.Polyline
 import com.devapp.runningapp.ui.viewmodels.SharedViewModel
-import com.devapp.runningapp.util.AppHelper.findOnClickWithScaleListener
+import com.devapp.runningapp.util.EndTrackingCallBack
 import com.devapp.runningapp.util.LongCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class ViewPagerTrackingFragment : Fragment(),LongCallback{
+class ViewPagerTrackingFragment : Fragment(),EndTrackingCallBack{
     private lateinit var parentContext:Context
     private lateinit var trackingAdapter:ViewPager2Adapter
     private var _binding:FragmentViewPagerTrackingBinding?=null
@@ -97,8 +98,8 @@ class ViewPagerTrackingFragment : Fragment(),LongCallback{
         _binding=null
     }
 
-    override fun execute(data: Long) {
+    override fun execute(currentTimeInMilis: Long, pathPoints: MutableList<Polyline>) {
         trackingFragment.moveCameraWholeTracking()
-        trackingFragment.endAndSaveTrackingToDb(data)
+        trackingFragment.endAndSaveTrackingToDb(currentTimeInMilis,pathPoints)
     }
 }

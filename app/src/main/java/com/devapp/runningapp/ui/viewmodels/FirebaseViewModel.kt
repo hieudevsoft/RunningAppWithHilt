@@ -2,6 +2,7 @@ package com.devapp.runningapp.ui.viewmodels
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.media.Image
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.devapp.runningapp.model.ResourceNetwork
@@ -18,6 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.sql.Timestamp
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,10 +58,28 @@ class FirebaseViewModel @Inject constructor(
 
     private val _stateAddImageToStorage:MutableStateFlow<ResourceNetwork<Boolean?>> = MutableStateFlow(ResourceNetwork.Idle)
     val stateFlowAddImageToFirestore = _stateAddImageToStorage.asStateFlow()
-    fun getStateAddImageToFireStore(uid:String,image:Bitmap){
+    fun getStateAddImageToFireStore(uid:String,image:Bitmap,timestamp: Long){
         _stateAddImageToStorage.value = ResourceNetwork.Loading
         viewModelScope.launch {
-            _stateAddImageToStorage.value = fireStorageRepository.addImageById(uid,image)
+            _stateAddImageToStorage.value = fireStorageRepository.addImageById(uid,image,timestamp)
+        }
+    }
+
+    private val _stateFlowGetAllRunByUid:MutableStateFlow<ResourceNetwork<List<Run>?>> = MutableStateFlow(ResourceNetwork.Idle)
+    val stateFlowGetAllRunByUid = _stateFlowGetAllRunByUid.asStateFlow()
+    fun getStateAllRun(uid:String){
+        _stateFlowGetAllRunByUid.value = ResourceNetwork.Loading
+        viewModelScope.launch {
+            _stateFlowGetAllRunByUid.value = fireStoreRepository.getAllRunInformation(uid)
+        }
+    }
+
+    private val _stateFlowGetAllImageByUid:MutableStateFlow<ResourceNetwork<HashMap<String,Bitmap>?>> = MutableStateFlow(ResourceNetwork.Idle)
+    val stateFlowGetAllImageByUid = _stateFlowGetAllImageByUid.asStateFlow()
+    fun getStateAllImageById(uid:String){
+        _stateFlowGetAllImageByUid.value = ResourceNetwork.Loading
+        viewModelScope.launch {
+            _stateFlowGetAllImageByUid.value = fireStorageRepository.downloadAllImagesById(uid)
         }
     }
 

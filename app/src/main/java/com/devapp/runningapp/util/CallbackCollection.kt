@@ -50,3 +50,7 @@ interface SettingListener {
 interface RunCallBack {
     fun execute(pathPoints:MutableList<Polyline>)
 }
+
+interface EndTrackingCallBack {
+    fun execute(currentTimeInMilis:Long,pathPoints:MutableList<Polyline>)
+}

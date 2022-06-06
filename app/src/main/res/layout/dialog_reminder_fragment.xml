@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
+    android:layout_gravity="center"
     android:layout_marginLeft="30dp"
     android:layout_marginRight="30dp">
 
@@ -30,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_title"
+            android:layout_alignParentStart="true"
             android:layout_marginLeft="@dimen/margin_20"
             android:layout_marginRight="@dimen/margin_20"
             android:fontFamily="@font/svn_avo_bold"
@@ -42,12 +44,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/tv_time"
-            app:track="@drawable/track_selecter_day"
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="@dimen/margin_20"
             android:layout_marginRight="@dimen/margin_20"
             android:checked="true"
-            android:theme="@style/WhiteStyle" />
+            android:theme="@style/WhiteStyle"
+            app:track="@drawable/track_selecter_day" />
 
         <View
             android:id="@+id/line_time"
@@ -64,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/line_time"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/margin_24"
             android:layout_marginRight="@dimen/margin_24" />
 
@@ -78,6 +80,7 @@
             android:visibility="gone" />
 
         <androidx.cardview.widget.CardView
+            android:layout_centerHorizontal="true"
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,7 +98,7 @@
                 android:paddingTop="@dimen/margin_8"
                 android:paddingBottom="@dimen/margin_10"
                 android:text="@string/save"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/textSize14" />
         </androidx.cardview.widget.CardView>
 

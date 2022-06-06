@@ -5,7 +5,7 @@ import androidx.room.*
 import com.devapp.runningapp.model.Run
 
 
-@Database(entities = [Run::class],version = 1,exportSchema = false)
+@Database(entities = [Run::class],version = 2,exportSchema = false)
 @TypeConverters(RunConverter::class)
 abstract class RunDatabase:RoomDatabase(){
     abstract fun getRunDao():RunDao

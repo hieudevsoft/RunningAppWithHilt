@@ -79,4 +79,35 @@ class FireStoreRepository @Inject constructor(@ApplicationContext private val co
         }
         return res
     }
+
+    suspend fun getAllRunInformation(
+        id: String,
+        @IoDispatcher dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ): ResourceNetwork<List<Run>?> {
+        val collection = Firebase.firestore.collection("runs")
+        val res = withContext(dispatcher) {
+            try {
+                val queriesSnapshot = collection
+                    .whereEqualTo("uid", id)
+                    .orderBy("timeStamp")
+                    .get()
+                    .await()
+                val listRun:MutableList<Run> = mutableListOf()
+                queriesSnapshot.documents.forEach {
+                    it.toObject<Run>()?.let { run -> listRun.add(run) }
+                }
+                ResourceNetwork.Success(listRun)
+
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                }
+                ResourceNetwork.Error(null, e.message)
+            }
+        }
+        return res
+    }
+
+
+
 }

@@ -10,52 +10,61 @@ class MainRepository @Inject constructor(val runDao: RunDao){
     suspend fun insertRun(run: Run):Long {
         return runDao.insertRun(run)
     }
+
+    suspend fun insertRuns(runs: List<Run>){
+        runDao.insertRuns(runs)
+    }
+
+    suspend fun deleteRuns(uid: String){
+        runDao.deleteAllRunByUid(uid)
+    }
+
     suspend fun delete(run: Run){
         runDao.delete(run)
     }
 
-    fun getAllRunsSortedByDate(): Flow<List<Run>>
+    fun getAllRunsSortedByDate(uid:String): Flow<List<Run>>
     {
-        return runDao.getAllRunsSortedByDate()
+        return runDao.getAllRunsSortedByDate(uid)
     }
 
-    fun getAllRunsSortedByTime(): Flow<List<Run>>
+    fun getAllRunsSortedByTime(uid:String): Flow<List<Run>>
     {
-        return runDao.getAllRunsSortedByTime()
+        return runDao.getAllRunsSortedByTime(uid)
     }
 
-    fun getAllRunsSortedByCaloriesBurned(): Flow<List<Run>>
+    fun getAllRunsSortedByCaloriesBurned(uid:String): Flow<List<Run>>
     {
-        return runDao.getAllRunsSortedByCaloriesBurned()
+        return runDao.getAllRunsSortedByCaloriesBurned(uid)
     }
 
-    fun getAllRunsSortedByAvgSpeed(): Flow<List<Run>>
+    fun getAllRunsSortedByAvgSpeed(uid:String): Flow<List<Run>>
     {
-        return runDao.getAllRunsSortedByAvgSpeed()
+        return runDao.getAllRunsSortedByAvgSpeed(uid)
     }
 
-    fun getAllRunsSortedDistance(): Flow<List<Run>>
+    fun getAllRunsSortedDistance(uid:String): Flow<List<Run>>
     {
-        return runDao.getAllRunsSortedDistance()
+        return runDao.getAllRunsSortedDistance(uid)
     }
 
-    fun getTotalTimeInMillis(): Flow<Long>
+    fun getTotalTimeInMillis(uid:String): Flow<Long>
     {
-        return runDao.getTotalTimeInMillis()
+        return runDao.getTotalTimeInMillis(uid)
     }
 
-    fun getTotalDistance(): Flow<Int>
+    fun getTotalDistance(uid:String): Flow<Int>
     {
-        return runDao.getTotalDistance()
+        return runDao.getTotalDistance(uid)
     }
 
-    fun getTotalCaloriesBurned(): Flow<Int>
+    fun getTotalCaloriesBurned(uid:String): Flow<Int>
     {
-        return runDao.getTotalCaloriesBurned()
+        return runDao.getTotalCaloriesBurned(uid)
     }
 
-    fun getTotalAvgSpeed(): Flow<Float>
+    fun getTotalAvgSpeed(uid:String): Flow<Float>
     {
-        return runDao.getTotalAvgSpeed()
+        return runDao.getTotalAvgSpeed(uid)
     }
 }

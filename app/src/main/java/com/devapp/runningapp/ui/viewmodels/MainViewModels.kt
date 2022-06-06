@@ -1,24 +1,31 @@
 package com.devapp.runningapp.ui.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.*
 import com.devapp.runningapp.model.Run
 import com.devapp.runningapp.repositories.MainRepository
+import com.devapp.runningapp.util.SharedPreferenceHelper
 import com.devapp.runningapp.util.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModels @Inject constructor(
+    app:Application,
     val mainRepository: MainRepository
-): ViewModel() {
-    private val getAllRunSortByDate: LiveData<List<Run>> = mainRepository.getAllRunsSortedByDate().asLiveData()
-    private val getAllRunsSortedByTime: LiveData<List<Run>> = mainRepository.getAllRunsSortedByTime().asLiveData()
-    private val getAllRunsSortedByAvgSpeed: LiveData<List<Run>> = mainRepository.getAllRunsSortedByAvgSpeed().asLiveData()
-    private val getAllRunsSortedDistance: LiveData<List<Run>> = mainRepository.getAllRunsSortedDistance().asLiveData()
-    private val getAllRunsSortedByCaloriesBurned: LiveData<List<Run>> = mainRepository.getAllRunsSortedByCaloriesBurned().asLiveData()
+): AndroidViewModel(app) {
+
+    private val sharedPreferenceHelper:SharedPreferenceHelper by lazy { SharedPreferenceHelper(getApplication()) }
+    private val getAllRunSortByDate: LiveData<List<Run>> = mainRepository.getAllRunsSortedByDate(sharedPreferenceHelper.accessUid!!).asLiveData()
+    private val getAllRunsSortedByTime: LiveData<List<Run>> = mainRepository.getAllRunsSortedByTime(sharedPreferenceHelper.accessUid!!).asLiveData()
+    private val getAllRunsSortedByAvgSpeed: LiveData<List<Run>> = mainRepository.getAllRunsSortedByAvgSpeed(sharedPreferenceHelper.accessUid!!).asLiveData()
+    private val getAllRunsSortedDistance: LiveData<List<Run>> = mainRepository.getAllRunsSortedDistance(sharedPreferenceHelper.accessUid!!).asLiveData()
+    private val getAllRunsSortedByCaloriesBurned: LiveData<List<Run>> = mainRepository.getAllRunsSortedByCaloriesBurned(sharedPreferenceHelper.accessUid!!).asLiveData()
 
     val getAllRuns = MediatorLiveData<List<Run>>()
 
@@ -59,6 +66,15 @@ class MainViewModels @Inject constructor(
             }
         }
         return result
+    }
+
+    fun insetAllRun(runs: List<Run>) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                mainRepository.deleteRuns(sharedPreferenceHelper.accessUid!!)
+                mainRepository.insertRuns(runs)
+            }
+        }
     }
 }
 

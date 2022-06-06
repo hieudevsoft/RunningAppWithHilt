@@ -84,7 +84,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         sections.add(SettingTypes.TITLE_OVERVIEW)
         sections.add(SettingTypes.LANGUAGE_DEVICE)
-        sections.add(SettingTypes.THEME_APP)
         sections.add(SettingTypes.REMINDER)
         sections.add(SettingTypes.POLICY)
         sections.add(SettingTypes.TITLE_SUPPORT)
