@@ -1,6 +1,8 @@
 package com.devapp.runningapp.util
 
+import com.devapp.runningapp.model.Run
 import com.devapp.runningapp.model.SettingTypes
+import com.devapp.runningapp.services.Polyline
 
 interface VoidCallback {
     fun execute()
@@ -15,7 +17,7 @@ interface IntCallback {
 }
 
 interface LongCallback {
-    fun execute(data: Int)
+    fun execute(data: Long)
 }
 
 interface DoubleCallback {
@@ -43,4 +45,8 @@ interface SettingListener {
     fun itemClickListener(type: SettingTypes)
     fun goUrl(url: String)
     fun logOutListener()
+}
+
+interface RunCallBack {
+    fun execute(pathPoints:MutableList<Polyline>)
 }

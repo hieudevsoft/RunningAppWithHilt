@@ -19,8 +19,10 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import com.devapp.runningapp.R
+import com.devapp.runningapp.model.weather.ResponseWeather
 import com.devapp.runningapp.ui.MainActivity
 import com.devapp.runningapp.util.Constant.ACTION_PAUSE_SERVICE
 import com.devapp.runningapp.util.Constant.ACTION_START_OR_RESUME_SERVICE
@@ -31,7 +33,7 @@ import com.devapp.runningapp.util.Constant.FASTEST_LOCATION_UPDATE_INTERVAL
 import com.devapp.runningapp.util.Constant.LOCATION_UPDATE_INTERVAL
 import com.devapp.runningapp.util.Constant.NOTIFICATION_ID
 import com.devapp.runningapp.util.Constant.NOTIFICATION_NAME
-import com.devapp.runningapp.util.Constant.REQUEST_CODE_FOR_GET_PENDING_INTENT
+import com.devapp.runningapp.util.OkHttpHelper
 import com.devapp.runningapp.util.TrackingUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -62,14 +64,17 @@ class TrackingService : LifecycleService() {
     private lateinit var currentNotificationBuilder : NotificationCompat.Builder
 
     private val timeRunInSeconds = MutableLiveData<Long>()
-
+    private var isUnLockCallApi = true
     private var isServiceKill = false
+    private var currentLatitude = 0f
+    private var currentLongitude = 0f
 
     companion object {
         val timeRunInMillis = MutableLiveData<Long>()
         private var isFirstRun = true
         var isTracking = MutableLiveData<Boolean>()
         var pathPoints = MutableLiveData<Polylines>()
+        var responseWeather = MutableLiveData<ResponseWeather>()
     }
 
     private fun postInitialValue(){
@@ -204,8 +209,7 @@ class TrackingService : LifecycleService() {
                     fastestInterval = FASTEST_LOCATION_UPDATE_INTERVAL
                     priority = PRIORITY_HIGH_ACCURACY
                 }
-                fusedLocationProviderClient.requestLocationUpdates(requestLocation,locationCallback,
-                    Looper.getMainLooper())
+                fusedLocationProviderClient.requestLocationUpdates(requestLocation,locationCallback, Looper.getMainLooper())
             }
         }else{
             fusedLocationProviderClient.removeLocationUpdates(locationCallback)
@@ -213,15 +217,27 @@ class TrackingService : LifecycleService() {
     }
 
 
-    val locationCallback = object: LocationCallback() {
+    private val locationCallback = object: LocationCallback() {
         override fun onLocationResult(p0: LocationResult?) {
             super.onLocationResult(p0)
             if(isTracking.value!!){
                 p0?.locations?.let{
                     for(location in it){
                         addPathPoint(location)
-                        Timber.d("NEW LOCATION: ${location.latitude}, ${location.longitude}")
+                        currentLatitude = location.latitude.toFloat()
+                        currentLongitude = location.longitude.toFloat()
                     }
+                }
+                lifecycle.coroutineScope.launch{
+                    if(isUnLockCallApi){
+                        OkHttpHelper.getWeatherFromOpenWeatherApi(currentLatitude,currentLongitude){
+                            Log.d("TAG", "onLocationResult: $it")
+                            responseWeather.postValue(it)
+                        }
+                    }
+                    isUnLockCallApi = false
+                    delay(1000*60*10)
+                    isUnLockCallApi = true
                 }
             }
         }
@@ -248,12 +264,17 @@ class TrackingService : LifecycleService() {
         }else vibrator.vibrate(500)
 
         startForeground(NOTIFICATION_ID, baseNotificationBuilder.build())
-        timeRunInSeconds.observe(this,{
-            if(!isServiceKill){
-                val notification = currentNotificationBuilder.setContentText(TrackingUtils.getFormattedStopWatchTime(it*1000,false))
-                notificationManager.notify(NOTIFICATION_ID,notification.build())
+        timeRunInSeconds.observe(this) {
+            if (!isServiceKill) {
+                val notification = currentNotificationBuilder.setContentText(
+                    TrackingUtils.getFormattedStopWatchTime(
+                        it * 1000,
+                        false
+                    )
+                )
+                notificationManager.notify(NOTIFICATION_ID, notification.build())
             }
-        })
+        }
 
     }
 

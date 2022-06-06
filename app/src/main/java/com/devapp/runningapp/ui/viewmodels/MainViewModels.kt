@@ -14,7 +14,6 @@ import javax.inject.Inject
 class MainViewModels @Inject constructor(
     val mainRepository: MainRepository
 ): ViewModel() {
-
     private val getAllRunSortByDate: LiveData<List<Run>> = mainRepository.getAllRunsSortedByDate().asLiveData()
     private val getAllRunsSortedByTime: LiveData<List<Run>> = mainRepository.getAllRunsSortedByTime().asLiveData()
     private val getAllRunsSortedByAvgSpeed: LiveData<List<Run>> = mainRepository.getAllRunsSortedByAvgSpeed().asLiveData()

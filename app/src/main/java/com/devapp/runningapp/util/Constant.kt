@@ -26,4 +26,5 @@ object Constant {
     const val KEY_NAME = "name"
     const val KEY_WEIGHT = "weight"
     const val KEY_IS_FIRST_TIME = "is_first_time"
+    const val API_KEY_WEATHER = "ce691c235536e7056880ad1a68877784"
 }

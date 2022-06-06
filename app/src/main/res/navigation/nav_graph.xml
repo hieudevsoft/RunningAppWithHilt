@@ -21,6 +21,16 @@
             app:popExitAnim="@android:anim/fade_out"
             android:id="@+id/action_runFragment_to_trackingFragment"
             app:destination="@id/trackingFragment" />
+        <action
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpToSaveState="true"
+            app:popUpTo="@id/viewPagerTrackingFragment"
+            app:popUpToInclusive="false"
+            android:id="@+id/action_runFragment_to_viewPagerTrackingFragment"
+            app:destination="@id/viewPagerTrackingFragment" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_statistics"
@@ -105,5 +115,16 @@
             app:popUpTo="@layout/fragment_setup"
             android:id="@+id/action_signUpFragment_to_setupFragment"
             app:destination="@id/setupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPagerTrackingFragment"
+        android:name="com.devapp.runningapp.ui.fragments.ViewPagerTrackingFragment"
+        android:label="fragment_view_pager_tracking"
+        tools:layout="@layout/fragment_view_pager_tracking" >
+        <action
+            app:enterAnim="@anim/slide_in_right_300"
+            app:exitAnim="@anim/slide_out_right_300"
+            android:id="@+id/action_viewPagerTrackingFragment_to_runFragment"
+            app:destination="@id/runFragment" />
     </fragment>
 </navigation>

@@ -142,4 +142,11 @@ dependencies {
 
     //FancyAlertDialog
     implementation 'com.github.Shashank02051997:FancyAlertDialog-Android:0.2'
+
+    //Lottie animation
+    implementation 'com.airbnb.android:lottie:4.2.1'
+
+    //OkHttpClient
+    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
 }

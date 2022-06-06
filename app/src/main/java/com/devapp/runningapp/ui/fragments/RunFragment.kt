@@ -58,7 +58,7 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
                 showToastNotConnectInternet()
                 return@setOnClickListener
             }
-            findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
+            findNavController().navigate(R.id.action_runFragment_to_viewPagerTrackingFragment)
         }
 
         setUpSearchView()
