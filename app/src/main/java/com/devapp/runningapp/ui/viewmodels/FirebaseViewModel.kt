@@ -47,6 +47,15 @@ class FirebaseViewModel @Inject constructor(
         }
     }
 
+    private val _stateFlowUpdateUserProfile:MutableStateFlow<ResourceNetwork<UserProfile?>> = MutableStateFlow(ResourceNetwork.Idle)
+    val stateFlowUpdateUserProfile = _stateFlowUpdateUserProfile.asStateFlow()
+    fun getStateUpdateUserProfile(userProfile:UserProfile){
+        _stateFlowUpdateUserProfile.value = ResourceNetwork.Loading
+        viewModelScope.launch {
+            _stateFlowUpdateUserProfile.value = fireStoreRepository.updateUserProfile(userProfile)
+        }
+    }
+
     private val _stateFlowAddRunInformation:MutableStateFlow<ResourceNetwork<Map<String,Any>?>> = MutableStateFlow(ResourceNetwork.Idle)
     val stateFlowAddRunInformation = _stateFlowAddRunInformation.asStateFlow()
     fun getStateFlowAddRunInformation(run: Run){

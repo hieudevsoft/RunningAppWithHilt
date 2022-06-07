@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        >
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvTotalDistanceInfo"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             app:fontFamily="@font/svn_avo_bold"
             android:text="Total Distance"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/tvAverageSpeedInfo"
             app:layout_constraintEnd_toEndOf="@+id/tvTotalDistance"
             app:layout_constraintHorizontal_bias="0.5"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0km"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             app:fontFamily="@font/svn_avo_bold"
             android:textSize="40sp"
             app:layout_constraintBottom_toTopOf="@+id/tvTotalDistanceInfo"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             app:fontFamily="@font/svn_avo_bold"
             android:text="Total Time"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/tvTotalCaloriesInfo"
             app:layout_constraintEnd_toEndOf="@+id/tvTotalTime"
             app:layout_constraintHorizontal_bias="0.5"
@@ -53,7 +53,7 @@
             android:id="@+id/tvTotalTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             android:text="00:00:00"
             app:fontFamily="@font/svn_avo_bold"
             android:textSize="40sp"
@@ -68,7 +68,7 @@
             android:text="Total Calories Burned"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="@+id/tvTotalCalories"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintHorizontal_bias="0.5"
             app:fontFamily="@font/svn_avo_bold"
             app:layout_constraintStart_toStartOf="@+id/tvTotalCalories"
@@ -81,7 +81,7 @@
             android:text="0kcal"
             app:fontFamily="@font/svn_avo_bold"
             android:textSize="40sp"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/tvTotalCaloriesInfo"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent" />
@@ -93,7 +93,7 @@
             android:text="Average Speed"
             app:fontFamily="@font/svn_avo_bold"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="@+id/tvAverageSpeed"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/tvAverageSpeed"
@@ -108,7 +108,7 @@
             android:textSize="40sp"
             app:layout_constraintBottom_toTopOf="@+id/tvAverageSpeedInfo"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
         <androidx.constraintlayout.widget.Guideline

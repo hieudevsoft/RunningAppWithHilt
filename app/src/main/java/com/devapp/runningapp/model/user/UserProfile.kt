@@ -13,10 +13,14 @@ data class UserProfile(
     var phoneNumber:String?=null,
     @SerializedName(value = "userName")
     var userName:String?=null,
+    @SerializedName(value = "nickName")
+    var nickName:String?=null,
+    @SerializedName(value = "slogan")
+    var slogan:String?=null,
     @SerializedName(value = "weight")
     var weight:String?=null,
     @SerializedName(value = "gender")
-    var gender:Gender=Gender.OTHER,
+    var gender:Gender=Gender.FEMALE,
     @SerializedName(value = "dob")
     var dob:String?=null,
     @SerializedName(value = "image")
@@ -29,6 +33,8 @@ data class UserProfile(
             "password" to password,
             "phoneNumber" to phoneNumber,
             "userName" to userName,
+            "nickName" to nickName,
+            "slogan" to slogan,
             "weight" to weight,
             "gender" to gender.name,
             "dob" to dob,
@@ -42,9 +48,12 @@ data class UserProfile(
         if(map["password"]!=null) this.password = map["password"].toString()
         if(map["phoneNumber"]!=null) this.phoneNumber = map["phoneNumber"].toString()
         if(map["userName"]!=null) this.userName = map["userName"].toString()
+        if(map["nickName"]!=null) this.nickName = map["nickName"].toString()
+        if(map["slogan"]!=null) this.slogan = map["slogan"].toString()
         if(map["gender"]!=null) this.gender = Gender.valueOf(map["gender"].toString())
         if(map["dob"]!=null) this.dob = map["dob"].toString()
         if(map["image"]!=null) this.image = map["image"].toString()
         if(map["weight"]!=null) this.weight = map["weight"].toString()
     }
+
 }

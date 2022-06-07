@@ -31,6 +31,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="signup_account">Signup Account</string>
     <string name="your_name">Your name</string>
+    <string name="your_nick_name">Your nick name</string>
     <string name="day_of_birth">Day of birth</string>
     <string name="confirm_password">Cofirm password</string>
     <string name="register">Register</string>

@@ -46,64 +46,69 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         binding.barChat.xAxis.apply {
             position = XAxis.XAxisPosition.BOTTOM
             setDrawLabels(false)
-            axisLineColor = Color.WHITE
-            textColor = Color.WHITE
+            axisLineColor = ContextCompat.getColor(requireContext(),R.color.colorPrimary)
+            textColor = ContextCompat.getColor(requireContext(),R.color.colorPrimary)
             setDrawGridLines(false)
         }
         binding.barChat.axisLeft.apply {
-            axisLineColor = Color.WHITE
-            textColor = Color.WHITE
+            axisLineColor = ContextCompat.getColor(requireContext(),R.color.colorPrimary)
+            textColor = ContextCompat.getColor(requireContext(),R.color.colorPrimary)
             setDrawGridLines(false)
         }
         binding.barChat.axisRight.apply {
-            axisLineColor = Color.WHITE
-            textColor = Color.WHITE
+            axisLineColor = ContextCompat.getColor(requireContext(),R.color.colorPrimary)
+            textColor = ContextCompat.getColor(requireContext(),R.color.colorPrimary)
             setDrawGridLines(false)
         }
         binding.barChat.apply {
             description.text = "Speed"
-            description.textColor = Color.WHITE
-            description.textSize = 16f
+            description.textColor = ContextCompat.getColor(requireContext(),R.color.black)
+            description.textSize = 12f
             description.textAlign = Paint.Align.CENTER
             legend.isEnabled = false
         }
     }
 
     private fun subscribeObservers(){
-        mainViewModels.totalTime.observe(viewLifecycleOwner,{
+        mainViewModels.totalTime.observe(viewLifecycleOwner) {
             it?.let {
                 binding.tvTotalTime.text = TrackingUtils.getFormattedStopWatchTime(it)
             }
-        })
-        mainViewModels.totalDistance.observe(viewLifecycleOwner,{
+        }
+        mainViewModels.totalDistance.observe(viewLifecycleOwner) {
             it?.let {
-                binding.tvTotalDistance.text = "${((it / 1000f) * 10f).roundToInt() /10f}km"
+                binding.tvTotalDistance.text = "${((it / 1000f) * 10f).roundToInt() / 10f}km"
             }
-        })
-        mainViewModels.totalAvgSpeed.observe(viewLifecycleOwner,{
+        }
+        mainViewModels.totalAvgSpeed.observe(viewLifecycleOwner) {
             it?.let {
-                binding.tvAverageSpeed.text = "${(it* 10f).roundToInt() /10f}km/h"
+                binding.tvAverageSpeed.text = "${(it * 10f).roundToInt() / 10f}km/h"
             }
-        })
-        mainViewModels.totalCaloriesBurned.observe(viewLifecycleOwner,{
+        }
+        mainViewModels.totalCaloriesBurned.observe(viewLifecycleOwner) {
             it?.let {
                 binding.tvTotalCalories.text = "${it}kcal"
             }
-        })
-        mainViewModels.runsSortedByDate.observe(viewLifecycleOwner,{
+        }
+        mainViewModels.runsSortedByDate.observe(viewLifecycleOwner) {
             it?.let {
                 val listReversed = it.reversed()
-                val allAvgSpeed = listReversed.indices.map { i->BarEntry(i.toFloat(),listReversed[i].avgSpeedInKMH!!) }
-                val barDataSet = BarDataSet(allAvgSpeed,"Avg Speed Over Time").apply {
-                    valueTextColor = Color.WHITE
-                    valueTextSize = 16f
-                    color = ContextCompat.getColor(requireContext(),R.color.mainColor_200)
+                val allAvgSpeed = listReversed.indices.map { i ->
+                    BarEntry(
+                        i.toFloat(),
+                        listReversed[i].avgSpeedInKMH!!
+                    )
                 }
-                binding.barChat.marker = CustomMarkerView(listReversed,requireContext(),R.layout.marker_view)
+                val barDataSet = BarDataSet(allAvgSpeed, "Avg Speed Over Time").apply {
+                    valueTextColor = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                    valueTextSize = 16f
+                    color = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                }
+                binding.barChat.marker = CustomMarkerView(listReversed, requireContext(), R.layout.marker_view)
                 binding.barChat.data = BarData(barDataSet)
                 binding.barChat.invalidate()
             }
-        })
+        }
     }
 
 

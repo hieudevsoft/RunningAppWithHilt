@@ -120,7 +120,10 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
                     }
 
                     is ResourceNetwork.Success->{
-                        if(it.data==null||it.data!!.isEmpty()) return@collect
+                        if(it.data==null||it.data!!.isEmpty()) {
+                            DialogLoading.hide()
+                            return@collect
+                        }
                         if(!::currentListRun.isInitialized) currentListRun = mutableListOf()
                         if(currentListRun.size>=1) currentListRun.clear()
                         currentListRun.addAll(it.data!!)

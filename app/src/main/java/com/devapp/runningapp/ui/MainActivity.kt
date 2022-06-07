@@ -27,6 +27,8 @@ import com.devapp.runningapp.util.Constant
 import com.devapp.runningapp.util.Constant.ACTION_TO_TRACKING_INTENT
 import com.devapp.runningapp.util.SharedPreferenceHelper
 import com.devapp.runningapp.util.TrackingUtils.hideSoftKeyboard
+import com.devapp.runningapp.util.TrackingUtils.toGone
+import com.devapp.runningapp.util.TrackingUtils.toVisible
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.muddz.styleabletoast.StyleableToast
 import org.greenrobot.eventbus.EventBus
@@ -56,8 +58,8 @@ class MainActivity : AppCompatActivity() {
         if(!sharedPref.isShowOnBoarding) navHostFragment.navController.navigate(R.id.loginFragment)
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id){
-                R.id.settingsFragment,R.id.runFragment,R.id.statisticsFragment->binding.bottomNavigationView.visibility = View.VISIBLE
-                else->binding.bottomNavigationView.visibility = View.GONE
+                R.id.settingsFragment,R.id.runFragment,R.id.statisticsFragment,R.id.profileFragment->binding.bottomNavigationView.toVisible()
+                else->binding.bottomNavigationView.toGone()
             }
         }
 

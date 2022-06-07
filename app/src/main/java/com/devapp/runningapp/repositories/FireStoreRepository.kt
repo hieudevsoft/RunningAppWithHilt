@@ -31,33 +31,42 @@ class FireStoreRepository @Inject constructor(@ApplicationContext private val co
                 val result = collection.add(userProfile).await()
                 ResourceNetwork.Success(result.get().await().data)
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
                 ResourceNetwork.Error(null)
             }
         }
         return res
     }
 
-    suspend fun getUserProfile(
-        id: String,
-        @IoDispatcher dispatcher: CoroutineDispatcher = Dispatchers.IO
-    ): ResourceNetwork<UserProfile?> {
+    suspend fun getUserProfile(id: String, @IoDispatcher dispatcher: CoroutineDispatcher = Dispatchers.IO): ResourceNetwork<UserProfile?> {
         val collection = Firebase.firestore.collection("profiles")
         val res = withContext(dispatcher) {
             try {
                 val queriesSnapshot = collection
-                    .whereEqualTo("id", id)
+                    .whereEqualTo("uid", id)
                     .orderBy("email")
                     .get()
                     .await()
                 ResourceNetwork.Success(queriesSnapshot.documents[0].toObject<UserProfile>())
 
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
+                ResourceNetwork.Error(null, e.message)
+            }
+        }
+        return res
+    }
+
+    suspend fun updateUserProfile(userProfile:UserProfile, @IoDispatcher dispatcher: CoroutineDispatcher = Dispatchers.IO): ResourceNetwork<UserProfile?> {
+        val collection = Firebase.firestore.collection("profiles")
+        val res = withContext(dispatcher) {
+            try {
+                val queriesSnapshot = collection
+                    .whereEqualTo("uid", userProfile.uid)
+                    .orderBy("email")
+                    .get()
+                    .await()
+                collection.document(queriesSnapshot.documents[0].id).update(userProfile.toMap())
+                ResourceNetwork.Success(userProfile)
+            } catch (e: Exception) {
                 ResourceNetwork.Error(null, e.message)
             }
         }
@@ -71,9 +80,6 @@ class FireStoreRepository @Inject constructor(@ApplicationContext private val co
                 val result = collection.add(run).await()
                 ResourceNetwork.Success(result.get().await().data)
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
                 ResourceNetwork.Error(null)
             }
         }
@@ -99,9 +105,6 @@ class FireStoreRepository @Inject constructor(@ApplicationContext private val co
                 ResourceNetwork.Success(listRun)
 
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
                 ResourceNetwork.Error(null, e.message)
             }
         }

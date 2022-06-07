@@ -27,16 +27,13 @@ import com.devapp.runningapp.model.user.UserProfile
 import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.widgets.DatePickerView
 import com.devapp.runningapp.ui.widgets.DialogLoading
-import com.devapp.runningapp.util.AnimationHelper
+import com.devapp.runningapp.util.*
 import com.devapp.runningapp.util.AppHelper.showStyleableToast
 import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
 import com.devapp.runningapp.util.AppHelper.toJson
-import com.devapp.runningapp.util.DateCallback
-import com.devapp.runningapp.util.NetworkHelper
 import com.devapp.runningapp.util.TrackingUtils.hideSoftKeyboard
 import com.devapp.runningapp.util.TrackingUtils.toGone
 import com.devapp.runningapp.util.TrackingUtils.toVisible
-import com.devapp.runningapp.util.VoidCallback
 import com.devapp.runningapp.util.firebase.FirebaseAuthClient
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -64,7 +61,7 @@ class SignUpFragment : Fragment() {
     private var yearOfBirth: Int = 0
     private var signInStatus = 0
     private var isLoading = false
-
+    private val sharedPreferenceHelper:SharedPreferenceHelper by lazy { SharedPreferenceHelper(requireContext()) }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -256,7 +253,7 @@ class SignUpFragment : Fragment() {
                                                     userProfile.password = binding.itemPasswordRegister.getContent()
                                                     userProfile.phoneNumber = it.phoneNumber?:""
                                                     userProfile.userName = it.displayName?:""
-                                                    userProfile.gender = Gender.OTHER
+                                                    userProfile.gender = Gender.FEMALE
                                                     userProfile.dob = binding.itemBirthdayRegister.getContent()
                                                     userProfile.image= if(it.photoUrl==null) "" else it.photoUrl.toString()
                                                     firebaseViewModel.getStateFlowAdUser(userProfile)
@@ -318,7 +315,7 @@ class SignUpFragment : Fragment() {
                                         btnRegister.toVisible()
                                         pbRegisterRegister.toGone()
                                     }
-                                    Log.d(TAG, "loginWithEmailAndGetResponseAddUserProfile: $it")
+                                    sharedPreferenceHelper.accessUid = it.uid
                                     findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSetupFragment(it.toJson()))
                                 }
                             }){

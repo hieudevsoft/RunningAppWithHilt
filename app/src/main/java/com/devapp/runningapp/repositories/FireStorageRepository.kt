@@ -33,9 +33,6 @@ class FireStorageRepository @Inject constructor(@ApplicationContext private val 
                 storageReference.child("images/$uid/$timeStamp").putBytes(AppHelper.bitmapToBytes(image)).await()
                 ResourceNetwork.Success(true)
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
                 ResourceNetwork.Error(false,e.message)
             }
         }
@@ -57,9 +54,6 @@ class FireStorageRepository @Inject constructor(@ApplicationContext private val 
                 }
                 ResourceNetwork.Success(mapData)
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
                 ResourceNetwork.Error(null,e.message)
             }
         }

@@ -28,18 +28,7 @@ object AppHelper {
         return dp * (this.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
-    fun Any.toJson() = GsonBuilder().excludeFieldsWithoutExposeAnnotation().setExclusionStrategies(object:ExclusionStrategy{
-        override fun shouldSkipField(f: FieldAttributes?): Boolean {
-            if(f?.name=="netAmountPcy")
-                return true
-            return false
-        }
-
-        override fun shouldSkipClass(clazz: Class<*>?): Boolean {
-            return false
-        }
-
-    }).create().toJson(this)
+    fun Any.toJson(): String = Gson().toJson(this)
 
     fun <T> String.fromJson(clazz: Class<*>): T {
         return Gson().fromJson(this, clazz) as T

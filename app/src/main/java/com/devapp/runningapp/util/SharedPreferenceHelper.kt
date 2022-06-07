@@ -21,6 +21,9 @@ class SharedPreferenceHelper @Inject constructor(@ApplicationContext context: Co
         get() = pref.getInt("STATUS_SIGN_IN",1)
         set(value) = pref.edit().putInt("STATUS_SIGN_IN",value).apply()
 
+    fun getNumberEnterPassword(uid:String) = pref.getInt("NUMBER_ENTER_PASSWORD_"+uid,5)
+    fun setNumberEnterPassword(uid:String,value:Int) = pref.edit().putInt("NUMBER_ENTER_PASSWORD_"+uid,value).apply()
+
     var timeReminder: String
         get() = pref.getString("TIME_REMINDER", "") ?: ""
         set(value) = pref.edit().putString("TIME_REMINDER", value).apply()
@@ -37,10 +40,6 @@ class SharedPreferenceHelper @Inject constructor(@ApplicationContext context: Co
         get() = pref.getString("CONTENT_NOTIFY", "") ?: ""
         set(value) = pref.edit().putString("CONTENT_NOTIFY", value).apply()
 
-    var nameUser: String?
-        get() = pref.getString("NAME_USER", "Bro") ?: ""
-        set(value) = pref.edit().putString("NAME_USER", value).apply()
-
     var weightUser: String
         get() = pref.getString("WEIGHT_USER", "") ?: ""
         set(value) = pref.edit().putString("WEIGHT_USER", value).apply()
@@ -52,4 +51,10 @@ class SharedPreferenceHelper @Inject constructor(@ApplicationContext context: Co
     var accessUid: String?
         get() = pref.getString("ACCESS_UID", "") ?: ""
         set(value) = pref.edit().putString("ACCESS_UID", value).apply()
+
+    var userProfile:String?
+        get() = pref.getString("USER_PROFILE","")
+        set(value) = pref.edit().putString("USER_PROFILE", value).apply()
+
+
 }
