@@ -136,7 +136,6 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
             btnContinue.setOnClickListener {
                 AnimationHelper.scaleAnimation(it, object : VoidCallback {
                     override fun execute() {
-                        Log.d("TAG", "execute: ${prefs.userProfile}")
                         if (checkInputInformation()) {
                             if(!NetworkHelper.isInternetConnected(requireContext())){
                                 requireContext().showStyleableToast("Mode offline enabled",true)

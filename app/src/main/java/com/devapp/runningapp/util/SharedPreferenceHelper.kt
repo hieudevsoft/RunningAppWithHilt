@@ -56,5 +56,4 @@ class SharedPreferenceHelper @Inject constructor(@ApplicationContext context: Co
         get() = pref.getString("USER_PROFILE","")
         set(value) = pref.edit().putString("USER_PROFILE", value).apply()
 
-
 }

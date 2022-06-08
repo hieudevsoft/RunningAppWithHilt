@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -19,6 +17,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.coroutineScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.devapp.runningapp.R
 import com.devapp.runningapp.databinding.FragmentProfileBinding
@@ -26,14 +25,15 @@ import com.devapp.runningapp.model.ResourceNetwork
 import com.devapp.runningapp.model.user.Gender
 import com.devapp.runningapp.model.user.UserProfile
 import com.devapp.runningapp.ui.dialog.ChooseGenderDialog
+import com.devapp.runningapp.ui.dialog.bsdf.ViewPhotosBSDF
 import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.widgets.DatePickerView
 import com.devapp.runningapp.util.AppHelper.fromJson
 import com.devapp.runningapp.util.AppHelper.setOnClickWithScaleListener
 import com.devapp.runningapp.util.AppHelper.showErrorToast
-import com.devapp.runningapp.util.AppHelper.showStyleableToast
 import com.devapp.runningapp.util.AppHelper.showSuccessToast
 import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
+import com.devapp.runningapp.util.AppHelper.toJson
 import com.devapp.runningapp.util.DateCallback
 import com.devapp.runningapp.util.NetworkHelper
 import com.devapp.runningapp.util.SharedPreferenceHelper
@@ -42,10 +42,11 @@ import com.devapp.runningapp.util.TrackingUtils.toGone
 import com.devapp.runningapp.util.TrackingUtils.toVisible
 import com.devapp.runningapp.util.VoidCallback
 import com.devapp.runningapp.util.firebase.FirebaseAuthClient
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.makeramen.roundedimageview.RoundedDrawable
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.IOException
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,7 +63,9 @@ class ProfileFragment : Fragment(){
     @Inject
     lateinit var sharedPreferenceHelper: SharedPreferenceHelper
     private val firebaseViewModel:FirebaseViewModel by viewModels()
+    private val firebaseAuthClient:FirebaseAuthClient by lazy { FirebaseAuthClient.getInstance(Firebase.auth)}
     private var clickDrawableEndPassword = 0
+    private var isSuccessUpdateAvatar = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -88,48 +91,14 @@ class ProfileFragment : Fragment(){
         if(hasInitializedRootView) return
         hasInitializedRootView = true
         onSetUpView()
-        subscriberObserver()
     }
 
-    private fun subscriberObserver() {
-        lifecycle.coroutineScope.launchWhenResumed {
-            firebaseViewModel.stateFlowUpdateUserProfile.collect(){
-                when(it){
-                    is ResourceNetwork.Loading->{
-                        showLoading()
-                    }
-
-                    is ResourceNetwork.Success->{
-                        requireContext().showSuccessToast("Update successfully~")
-                        hideLoading()
-                    }
-
-                    is ResourceNetwork.Error->{
-                        requireContext().showErrorToast("Update failure~")
-                        hideLoading()
-                    }
-
-                    else->{
-
-                    }
-                }
-            }
-        }
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun onSetUpView() {
         if(!::userProfile.isInitialized) return
         binding.apply {
-            Glide.with(this@ProfileFragment).asBitmap().centerCrop().load(FirebaseAuthClient.getInstance(Firebase.auth).getCurrentUser()?.photoUrl).into(imgAvatar)
-            tvNickName.text = userProfile.nickName
-            tvSlogan.text = userProfile.slogan?:"I'm Runner"
-            edtName.setText(userProfile.userName?:"")
-            edtEmail.setText(userProfile.email)
-            edtDob.setText(userProfile.dob?:"")
-            edtWeight.setText(userProfile.weight?:"")
-            edtPhone.setText(userProfile.phoneNumber?:"")
-            edtSex.setText(userProfile.gender.name)
+            onSetupUi()
             val dob = userProfile.dob!!
             var dayOfBirth = dob.split("-")[0].toInt()
             var monthOfBirth = dob.split("-")[1].toInt()
@@ -160,10 +129,10 @@ class ProfileFragment : Fragment(){
                     },
                     object : VoidCallback {
                         override fun execute() {
-                            nestedScrollView.removeView(datePickerView)
+                            cardContent.removeView(datePickerView)
                         }
                     })
-                nestedScrollView.addView(datePickerView)
+                cardContent.addView(datePickerView)
                 datePickerView.animateView()
             }
             edtSex.setOnClickListener {
@@ -185,11 +154,11 @@ class ProfileFragment : Fragment(){
                         if(clickDrawableEndPassword%2==1){
                             edtNewPassword.toVisible()
                             edtConfirmNewPassword.toVisible()
-                            edtPassword.setCompoundDrawablesWithIntrinsicBounds(null,null,ResourcesCompat.getDrawable(resources,R.drawable.ic_left,null),null)
+                            edtPassword.setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(resources,R.drawable.ic_password,null),null,ResourcesCompat.getDrawable(resources,R.drawable.ic_left,null),null)
                         } else {
                             edtNewPassword.toGone()
                             edtConfirmNewPassword.toGone()
-                            edtPassword.setCompoundDrawablesWithIntrinsicBounds(null,null,ResourcesCompat.getDrawable(resources,R.drawable.ic_right,null),null)
+                            edtPassword.setCompoundDrawablesWithIntrinsicBounds(ResourcesCompat.getDrawable(resources,R.drawable.ic_password,null),null,ResourcesCompat.getDrawable(resources,R.drawable.ic_left,null),null)
                         }
                         return@OnTouchListener true
                     }
@@ -200,6 +169,35 @@ class ProfileFragment : Fragment(){
             btnChangeAvatar.setOnClickWithScaleListener {
                 imageChooser()
             }
+
+            imgAvatar.setOnClickWithScaleListener {
+                if(isSuccessUpdateAvatar) ViewPhotosBSDF.show(firebaseAuthClient.getCurrentUser()?.photoUrl.toString(),childFragmentManager)
+                else binding.imgAvatar.let {
+                    it.invalidate()
+                    ViewPhotosBSDF.show((it.drawable as RoundedDrawable).sourceBitmap,childFragmentManager)
+                }
+            }
+
+            cardAward.setOnClickWithScaleListener {
+                if(!isAdded) return@setOnClickWithScaleListener
+                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAwardFragment())
+            }
+        }
+    }
+
+    private fun onSetupUi() {
+        binding.apply {
+            Glide.with(this@ProfileFragment).asBitmap().centerCrop().load(firebaseAuthClient.getCurrentUser()?.photoUrl).into(imgAvatar)
+            tvNickName.text = userProfile.nickName
+            tvSlogan.text = userProfile.slogan?:"I'm Runner"
+            edtName.setText(userProfile.userName?:"")
+            edtNickName.setText(userProfile.nickName?:"")
+            edtSlogan.setText(userProfile.slogan?:"")
+            edtEmail.setText(userProfile.email)
+            edtDob.setText(userProfile.dob?:"")
+            edtWeight.setText(userProfile.weight?:"")
+            edtPhone.setText(userProfile.phoneNumber?:"")
+            edtSex.setText(userProfile.gender.name)
         }
     }
 
@@ -217,13 +215,21 @@ class ProfileFragment : Fragment(){
             // do your operation from here....
             if (data != null && data.data != null) {
                 val selectedImageUri: Uri? = data.data
-                val selectedImageBitmap: Bitmap
-                try {
-                    selectedImageBitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImageUri)
-                    binding.imgAvatar.setImageBitmap(selectedImageBitmap)
-                } catch (e: IOException) {
-                    e.printStackTrace()
+                val profileChangeRequest = UserProfileChangeRequest.Builder()
+                    .setPhotoUri(selectedImageUri)
+                    .build()
+                firebaseAuthClient.getCurrentUser()?.let {
+                    it.updateProfile(profileChangeRequest).addOnCompleteListener {
+                        if(it.isSuccessful){
+                            onSetupUi()
+                            isSuccessUpdateAvatar = true
+                            requireContext().showSuccessToast("Update avatar successfully~")
+                        } else{
+                            requireContext().showErrorToast("Error update avatar!")
+                        }
+                    }
                 }
+
             }
         }
     }
@@ -256,23 +262,51 @@ class ProfileFragment : Fragment(){
                     requireContext().showErrorToast("You have entered wrong more than 5 times")
                     return@apply
                 }
-                if(userProfile.password!=userProfile.password){
+                if(edtPassword.text.toString()!=userProfile.password){
                     sharedPreferenceHelper.setNumberEnterPassword(sharedPreferenceHelper.accessUid!!,sharedPreferenceHelper.getNumberEnterPassword(sharedPreferenceHelper.accessUid!!)-1)
-                    requireContext().showStyleableToast("Password is not correct",false)
+                    requireContext().showErrorToast("Password is not correct")
                     sharedPreferenceHelper
                     return@apply
                 }
-                if(edtConfirmNewPassword.text.toString().length<6){
-                    requireContext().showStyleableToast(getString(R.string.invalid_password),false)
+                if(edtNewPassword.text.toString().length<6){
+                    requireContext().showErrorToast(getString(R.string.invalid_password))
                     return@apply
                 }
                 if(edtConfirmNewPassword.text.toString()!=edtNewPassword.text.toString()){
-                    requireContext().showStyleableToast(getString(R.string.match_submit_password),false)
+                    requireContext().showErrorToast(getString(R.string.match_submit_password))
                     return@apply
                 }
                 userProfile.password = edtNewPassword.text.toString()
             }
             firebaseViewModel.getStateUpdateUserProfile(userProfile)
+            lifecycle.coroutineScope.launchWhenResumed {
+                firebaseViewModel.stateFlowUpdateUserProfile.collect(){
+                    when(it){
+                        is ResourceNetwork.Loading->{
+                            showLoading()
+                        }
+
+                        is ResourceNetwork.Success->{
+                            hideLoading()
+                            if(it.data==null) {
+                                requireContext().showErrorToast(getString(R.string.please_try_again))
+                                return@collect
+                            }
+                            requireContext().showSuccessToast("Update successfully~")
+                            sharedPreferenceHelper.userProfile = it.data!!.toJson()
+                            userProfile = it.data!!
+                            onSetupUi()
+                        }
+
+                        is ResourceNetwork.Error->{
+                            hideLoading()
+                            requireContext().showErrorToast("Update failure!!")
+                        }
+
+                        else->{}
+                    }
+                }
+            }
         }
     }
 

@@ -132,7 +132,6 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
 
                     is ResourceNetwork.Error->{
                         isSyncDataWithServer = false
-                        Log.d("TAG", "onViewCreated: ${it.message}")
                         DialogLoading.hide()
                         requireContext().showStyleableToast(getString(R.string.please_try_again),false)
                     }
@@ -155,13 +154,11 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
                             run.img = it.data!!.get(run.timeStamp!!.toString())
                             run
                         }
-                        Log.d("TAG", "onViewCreated: $currentListRun")
                         mainViewModels.insetAllRun(currentListRun)
                     }
 
                     is ResourceNetwork.Error->{
                         isSyncDataWithServer = false
-                        Log.d("TAG", "onViewCreated: ${it.message}")
                         DialogLoading.hide()
                         requireContext().showStyleableToast(getString(R.string.please_try_again),false)
                     }
@@ -174,7 +171,6 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
         mainViewModels.getAllRuns.observe(viewLifecycleOwner){
                 if(!::currentListRun.isInitialized) currentListRun = mutableListOf()
                 currentListRun = it.toMutableList()
-                Log.d("TAG", "onViewCreated: $it")
                 runAdapter.submitList(it)
         }
 

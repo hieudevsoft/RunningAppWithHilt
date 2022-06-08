@@ -109,7 +109,6 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
                     }
 
                     is ResourceNetwork.Success->{
-                        Log.d("TAG", "subscribeToObservers: $runFirebase")
                         DialogLoading.hide()
                             val result = withContext(Dispatchers.Main) {
                                 mainViewModels.insert(run)
@@ -166,7 +165,6 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         googleMap?.snapshot { bitmap->
             val distanceInMeters = TrackingUtils.getDistanceForTracking(polylines = mPathPoints)
             val avgSpeedInKMH = ((distanceInMeters / 1000f) /(currentTimeInMillis/(1000f*60f*60f))*10f).roundToInt()/10f
-            Log.d("TAG", "endAndSaveTrackingToDb: $mPathPoints $distanceInMeters $avgSpeedInKMH $currentTimeInMillis")
             val timeStamp = Calendar.getInstance().timeInMillis
             val mph = avgSpeedInKMH/1.61
             val MET:Float = if(mph<=6) 2f else if(mph<=10) 6f else 10f

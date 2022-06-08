@@ -131,5 +131,16 @@
         android:id="@+id/profileFragment"
         android:name="com.devapp.runningapp.ui.fragments.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            app:enterAnim="@anim/slide_in_right_300"
+            app:exitAnim="@anim/slide_out_right_300"
+            android:id="@+id/action_profileFragment_to_awardFragment"
+            app:destination="@id/awardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/awardFragment"
+        android:name="com.devapp.runningapp.ui.fragments.AwardFragment"
+        android:label="fragment_award"
+        tools:layout="@layout/fragment_award" />
 </navigation>

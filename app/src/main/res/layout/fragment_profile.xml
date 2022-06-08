@@ -20,30 +20,40 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:riv_corner_radius="20dp"
-            app:riv_border_width="2dp"
+            app:riv_corner_radius="50dp"
+            app:riv_border_width="3dp"
             android:scaleType="centerCrop"
-            app:riv_border_color="@color/colorGray_10"
+            app:layout_constraintHorizontal_bias="0"
+            app:riv_border_color="@color/colorGray_14"
             android:src="@mipmap/ic_launcher_round"
-            android:layout_width="120dp"
-            android:layout_height="120dp"/>
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+
+        <View
+            app:layout_constraintEnd_toEndOf="@id/img_avatar"
+            app:layout_constraintBottom_toBottomOf="@id/img_avatar"
+            app:layout_constraintStart_toStartOf="@id/img_avatar"
+            app:layout_constraintTop_toTopOf="@id/img_avatar"
+            android:id="@+id/view_center"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btn_change_avatar"
             android:focusable="true"
             android:clickable="true"
-            app:cardCornerRadius="24dp"
+            app:cardCornerRadius="20dp"
             app:cardUseCompatPadding="true"
-            app:contentPadding="12dp"
             android:foreground="?attr/selectableItemBackground"
             app:layout_constraintStart_toEndOf="@id/img_avatar"
             app:layout_constraintBottom_toBottomOf="@id/img_avatar"
-            android:layout_marginBottom="-20dp"
-            android:layout_marginStart="-50dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginStart="-40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatImageView
                 android:tint="@color/colorPrimary"
+                android:padding="6dp"
                 android:src="@drawable/ic_cam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -52,34 +62,78 @@
             android:id="@+id/tv_nick_name"
             android:textColor="@color/color_bg_dark"
             android:fontFamily="@font/svn_avo_bold"
-            android:text="Doctor strange"
             android:textSize="20sp"
+            app:layout_constraintHorizontal_bias="0"
             android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp"
+            android:text="Doctor stranger"
             android:ellipsize="end"
-            app:layout_constraintEnd_toEndOf="@id/img_avatar"
-            app:layout_constraintStart_toStartOf="@id/img_avatar"
-            app:layout_constraintTop_toBottomOf="@id/btn_change_avatar"
-            style="@style/AppWidget.TextView.Default"
-            />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_slogan"
-            android:text="The flash is real"
-            android:textSize="12sp"
-            android:textColor="@color/colorGray_13"
-            android:layout_marginTop="8dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            app:layout_constraintEnd_toEndOf="@id/tv_nick_name"
-            app:layout_constraintStart_toStartOf="@id/tv_nick_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_nick_name"
+            app:layout_constraintBottom_toTopOf="@id/view_center"
+            app:layout_constraintStart_toEndOf="@id/img_avatar"
             style="@style/AppWidget.TextView.Default"
             />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_own_award"
+            app:layout_constraintStart_toEndOf="@id/btn_change_avatar"
+            app:layout_constraintTop_toTopOf="@id/btn_change_avatar"
+            app:layout_constraintBottom_toBottomOf="@id/btn_change_avatar"
+            android:layout_width="wrap_content"
+            android:focusable="true"
+            android:clickable="true"
+            app:cardCornerRadius="20dp"
+            app:contentPadding="6dp"
+            app:cardUseCompatPadding="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:src="@drawable/img_crown"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_award"
+            app:layout_constraintStart_toEndOf="@id/card_own_award"
+            app:layout_constraintTop_toTopOf="@id/card_own_award"
+            app:layout_constraintBottom_toBottomOf="@id/card_own_award"
+            android:layout_width="wrap_content"
+            android:focusable="true"
+            android:clickable="true"
+            app:cardCornerRadius="20dp"
+            app:contentPadding="6dp"
+            app:cardUseCompatPadding="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:src="@drawable/img_award"
+                android:padding="2dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_slogan"
+            android:textSize="12sp"
+            android:textColor="@color/colorGray_13"
+            android:layout_marginTop="8dp"
+            android:maxLines="2"
+            android:text="Mcu"
+            app:layout_constraintHorizontal_bias="0"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toEndOf="@id/tv_nick_name"
+            app:layout_constraintStart_toStartOf="@id/tv_nick_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_nick_name"
+            app:layout_constraintBottom_toTopOf="@id/btn_change_avatar"
+            style="@style/AppWidget.TextView.Default"
+            />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_slogan"
+            app:layout_constraintTop_toBottomOf="@id/btn_change_avatar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:cardCornerRadius="10dp"
@@ -119,6 +173,19 @@
                     android:layout_marginTop="8dp"
                     android:drawableStart="@drawable/ic_user"
                     android:hint="User name"
+                    android:drawablePadding="12dp"
+                    android:fontFamily="@font/svn_avo"
+                    android:paddingVertical="16dp"
+                    android:textCursorDrawable="@null"
+                    android:textSize="12sp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_nick_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawableStart="@drawable/ic_round_drive_file_rename_outline_24"
+                    android:hint="Nick name"
                     android:drawablePadding="12dp"
                     android:fontFamily="@font/svn_avo"
                     android:paddingVertical="16dp"
@@ -275,6 +342,7 @@
                     app:trackThickness="3dp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.core.widget.NestedScrollView>
+
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

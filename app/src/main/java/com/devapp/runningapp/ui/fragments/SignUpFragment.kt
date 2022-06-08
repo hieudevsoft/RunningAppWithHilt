@@ -241,7 +241,6 @@ class SignUpFragment : Fragment() {
                             lifecycleScope.launchWhenResumed {
                                 FirebaseAuthClient.getInstance(Firebase.auth).registerWithEmailAndPassword(binding.itemEmailRegister.getContent(),binding.itemPasswordRegister.getContent(),{
                                     firebaseUser ->
-                                    Log.d(TAG, "execute: $firebaseUser")
                                     val profileUpdate = UserProfileChangeRequest.Builder().setDisplayName(binding.itemNameRegister.getContent()).setPhotoUri("https://t4.ftcdn.net/jpg/00/23/72/59/360_F_23725944_W2aSrg3Kqw3lOmU4IAn7iXV88Rnnfch1.jpg".toUri()).build()
                                     firebaseUser?.updateProfile(profileUpdate)
                                         ?.addOnCompleteListener {

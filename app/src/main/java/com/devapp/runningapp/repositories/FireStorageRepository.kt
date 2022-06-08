@@ -22,12 +22,7 @@ import javax.inject.Inject
 class FireStorageRepository @Inject constructor(@ApplicationContext private val context:Context) {
     private val storageReference : StorageReference by lazy {Firebase.storage.reference}
 
-    suspend fun addImageById(
-        uid: String,
-        image: Bitmap,
-        timeStamp:Long,
-        @IoDispatcher dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    ): ResourceNetwork<Boolean> {
+    suspend fun addImageById(uid: String, image: Bitmap, timeStamp:Long, @IoDispatcher dispatcher: CoroutineDispatcher = Dispatchers.IO): ResourceNetwork<Boolean> {
         val res = withContext(dispatcher) {
             try {
                 storageReference.child("images/$uid/$timeStamp").putBytes(AppHelper.bitmapToBytes(image)).await()
@@ -38,6 +33,7 @@ class FireStorageRepository @Inject constructor(@ApplicationContext private val 
         }
         return res
     }
+
 
     suspend fun downloadAllImagesById(
         uid: String,

@@ -3,6 +3,7 @@ package com.devapp.runningapp.ui.dialog.bsdf
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,10 @@ import com.devapp.runningapp.ui.base.BaseFullScreenBSDF
 import com.devapp.runningapp.util.AnimationHelper
 import com.devapp.runningapp.util.AppHelper
 import com.devapp.runningapp.util.VoidCallback
+import com.devapp.runningapp.util.firebase.FirebaseAuthClient
 import com.github.chrisbanes.photoview.PhotoView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class ViewPhotosBSDF : BaseFullScreenBSDF() {
     companion object {
@@ -57,7 +61,7 @@ class ViewPhotosBSDF : BaseFullScreenBSDF() {
             try {
                 Glide.with(context ?: return).asBitmap().load(AppHelper.decodeBase64(image)).into(it)
             }catch (e:Exception){
-                Glide.with(context ?: return).load(image).into(it)
+                 Glide.with(context?:return).asBitmap().fitCenter().load(image).into(it)
             }
         }
     }

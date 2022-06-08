@@ -231,7 +231,6 @@ class TrackingService : LifecycleService() {
                 lifecycle.coroutineScope.launch{
                     if(isUnLockCallApi){
                         OkHttpHelper.getWeatherFromOpenWeatherApi(currentLatitude,currentLongitude){
-                            Log.d("TAG", "onLocationResult: $it")
                             responseWeather.postValue(it)
                         }
                     }
