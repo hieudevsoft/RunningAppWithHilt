@@ -75,7 +75,7 @@
             />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_own_award"
+            android:id="@+id/card_award"
             app:layout_constraintStart_toEndOf="@id/btn_change_avatar"
             app:layout_constraintTop_toTopOf="@id/btn_change_avatar"
             app:layout_constraintBottom_toBottomOf="@id/btn_change_avatar"
@@ -94,10 +94,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_award"
-            app:layout_constraintStart_toEndOf="@id/card_own_award"
-            app:layout_constraintTop_toTopOf="@id/card_own_award"
-            app:layout_constraintBottom_toBottomOf="@id/card_own_award"
+            android:id="@+id/card_owner_award"
+            app:layout_constraintStart_toEndOf="@id/card_award"
+            app:layout_constraintTop_toTopOf="@id/card_award"
+            app:layout_constraintBottom_toBottomOf="@id/card_award"
             android:layout_width="wrap_content"
             android:focusable="true"
             android:clickable="true"

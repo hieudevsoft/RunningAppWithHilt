@@ -73,9 +73,10 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(isHasInitRootView) return
-        isHasInitRootView = true
-        requestPermission()
+        binding.fabRefresh.setOnClickWithScaleListener {
+            if(isSyncDataWithServer) return@setOnClickWithScaleListener
+            firebaseViewModel.getStateAllRun(sharedPreferenceHelper.accessUid!!)
+        }
         binding.fab.setOnClickListener {
             if(!NetworkHelper.isInternetConnected(requireContext())){
                 showToastNotConnectInternet()
@@ -83,6 +84,9 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
             }
             findNavController().navigate(R.id.action_runFragment_to_viewPagerTrackingFragment)
         }
+        if(isHasInitRootView) return
+        isHasInitRootView = true
+        requestPermission()
 
         setUpSearchView()
 
@@ -107,10 +111,7 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
 
         }
         setupRecyclerView()
-        binding.fabRefresh.setOnClickWithScaleListener {
-            if(isSyncDataWithServer) return@setOnClickWithScaleListener
-            firebaseViewModel.getStateAllRun(sharedPreferenceHelper.accessUid!!)
-        }
+
         lifecycleScope.launchWhenResumed {
             firebaseViewModel.stateFlowGetAllRunByUid.collect(){
                 when(it){

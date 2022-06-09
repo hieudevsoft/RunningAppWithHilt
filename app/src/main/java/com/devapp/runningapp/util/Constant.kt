@@ -27,4 +27,9 @@ object Constant {
     const val KEY_WEIGHT = "weight"
     const val KEY_IS_FIRST_TIME = "is_first_time"
     const val API_KEY_WEATHER = "ce691c235536e7056880ad1a68877784"
+
+    val LIST_TIME_AWARD = listOf(2,4,8,16,20)
+    val LIST_AVG_SPEED_AWARD = listOf(8,18,26,32,36)
+    val LIST_DISTANCE_AWARD = listOf(40,100,220,500,1000)
+    val LIST_CALORIES_AWARD = listOf(10,30,60,90,100)
 }

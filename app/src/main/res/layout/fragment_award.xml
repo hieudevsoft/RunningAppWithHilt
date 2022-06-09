@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
-    android:measureAllChildren="true"
-    android:fillViewport="true"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.AwardFragment">
-
+    <androidx.core.widget.NestedScrollView
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="16dp">
+
         <RelativeLayout
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/ly_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/ib_back"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_back"
-                android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_back" />
 
             <com.google.android.material.textview.MaterialTextView
                 style="@style/AppWidget.TextView.Default"
@@ -39,60 +44,220 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </RelativeLayout>
+
         <androidx.appcompat.widget.LinearLayoutCompat
-            app:layout_constraintTop_toBottomOf="@id/ly_header"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_height="0dp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ly_header">
+
             <FrameLayout
-                android:background="@drawable/img_achievement"
                 android:layout_width="match_parent"
-                android:padding="16dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_height="150dp">
+                android:background="@drawable/img_achievement"
+                android:padding="16dp">
+
                 <com.google.android.material.textview.MaterialTextView
-                    android:layout_gravity="center|start"
-                    android:textSize="18sp"
-                    android:letterSpacing=".06"
-                    android:textColor="@color/black"
-                    android:gravity="start"
-                    android:text="Do your best to\nachieve the trophies"
-                    android:fontFamily="@font/svn_avo_bold"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:fontFamily="@font/svn_avo_bold"
+                    android:gravity="start"
+                    android:letterSpacing=".06"
+                    android:text="Do your best to\nachieve the trophies"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
             </FrameLayout>
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/ly_time"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.textview.MaterialTextView
-                    style="@style/AppWidget.TextView.Default"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_toEndOf="@id/ib_back"
-                    android:fontFamily="@font/svn_avo_bold"
-                    android:letterSpacing=".06"
-                    android:text="Time"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/AppWidget.TextView.Default"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/svn_avo_bold"
+                        android:letterSpacing=".06"
+                        android:text="Time"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/AppWidget.TextView.Default"
+                        android:fontFamily="@font/svn_avo"
+                        android:id="@+id/tv_num_award_time"
+                        android:layout_alignParentEnd="true"
+                        android:letterSpacing=".06"
+                        android:text="0 / 5"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </RelativeLayout>
                 <androidx.recyclerview.widget.RecyclerView
-                    android:clipToPadding="false"
-                    android:clipChildren="false"
                     android:id="@+id/rv_time"
-                    android:fitsSystemWindows="true"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/item_award"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_award" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ly_avg_speed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/AppWidget.TextView.Default"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/svn_avo_bold"
+                        android:letterSpacing=".06"
+                        android:text="Avarage speed"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_num_award_avg_speed"
+                        style="@style/AppWidget.TextView.Default"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/svn_avo"
+                        android:letterSpacing=".06"
+                        android:text="0 / 5"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_avg_speed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_award" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ly_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/AppWidget.TextView.Default"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/svn_avo_bold"
+                        android:letterSpacing=".06"
+                        android:text="Distance"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_num_award_distance"
+                        style="@style/AppWidget.TextView.Default"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/svn_avo"
+                        android:letterSpacing=".06"
+                        android:text="0 / 5"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_distance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_award" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ly_calory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/AppWidget.TextView.Default"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/svn_avo_bold"
+                        android:letterSpacing=".06"
+                        android:text="Calories burned"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_num_award_calory"
+                        style="@style/AppWidget.TextView.Default"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/svn_avo"
+                        android:letterSpacing=".06"
+                        android:text="0 / 5"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_calory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_award" />
+
+
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

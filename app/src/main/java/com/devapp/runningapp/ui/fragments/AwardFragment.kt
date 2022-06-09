@@ -23,7 +23,10 @@ class AwardFragment:Fragment(){
     private var _binding:FragmentAwardBinding?=null
     private val binding get() = _binding!!
     private var hasInitializedView = false
-    private lateinit var awardAdapter: AwardAdapter
+    private lateinit var timeAward: AwardAdapter
+    private lateinit var avgSpeedAwardAdapter: AwardAdapter
+    private lateinit var distanceAwardAdapter: AwardAdapter
+    private lateinit var caloriesBurnedAwardAdapter: AwardAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if(hasInitializedView) return
@@ -41,16 +44,55 @@ class AwardFragment:Fragment(){
     }
 
     private fun setupRecyclerView() {
-        if(!::awardAdapter.isInitialized) awardAdapter = AwardAdapter()
+        if(!::timeAward.isInitialized) timeAward = AwardAdapter()
+        if(!::avgSpeedAwardAdapter.isInitialized) avgSpeedAwardAdapter = AwardAdapter()
+        if(!::distanceAwardAdapter.isInitialized) distanceAwardAdapter = AwardAdapter()
+        if(!::caloriesBurnedAwardAdapter.isInitialized) caloriesBurnedAwardAdapter = AwardAdapter()
         binding.rvTime.apply {
             itemAnimator = SlideInLeftAnimator()
-            adapter = ScaleInAnimationAdapter(awardAdapter).also { it.setDuration(300) }
-            awardAdapter.submitList(listOf(
-                ItemAward(R.drawable.ic_startup,"Warm up","Run time from 2 to 4 weeks",false,100),
-                ItemAward(R.drawable.ic_momentum,"Being run more","Run time from 4 to 8 weeks",false,100),
-                ItemAward(R.drawable.ic_hard,"Runner","Run time from 8 to 16 weeks",true,40),
-                ItemAward(R.drawable.ic_time_color,"Lord of time","Run time from 16 to 24 weeks",true,29),
-                ItemAward(R.drawable.ic_doctor,"Doctor strange","Run time more than 24 weeks",true,10),
+            adapter = ScaleInAnimationAdapter(timeAward).also { it.setDuration(300) }
+            timeAward.submitList(listOf(
+                ItemAward(R.drawable.ic_startup,"Warm up","Run time more than 2 day",false,100),
+                ItemAward(R.drawable.ic_momentum,"Being run more","Run time more than 4 day",false,100),
+                ItemAward(R.drawable.ic_hard,"Runner","Run time more than 8 day",true,40),
+                ItemAward(R.drawable.ic_time_color,"Lord of time","Run time more than 16 day",true,29),
+                ItemAward(R.drawable.ic_doctor,"Doctor strange","Run time more than 20 day",true,10),
+            ))
+        }
+
+        binding.rvAvgSpeed.apply {
+            itemAnimator = SlideInLeftAnimator()
+            adapter = ScaleInAnimationAdapter(avgSpeedAwardAdapter).also { it.setDuration(300) }
+            avgSpeedAwardAdapter.submitList(listOf(
+                ItemAward(R.drawable.ic_warmup_speed,"Warm up","Average speed more than 8 km/h",false,100),
+                ItemAward(R.drawable.ic_accleartion,"Acceleration","Average speed more than 18km/h",false,100),
+                ItemAward(R.drawable.ic_usain_bolt,"Usain bolt","Average speed more than 26km/h",true,40),
+                ItemAward(R.drawable.ic_ghost_rider,"Ghost rider","Average speed more than 32km/h",true,29),
+                ItemAward(R.drawable.ic_the_flash,"The flash","Average speed more than 36km/h",true,10),
+            ))
+        }
+
+        binding.rvDistance.apply {
+            itemAnimator = SlideInLeftAnimator()
+            adapter = ScaleInAnimationAdapter(distanceAwardAdapter).also { it.setDuration(300) }
+            distanceAwardAdapter.submitList(listOf(
+                ItemAward(R.drawable.ic_warmup_distance,"Warm up","Running distance more than 40km",false,100),
+                ItemAward(R.drawable.ic_enduring,"Being enduring","Running distance more than 100km",false,100),
+                ItemAward(R.drawable.ic_distance,"Distancener","Running distance more than 220km",true,40),
+                ItemAward(R.drawable.ic_lord_distance,"Lord of distance","Running distance more than 500km",true,29),
+                ItemAward(R.drawable.ic_hulk,"The Hulk","Running distance more then 1000km",true,10),
+            ))
+        }
+
+        binding.rvCalory.apply {
+            itemAnimator = SlideInLeftAnimator()
+            adapter = ScaleInAnimationAdapter(caloriesBurnedAwardAdapter).also { it.setDuration(300) }
+            caloriesBurnedAwardAdapter.submitList(listOf(
+                ItemAward(R.drawable.ic_warm_up_calories,"Warm up","Total calories burned more than 10kcal",false,100),
+                ItemAward(R.drawable.ic_calories_fire,"Being burned calories more","Total calories burned more than 30kcal",false,100),
+                ItemAward(R.drawable.ic_calorieser,"Colorieser","Total calories burned more than 60kcal",true,40),
+                ItemAward(R.drawable.ic_the_rock,"The rock","Total calories burned more than 90kcal",true,29),
+                ItemAward(R.drawable.ic_saitama,"One punch man","Total calories burned more than 100kcal",true,10),
             ))
         }
     }
