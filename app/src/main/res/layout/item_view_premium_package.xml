@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:autofit="http://schemas.android.com/tools"
+    android:id="@+id/item_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/view_purchase"
+            android:layout_width="match_parent"
+            app:cardUseCompatPadding="true"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_24"
+            android:layout_marginTop="@dimen/margin_32"
+            android:layout_marginRight="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_8"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="@color/white">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorGray_11">
+
+                <FrameLayout
+                    android:id="@+id/view_choose"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:visibility="gone">
+
+                    <View
+                        android:id="@+id/view_choose_child"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/margin_2"/>
+
+                </FrameLayout>
+
+                <View
+                    android:id="@+id/view_center"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <View
+                    android:id="@+id/view_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:layout_constraintTop_toBottomOf="@id/view_center"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:background="@color/black" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:layout_marginBottom="@dimen/margin_16"
+                    android:fontFamily="@font/svn_avo"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    app:autoSizeMaxTextSize="@dimen/textSize18"
+                    app:autoSizeMinTextSize="8sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toTopOf="@id/view_line"
+                    autofit:ignore="MissingPrefix" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_package_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:layout_marginBottom="@dimen/margin_6"
+                    android:fontFamily="@font/svn_avo_bold"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    app:autoSizeMaxTextSize="@dimen/textSize16"
+                    app:autoSizeMinTextSize="8sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toTopOf="@id/tv_price"
+                    app:layout_constraintTop_toTopOf="parent"
+                    autofit:ignore="MissingPrefix" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/view_line"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginBottom="@dimen/margin_20">
+
+                    <RelativeLayout
+                        android:id="@+id/view_price_origin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginBottom="@dimen/margin_4">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_price_origin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/svn_avo"
+                            android:paddingBottom="@dimen/margin_4"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            app:autoSizeMaxTextSize="@dimen/textSize15"
+                            app:autoSizeMinTextSize="8sp"
+                            app:autoSizeTextType="uniform"
+                            autofit:ignore="MissingPrefix"/>
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_alignStart="@id/tv_price_origin"
+                            android:layout_alignEnd="@id/tv_price_origin"
+                            android:layout_centerVertical="true"
+                            android:background="@color/black" />
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/view_percent"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/img_percent_sale"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/view_character"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="end"
+        android:src="@drawable/img_premium_package"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_20"
+        android:layout_marginTop="22dp"
+        android:fontFamily="@font/svn_avo_bold"
+        android:rotation="-40"
+        android:textColor="@color/colorPrimary" />
+
+</FrameLayout>

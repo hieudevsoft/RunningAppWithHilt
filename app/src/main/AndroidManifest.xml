@@ -46,6 +46,10 @@
             android:name=".receiver.ReminderReceiver"
             android:exported="true"
             tools:ignore="ExportedReceiver" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
     </application>
 
 </manifest>

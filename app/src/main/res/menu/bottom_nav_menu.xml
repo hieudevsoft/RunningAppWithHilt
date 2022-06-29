@@ -2,20 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/runFragment"
-        android:title="Your Runs"
-        android:icon="@drawable/ic_run" />
+        android:title="Home"
+        android:icon="@drawable/selector_home" />
 
     <item android:id="@+id/statisticsFragment"
         android:title="Statistics"
-        android:icon="@drawable/ic_statistics" />
+        android:icon="@drawable/selector_statistics" />
 
     <item android:id="@+id/profileFragment"
         android:title="Profile"
-        android:icon="@drawable/ic_person" />
+        android:icon="@drawable/selector_account" />
+
+    <item android:id="@+id/premiumFragment"
+        android:title="Premium"
+        android:icon="@drawable/selector_premium" />
 
 
     <item android:id="@+id/settingsFragment"
         android:title="Settings"
-        android:icon="@drawable/ic_settings" />
+        android:icon="@drawable/selector_setting" />
 
 </menu>

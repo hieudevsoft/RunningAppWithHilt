@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -14,6 +15,7 @@ import timber.log.Timber
 class BaseApplication: Application() {
     override fun onCreate() {
         super.onCreate()
+        MobileAds.initialize(this)
         createNotificationChannel()
         Timber.plant(Timber.DebugTree())
     }

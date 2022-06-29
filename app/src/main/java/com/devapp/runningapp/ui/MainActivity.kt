@@ -8,12 +8,11 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -23,22 +22,31 @@ import com.devapp.runningapp.db.RunDao
 import com.devapp.runningapp.model.EventBusState
 import com.devapp.runningapp.receiver.DeviceBootReceiver
 import com.devapp.runningapp.receiver.ReminderReceiver
+import com.devapp.runningapp.util.AppHelper.showErrorToast
 import com.devapp.runningapp.util.Constant
 import com.devapp.runningapp.util.Constant.ACTION_TO_TRACKING_INTENT
 import com.devapp.runningapp.util.SharedPreferenceHelper
 import com.devapp.runningapp.util.TrackingUtils.hideSoftKeyboard
 import com.devapp.runningapp.util.TrackingUtils.toGone
 import com.devapp.runningapp.util.TrackingUtils.toVisible
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.tasks.await
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    val TAG = "MainActivity"
     @Inject
     lateinit var preferences: SharedPreferences
     @Inject
@@ -46,7 +54,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var runDao: RunDao
     private lateinit var binding:ActivityMainBinding
+    private val sdf:SimpleDateFormat by lazy { SimpleDateFormat("dd/MM/yyyy") }
     private lateinit var navHostFragment:NavHostFragment
+    private val firebaseDatabase: FirebaseDatabase by lazy { FirebaseDatabase.getInstance(Constant.URL_FIREBASE_DB) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -55,14 +65,49 @@ class MainActivity : AppCompatActivity() {
         navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHostFragment.navController)
         binding.bottomNavigationView.setOnItemReselectedListener {}
+        binding.bottomNavigationView.itemIconTintList = null
         if(!sharedPref.isShowOnBoarding) navHostFragment.navController.navigate(R.id.loginFragment)
         navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id){
-                R.id.settingsFragment,R.id.runFragment,R.id.statisticsFragment,R.id.profileFragment->binding.bottomNavigationView.toVisible()
+                R.id.settingsFragment,R.id.runFragment,R.id.statisticsFragment,R.id.profileFragment,R.id.premiumFragment->{
+                    lifecycleScope.launchWhenResumed {
+                        delay(1000)
+                        binding.bottomNavigationView.toVisible()
+                    }
+                }
                 else->binding.bottomNavigationView.toGone()
             }
         }
+        fetchDataRemote()
+    }
 
+    fun fetchDataRemote(){
+        if(sharedPref.accessUid.isNullOrEmpty()) return
+        firebaseDatabase.getReference("premium").child(sharedPref.accessUid!!).addValueEventListener(object:ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data = snapshot.value
+                if(data is HashMap<*, *>){
+                    sharedPref.freeClick = data["freeClick"] as Long
+                    sharedPref.isPremium = data["isPremium"] as Boolean
+                    sharedPref.isUpgrade = data["isUpgrade"] as Long
+                    sharedPref.lastDate = data["lastDate"] as Long
+                    sharedPref.upgradePackage = data["upgradePackage"] as Long
+
+                    if(sdf.format(Date(sharedPref.lastDate))!=sdf.format(Date())){
+                        sharedPref.lastDate = Date().time
+                        sharedPref.freeClick = 3
+                        lifecycle.coroutineScope.launchWhenResumed {
+                            firebaseDatabase.getReference("premium").child(sharedPref.accessUid?:"").setValue(hashMapOf("freeClick" to (sharedPref.freeClick),"isPremium" to sharedPref.isPremium, "isUpgrade" to sharedPref.isUpgrade,"lastDate" to sharedPref.lastDate,"upgradePackage" to sharedPref.upgradePackage)).await()
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                showErrorToast("Error server")
+            }
+
+        })
     }
 
     override fun onResume() {
@@ -139,6 +184,10 @@ class MainActivity : AppCompatActivity() {
             )
             StyleableToast.makeText(this, getString(R.string.turn_off_reminders), Toast.LENGTH_SHORT, R.style.toast_reminder_off).show()
         }
+    }
+
+    fun navigateToPremium(){
+        binding.bottomNavigationView.selectedItemId = R.id.premiumFragment
     }
 
     private fun restartApp(){recreate()}

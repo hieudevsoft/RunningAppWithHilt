@@ -24,10 +24,12 @@ import com.devapp.runningapp.databinding.FragmentSignUpBinding
 import com.devapp.runningapp.model.ResourceNetwork
 import com.devapp.runningapp.model.user.Gender
 import com.devapp.runningapp.model.user.UserProfile
+import com.devapp.runningapp.ui.MainActivity
 import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.widgets.DatePickerView
 import com.devapp.runningapp.ui.widgets.DialogLoading
 import com.devapp.runningapp.util.*
+import com.devapp.runningapp.util.AppHelper.showErrorToast
 import com.devapp.runningapp.util.AppHelper.showStyleableToast
 import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
 import com.devapp.runningapp.util.AppHelper.toJson
@@ -38,9 +40,12 @@ import com.devapp.runningapp.util.firebase.FirebaseAuthClient
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.tasks.await
 import java.text.ParseException
@@ -62,6 +67,7 @@ class SignUpFragment : Fragment() {
     private var signInStatus = 0
     private var isLoading = false
     private val sharedPreferenceHelper:SharedPreferenceHelper by lazy { SharedPreferenceHelper(requireContext()) }
+    private val firebaseDatabase:FirebaseDatabase by lazy { FirebaseDatabase.getInstance(Constant.URL_FIREBASE_DB) }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,6 +86,7 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if(!isInitialized){
             isInitialized = true
+
             initUI()
         }
     }
@@ -261,7 +268,9 @@ class SignUpFragment : Fragment() {
                                             } else showStyleableToast(getString(R.string.please_try_again),false)
                                         }
                                 }){
-                                    showToastNotConnectInternet()
+                                    pbRegisterRegister.toGone()
+                                    btnRegister.toVisible()
+                                    requireContext().showErrorToast("Email already exist!!")
                                 }
                             }
                         } else {
@@ -315,7 +324,18 @@ class SignUpFragment : Fragment() {
                                         pbRegisterRegister.toGone()
                                     }
                                     sharedPreferenceHelper.accessUid = it.uid
-                                    findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSetupFragment(it.toJson()))
+                                    sharedPreferenceHelper.isPremium = false
+                                    lifecycleScope.launchWhenCreated {
+                                        try {
+                                            firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("isPremium" to false,"freeClick" to 3,"lastDate" to Date().time,"isUpgrade" to 0,"upgradePackage" to 0)).await()
+                                            (requireActivity() as MainActivity).fetchDataRemote()
+                                            delay(500)
+                                            findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSetupFragment(it.toJson()))
+                                        }catch (e:Exception){
+                                            Log.d(TAG, "loginWithEmailAndGetResponseAddUserProfile: ${e.message}")
+                                            requireContext().showErrorToast(getString(R.string.please_try_again))
+                                        }
+                                    }
                                 }
                             }){
                                 showStyleableToast(it.toString(),false)

@@ -66,5 +66,7 @@
     <string name="practice_reminder">Practice reminder</string>
     <string name="save">Save</string>
     <string name="running">Running</string>
+    <string name="payment_success_content">Wish you have a fun and rewarding time learning with HeyChina</string>
+    <string name="payment_fail">Payment fail</string>
 
 </resources>

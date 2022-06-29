@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devapp.runningapp.R
 import com.devapp.runningapp.adapters.RunAdapter
+import com.devapp.runningapp.ads.AdsInterval
 import com.devapp.runningapp.databinding.FragmentRunBinding
 import com.devapp.runningapp.model.ResourceNetwork
 import com.devapp.runningapp.model.Run
@@ -24,16 +25,15 @@ import com.devapp.runningapp.ui.MainActivity
 import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.viewmodels.MainViewModels
 import com.devapp.runningapp.ui.widgets.DialogLoading
+import com.devapp.runningapp.util.*
 import com.devapp.runningapp.util.AppHelper.setOnClickWithScaleListener
 import com.devapp.runningapp.util.AppHelper.showStyleableToast
 import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
 import com.devapp.runningapp.util.Constant.REQUEST_CODE_PERMISSION
-import com.devapp.runningapp.util.NetworkHelper
-import com.devapp.runningapp.util.SharedPreferenceHelper
-import com.devapp.runningapp.util.SortType
-import com.devapp.runningapp.util.TrackingUtils
+import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.tasks.await
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.text.SimpleDateFormat
@@ -51,6 +51,8 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
     private var isSyncDataWithServer = false
     private var isHasInitRootView = false
     private val sharedPreferenceHelper: SharedPreferenceHelper by lazy { SharedPreferenceHelper(requireContext()) }
+    private val firebaseDatabase: FirebaseDatabase by lazy { FirebaseDatabase.getInstance(Constant.URL_FIREBASE_DB) }
+    private var adsInterval:AdsInterval?=null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,7 +84,26 @@ class RunFragment : Fragment(R.layout.fragment_run),EasyPermissions.PermissionCa
                 showToastNotConnectInternet()
                 return@setOnClickListener
             }
-            findNavController().navigate(R.id.action_runFragment_to_viewPagerTrackingFragment)
+            if(sharedPreferenceHelper.freeClick>0||sharedPreferenceHelper.isPremium){
+                lifecycleScope.launchWhenResumed {
+                    firebaseDatabase.getReference("premium").child(sharedPreferenceHelper.accessUid?:"").setValue(hashMapOf("freeClick" to (sharedPreferenceHelper.freeClick-1),"isPremium" to sharedPreferenceHelper.isPremium, "isUpgrade" to sharedPreferenceHelper.isUpgrade,"lastDate" to sharedPreferenceHelper.lastDate,"upgradePackage" to sharedPreferenceHelper.upgradePackage)).await()
+                    findNavController().navigate(R.id.action_runFragment_to_viewPagerTrackingFragment)
+                    return@launchWhenResumed
+                }
+            }
+            else {
+                if(adsInterval==null) adsInterval = AdsInterval(requireContext())
+                adsInterval!!.setOnCloseListener(object:VoidCallback{
+                    override fun execute() {
+                        findNavController().navigate(R.id.action_runFragment_to_viewPagerTrackingFragment)
+                    }
+                })
+                adsInterval!!.showIntervalAds(object:VoidCallback{
+                    override fun execute() {
+                        (requireActivity() as MainActivity).navigateToPremium()
+                    }
+                })
+            }
         }
         if(isHasInitRootView) return
         isHasInitRootView = true

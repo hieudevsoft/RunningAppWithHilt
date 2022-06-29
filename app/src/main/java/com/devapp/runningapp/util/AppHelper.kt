@@ -6,14 +6,20 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.devapp.runningapp.R
+import com.google.android.material.textview.MaterialTextView
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
@@ -21,6 +27,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import io.github.muddz.styleabletoast.StyleableToast
 import java.io.ByteArrayOutputStream
+import java.util.ArrayList
 
 
 object AppHelper {
@@ -135,6 +142,112 @@ object AppHelper {
                 }
             },0.96f)
         }
+    }
+
+    fun addDotPrice(price: Long): String {
+        if (price < 1000) return "$price"
+
+        var priceCached = price
+        val priceSplit = ArrayList<Int>()
+        while (priceCached > 0) {
+            val number = priceCached % 10
+            priceSplit.add(number.toInt())
+            priceCached /= 10
+        }
+
+        var textPrice = ""
+        for (i in 0 until priceSplit.size) {
+            if (i > 0 && i % 3 == 0) textPrice = ".$textPrice"
+            textPrice = "${priceSplit[i]}$textPrice"
+        }
+        return textPrice
+    }
+
+    fun showDialogSkipAds(
+        activity: Activity?,
+        booleanCallback: BooleanCallback,
+    ) {
+        if (activity == null) return
+        val builder = AlertDialog.Builder(activity, R.style.bottom_top_dialog)
+        val mView = activity.layoutInflater.inflate(R.layout.dialog_skip_ads, null)
+
+        val btnContinue = mView.findViewById<CardView>(R.id.btn_continue)
+        val btnUpgrade = mView.findViewById<CardView>(R.id.btn_upgrade)
+
+        builder.setView(mView)
+        val dialog = builder.create()
+        if (dialog.window != null) dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        btnContinue.setOnClickListener {
+            booleanCallback.execute(false)
+            dialog.dismiss() }
+        btnUpgrade.setOnClickListener {
+            booleanCallback.execute(true)
+            dialog.dismiss()
+        }
+        dialog.setOnCancelListener {
+            booleanCallback.execute(false)
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    fun showDialogTransfer(
+        activity: Activity?,
+        voidCallback: VoidCallback,
+    ) {
+        if (activity == null) return
+        val builder = AlertDialog.Builder(activity, R.style.bottom_top_dialog)
+        val mView = activity.layoutInflater.inflate(R.layout.dialog_transfer, null)
+
+        val btnUpgrade = mView.findViewById<CardView>(R.id.btn_upgrade)
+
+        builder.setView(mView)
+        val dialog = builder.create()
+        if (dialog.window != null) dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        btnUpgrade.setOnClickListener {
+            voidCallback.execute()
+            dialog.dismiss()
+        }
+        dialog.setOnCancelListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    fun showDialogPayment(
+        activity: Activity?,
+        isSuccess:Boolean
+    ) {
+        if (activity == null) return
+        val builder = AlertDialog.Builder(activity, R.style.bottom_top_dialog)
+        val mView = activity.layoutInflater.inflate(R.layout.dialog_payment_result, null)
+
+        val btnClose = mView.findViewById<CardView>(R.id.btn_close)
+        val tvTitle = mView.findViewById<MaterialTextView>(R.id.tv_title)
+        val tvContent = mView.findViewById<MaterialTextView>(R.id.tv_content)
+        val imgHeader = mView.findViewById<AppCompatImageView>(R.id.iv_payment)
+        if(!isSuccess){
+            tvTitle.text = "Upgrade failure"
+            tvTitle.setTextColor(ContextCompat.getColor(activity,R.color.colorRed_5))
+            tvContent.text = activity.getString(R.string.payment_fail)
+            imgHeader.setImageResource(R.drawable.img_payment_fail)
+            btnClose.setCardBackgroundColor(ContextCompat.getColor(activity,R.color.colorRed_5))
+        }
+
+
+        builder.setView(mView)
+        val dialog = builder.create().also { it.setCancelable(false) }
+        if (dialog.window != null) dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setOnCancelListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
 }

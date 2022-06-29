@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="bottom_top_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/bottomTopAnimation</item>
+    </style>
+
+    <style name="bottomTopAnimation">
+        <item name="android:windowEnterAnimation">@anim/bottom_up_300</item>
+        <item name="android:windowExitAnimation">@anim/top_up_300</item>
+    </style>
+
     <style name="WhiteStyle">
         <item name="colorAccent">#FFFFFF</item>
     </style>

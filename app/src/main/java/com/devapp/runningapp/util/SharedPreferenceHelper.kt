@@ -56,4 +56,27 @@ class SharedPreferenceHelper @Inject constructor(@ApplicationContext context: Co
         get() = pref.getString("USER_PROFILE","")
         set(value) = pref.edit().putString("USER_PROFILE", value).apply()
 
+    var isPremium:Boolean
+        get() = pref.getBoolean("IS_PREMIUM",false)
+        set(value) = pref.edit().putBoolean("IS_PREMIUM",value).apply()
+
+    var freeClick:Long
+        get() = pref.getLong("FREE_CLICK",0)
+        set(value) = pref.edit().putLong("FREE_CLICK",value).apply()
+
+    var isUpgrade:Long
+        get() = pref.getLong("IS_UPGRADE",0)
+        set(value) = pref.edit().putLong("IS_UPGRADE",value).apply()
+
+    var lastDate:Long
+        get() = pref.getLong("LAST_DATE",0)
+        set(value) = pref.edit().putLong("LAST_DATE",value).apply()
+
+    var upgradePackage:Long
+        get() = pref.getLong("UPGRADE_PACKAGE",0)
+        set(value) = pref.edit().putLong("UPGRADE_PACKAGE", value).apply()
+
+    var isUpdateToday:Boolean
+        get() = pref.getBoolean("IS_UPDATE_TODAY",false)
+        set(value) = pref.edit().putBoolean("IS_UPDATE_TODAY", value).apply()
 }

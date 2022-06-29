@@ -32,4 +32,6 @@ object Constant {
     val LIST_AVG_SPEED_AWARD = listOf(8,18,26,32,36)
     val LIST_DISTANCE_AWARD = listOf(40,100,220,500,1000)
     val LIST_CALORIES_AWARD = listOf(10,30,60,90,100)
+
+    val URL_FIREBASE_DB = "https://runapp-372b2-default-rtdb.asia-southeast1.firebasedatabase.app"
 }

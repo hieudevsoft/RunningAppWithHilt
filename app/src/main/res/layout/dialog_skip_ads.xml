@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:autofit="http://schemas.android.com/tools"
+    android:id="@+id/card_rate_now"
+    android:layout_width="match_parent"
+    app:cardUseCompatPadding="true"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_36"
+    android:layout_marginRight="@dimen/margin_36"
+    app:cardCornerRadius="@dimen/margin_10">
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:id="@+id/line_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ima_premium_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_premium_2" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_skip_ads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ima_premium_2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_16"
+            android:fontFamily="@font/svn_avo"
+            android:gravity="center"
+            android:text="You will need to watch an ad to continue tracking running. Do you want to upgrade to remove all ads?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize14" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/txt_skip_ads"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_28"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_continue"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_40"
+                android:layout_gravity="center"
+                app:cardCornerRadius="@dimen/margin_20"
+                android:layout_weight="1">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="@font/svn_avo_bold"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/margin_24"
+                    android:paddingRight="@dimen/margin_24"
+                    android:paddingBottom="@dimen/margin_2"
+                    android:text="Continute Ads"
+                    android:textColor="@color/white"
+                    app:autoSizeMaxTextSize="@dimen/textSize20"
+                    app:autoSizeMinTextSize="@dimen/textSize8"
+                    app:autoSizeTextType="uniform"
+                    autofit:ignore="MissingPrefix" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_upgrade"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_40"
+                android:layout_margin="@dimen/margin_6"
+                app:cardCornerRadius="@dimen/margin_20"
+                android:layout_gravity="center"
+                android:layout_weight="1">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccent"
+                    android:fontFamily="@font/svn_avo_bold"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/margin_24"
+                    android:paddingRight="@dimen/margin_24"
+                    android:paddingBottom="@dimen/margin_2"
+                    android:text="Upgrade premium"
+                    android:textColor="@color/white"
+                    app:autoSizeMaxTextSize="@dimen/textSize20"
+                    app:autoSizeMinTextSize="@dimen/textSize8"
+                    app:autoSizeTextType="uniform"
+                    autofit:ignore="MissingPrefix" />
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

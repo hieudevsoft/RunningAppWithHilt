@@ -143,4 +143,9 @@
         android:name="com.devapp.runningapp.ui.fragments.AwardFragment"
         android:label="fragment_award"
         tools:layout="@layout/fragment_award" />
+    <fragment
+        android:id="@+id/premiumFragment"
+        android:name="com.devapp.runningapp.ui.fragments.PremiumFragment"
+        android:label="fragment_premium"
+        tools:layout="@layout/fragment_premium" />
 </navigation>
