@@ -27,6 +27,7 @@ import com.devapp.runningapp.model.user.UserProfile
 import com.devapp.runningapp.ui.dialog.ChooseGenderDialog
 import com.devapp.runningapp.ui.dialog.bsdf.ViewPhotosBSDF
 import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
+import com.devapp.runningapp.ui.viewmodels.StatisticsViewModel
 import com.devapp.runningapp.ui.widgets.DatePickerView
 import com.devapp.runningapp.util.AppHelper.fromJson
 import com.devapp.runningapp.util.AppHelper.setOnClickWithScaleListener

@@ -330,9 +330,9 @@ class SignUpFragment : Fragment() {
                                             firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("isPremium" to false,"freeClick" to 3,"lastDate" to Date().time,"isUpgrade" to 0,"upgradePackage" to 0)).await()
                                             (requireActivity() as MainActivity).fetchDataRemote()
                                             delay(500)
+                                            sharedPreferenceHelper.statusSignIn = 1
                                             findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSetupFragment(it.toJson()))
                                         }catch (e:Exception){
-                                            Log.d(TAG, "loginWithEmailAndGetResponseAddUserProfile: ${e.message}")
                                             requireContext().showErrorToast(getString(R.string.please_try_again))
                                         }
                                     }

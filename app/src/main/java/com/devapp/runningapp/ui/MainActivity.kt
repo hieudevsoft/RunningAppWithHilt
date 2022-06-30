@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import com.devapp.runningapp.db.RunDao
 import com.devapp.runningapp.model.EventBusState
 import com.devapp.runningapp.receiver.DeviceBootReceiver
 import com.devapp.runningapp.receiver.ReminderReceiver
+import com.devapp.runningapp.util.AppHelper
 import com.devapp.runningapp.util.AppHelper.showErrorToast
 import com.devapp.runningapp.util.Constant
 import com.devapp.runningapp.util.Constant.ACTION_TO_TRACKING_INTENT
@@ -86,13 +88,17 @@ class MainActivity : AppCompatActivity() {
         firebaseDatabase.getReference("premium").child(sharedPref.accessUid!!).addValueEventListener(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val data = snapshot.value
+                Log.d(TAG, "onDataChange: $data")
                 if(data is HashMap<*, *>){
                     sharedPref.freeClick = data["freeClick"] as Long
-                    sharedPref.isPremium = data["isPremium"] as Boolean
-                    sharedPref.isUpgrade = data["isUpgrade"] as Long
                     sharedPref.lastDate = data["lastDate"] as Long
+                    sharedPref.isPremium = data["isPremium"] as Boolean
+                    if(sharedPref.isUpgrade!=data["isUpgrade"] as Long) {
+                        sharedPref.isUpgrade = data["isUpgrade"] as Long
+                        if(sharedPref.isUpgrade==2L) AppHelper.showDialogPayment(this@MainActivity,true) else if(sharedPref.isUpgrade==3L) AppHelper.showDialogPayment(this@MainActivity,false)
+                    }
                     sharedPref.upgradePackage = data["upgradePackage"] as Long
-
+                    Log.d(TAG, "onDataChange: ${sdf.format(Date(sharedPref.lastDate))} ${sdf.format(Date())}")
                     if(sdf.format(Date(sharedPref.lastDate))!=sdf.format(Date())){
                         sharedPref.lastDate = Date().time
                         sharedPref.freeClick = 3

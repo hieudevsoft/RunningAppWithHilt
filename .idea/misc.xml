@@ -73,7 +73,7 @@
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_run.xml" value="0.33" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_settings.xml" value="0.36041666666666666" />
-        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_setup.xml" value="0.25" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_setup.xml" value="0.22" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_sign_up.xml" value="0.25" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_splash.xml" value="0.25" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_splash2.xml" value="0.2015625" />
@@ -81,6 +81,7 @@
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_tracking.xml" value="0.25" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/fragment_view_pager_tracking.xml" value="0.29791666666666666" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_award.xml" value="0.33" />
+        <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_member_upgrade.xml" value="0.33489583333333334" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_onboarding_introduce.xml" value="0.33" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_run.xml" value="0.33" />
         <entry key="..\:/DEVS/ANDROID(KOLIN-JAVA)/RunningApp/app/src/main/res/layout/item_setting_arrow.xml" value="0.33" />

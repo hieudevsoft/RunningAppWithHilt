@@ -23,6 +23,11 @@ import com.devapp.runningapp.model.EventBusState
 import com.devapp.runningapp.model.SettingTypes
 import com.devapp.runningapp.ui.dialog.ReminderFragmentDialog
 import com.devapp.runningapp.util.*
+import com.devapp.runningapp.util.AppHelper.showSuccessToast
+import com.devapp.runningapp.util.firebase.FirebaseAuthClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.eventbus.EventBus
 import dagger.hilt.android.AndroidEntryPoint
@@ -193,8 +198,15 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         override fun logOutListener() {
             if (preferences.statusSignIn <=0) return
-            //LOGOUT
-
+            preferences.statusSignIn=0
+            preferences.accessUid = ""
+            if(preferences.statusSignIn==2) {
+                GoogleSignIn.getClient(requireContext(),
+                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()).signOut()
+            }
+            FirebaseAuthClient.instance?.signOut()
+            requireContext().showSuccessToast("Logout successfully")
+            findNavController().navigate(R.id.loginFragment)
         }
     }
 

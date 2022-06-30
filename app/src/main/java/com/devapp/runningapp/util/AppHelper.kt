@@ -19,6 +19,8 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.devapp.runningapp.R
+import com.devapp.runningapp.databinding.DialogTransferBinding
+import com.devapp.runningapp.util.TrackingUtils.toGone
 import com.google.android.material.textview.MaterialTextView
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
@@ -195,17 +197,22 @@ object AppHelper {
     fun showDialogTransfer(
         activity: Activity?,
         voidCallback: VoidCallback,
+        text:String?=null,
     ) {
         if (activity == null) return
         val builder = AlertDialog.Builder(activity, R.style.bottom_top_dialog)
         val mView = activity.layoutInflater.inflate(R.layout.dialog_transfer, null)
-
+        val binding = DialogTransferBinding.bind(mView)
         val btnUpgrade = mView.findViewById<CardView>(R.id.btn_upgrade)
 
         builder.setView(mView)
         val dialog = builder.create()
         if (dialog.window != null) dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
+        if(text!=null) {
+            binding.imaPremium2.toGone()
+            binding.txtSkipAds.toGone()
+            binding.tvContinue.text = text
+        }
         btnUpgrade.setOnClickListener {
             voidCallback.execute()
             dialog.dismiss()

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    app:cardUseCompatPadding="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp"
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardMaxElevation="4dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_uid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.05"
+            android:textIsSelectable="true"
+            android:text="UID: G89Eh7HPHDSDFcepHTbSDqJjlfs1"
+            android:textColor="@color/teal_700"
+            android:textSize="16sp"
+            app:fontFamily="@font/svn_avo_bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_package_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_uid"
+            android:layout_marginTop="12dp"
+            android:letterSpacing="0.02"
+            android:text="Premium: 6 months"
+            android:textColor="@color/md_blue_700"
+            android:textSize="14sp"
+            app:fontFamily="@font/svn_avo_bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_package_name"
+            android:layout_marginTop="12dp"
+            android:letterSpacing="0.02"
+            android:text="Time: 30/06/2022 10:15"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:fontFamily="@font/svn_avo_bold" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_40"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="@dimen/margin_20"
+                android:layout_weight="1">
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorRed_5"
+                    android:fontFamily="@font/svn_avo_bold"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/margin_24"
+                    android:paddingRight="@dimen/margin_24"
+                    android:paddingBottom="@dimen/margin_2"
+                    android:text="Ignore"
+                    android:textColor="@color/white"
+
+                    />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_40"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                app:cardCornerRadius="@dimen/margin_20"
+                android:layout_weight="1">
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="@font/svn_avo_bold"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/margin_24"
+                    android:paddingRight="@dimen/margin_24"
+                    android:paddingBottom="@dimen/margin_2"
+                    android:text="Confirm"
+                    android:textColor="@color/white"
+                    />
+            </androidx.cardview.widget.CardView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
