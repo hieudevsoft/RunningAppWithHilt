@@ -97,7 +97,9 @@ class MainActivity : AppCompatActivity() {
                         val premiumExpired = data["premiumExpired"] as Long
                         if(premiumExpired<=System.currentTimeMillis()) {
                             sharedPref.isPremium = false
-                            firebaseDatabase.getReference("premium").child(sharedPref.accessUid?:"").setValue(hashMapOf("freeClick" to (sharedPref.freeClick),"isPremium" to sharedPref.isPremium, "isUpgrade" to sharedPref.isUpgrade,"lastDate" to sharedPref.lastDate,"upgradePackage" to sharedPref.upgradePackage)).await()
+                            lifecycleScope.launchWhenResumed {
+                                firebaseDatabase.getReference("premium").child(sharedPref.accessUid?:"").setValue(hashMapOf("freeClick" to (sharedPref.freeClick),"isPremium" to sharedPref.isPremium, "isUpgrade" to sharedPref.isUpgrade,"lastDate" to sharedPref.lastDate,"upgradePackage" to sharedPref.upgradePackage)).await()
+                            }
                         }else{
                             sharedPref.isPremium = true
                             return
