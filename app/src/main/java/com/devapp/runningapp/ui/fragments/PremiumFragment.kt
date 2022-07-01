@@ -48,7 +48,7 @@ class PremiumFragment : Fragment(){
         binding.apply {
             itemForever.skuType = "every"
             itemForever.isSelect = true
-            itemForever.updateView(30,1000000)
+            itemForever.updateView(30,2000000)
             itemForever.purchaseClickListener = object:PremiumPackageItemView.PurchaseClickListener{
                 override fun execute(skuType: String, percentSale: Int) {
                     itemForever.isSelect = true
@@ -63,9 +63,9 @@ class PremiumFragment : Fragment(){
                     })
                 }
             }
-            item6months.skuType = "every"
+            item6months.skuType = "6months"
             item6months.isSelect = false
-            item6months.updateView(70,600000)
+            item6months.updateView(70,20000)
             item6months.purchaseClickListener = object:PremiumPackageItemView.PurchaseClickListener{
                 override fun execute(skuType: String, percentSale: Int) {
                     item6months.isSelect = true

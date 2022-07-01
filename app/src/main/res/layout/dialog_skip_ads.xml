@@ -33,7 +33,7 @@
             android:layout_marginRight="@dimen/margin_16"
             android:fontFamily="@font/svn_avo"
             android:gravity="center"
-            android:text="You will need to watch an ad to continue tracking running. Do you want to upgrade to remove all ads?"
+            android:text="You will need to watch an ad to continue tracking running. Do you want to upgrade to remove all ads,see award?"
             android:textColor="@color/black"
             android:textSize="@dimen/textSize14" />
 

@@ -60,30 +60,10 @@ class Award {
             return null
         }
 
-        private fun getProcess(maxValue:Int,value:Int): Int {
-            if(value>=maxValue) return 100
-            return ((value.toFloat()/maxValue.toFloat())*100).toInt()
+        fun getProcess(maxValue:Int, value: Float): Float {
+            if(value>=maxValue) return 100f
+            return ((value.toFloat()/maxValue.toFloat())*100)
         }
-
-
-        fun getListAwardResult(context: Context,entries:List<AwardEntry>):List<AwardResult>{
-            val awards = mutableListOf<AwardResult>()
-            entries.forEach {
-                val awardResult = AwardResult(it.type)
-                it.data.forEach { (index, value) ->
-                    awardResult.icons[index] = getIconByTypeAndIndex(context,awardResult.type,index)?:-1
-                    awardResult.awards[index] = getProcess(when(awardResult.type){
-                        AwardType.TIME->Constant.LIST_TIME_AWARD[index]
-                        AwardType.AVG_SPEED->Constant.LIST_AVG_SPEED_AWARD[index]
-                        AwardType.DISTANCE->Constant.LIST_DISTANCE_AWARD[index]
-                        else ->Constant.LIST_CALORIES_AWARD[index]
-                    },value)
-                }
-                awards.add(awardResult)
-            }
-            return awards.toList()
-        }
-
 
 
         data class AwardResult(

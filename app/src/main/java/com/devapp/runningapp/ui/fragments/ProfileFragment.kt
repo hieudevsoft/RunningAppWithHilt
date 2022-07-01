@@ -24,24 +24,21 @@ import com.devapp.runningapp.databinding.FragmentProfileBinding
 import com.devapp.runningapp.model.ResourceNetwork
 import com.devapp.runningapp.model.user.Gender
 import com.devapp.runningapp.model.user.UserProfile
+import com.devapp.runningapp.ui.MainActivity
 import com.devapp.runningapp.ui.dialog.ChooseGenderDialog
 import com.devapp.runningapp.ui.dialog.bsdf.ViewPhotosBSDF
 import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
-import com.devapp.runningapp.ui.viewmodels.StatisticsViewModel
 import com.devapp.runningapp.ui.widgets.DatePickerView
+import com.devapp.runningapp.util.*
 import com.devapp.runningapp.util.AppHelper.fromJson
 import com.devapp.runningapp.util.AppHelper.setOnClickWithScaleListener
 import com.devapp.runningapp.util.AppHelper.showErrorToast
 import com.devapp.runningapp.util.AppHelper.showSuccessToast
 import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
 import com.devapp.runningapp.util.AppHelper.toJson
-import com.devapp.runningapp.util.DateCallback
-import com.devapp.runningapp.util.NetworkHelper
-import com.devapp.runningapp.util.SharedPreferenceHelper
 import com.devapp.runningapp.util.TrackingUtils.hideSoftKeyboard
 import com.devapp.runningapp.util.TrackingUtils.toGone
 import com.devapp.runningapp.util.TrackingUtils.toVisible
-import com.devapp.runningapp.util.VoidCallback
 import com.devapp.runningapp.util.firebase.FirebaseAuthClient
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -178,10 +175,19 @@ class ProfileFragment : Fragment(){
                     ViewPhotosBSDF.show((it.drawable as RoundedDrawable).sourceBitmap,childFragmentManager)
                 }
             }
-
-            cardAward.setOnClickWithScaleListener {
+            if(sharedPreferenceHelper.isPremium) cardAward.toVisible() else cardAward.toGone()
+             cardOwnerAward.setOnClickWithScaleListener {
                 if(!isAdded) return@setOnClickWithScaleListener
-                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAwardFragment())
+                if(!sharedPreferenceHelper.isPremium){
+                    AppHelper.showDialogSkipAds(requireActivity(),object:BooleanCallback{
+                        override fun execute(boolean: Boolean) {
+                            if(boolean){
+                                (requireActivity() as MainActivity).navigateToPremium()
+                            }
+                        }
+                    },true)
+                }
+                else findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToAwardFragment())
             }
         }
     }

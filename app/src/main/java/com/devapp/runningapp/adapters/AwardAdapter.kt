@@ -63,6 +63,12 @@ class AwardAdapter : RecyclerView.Adapter<AwardAdapter.ViewHolder>() {
         onClickItemListener= listener
     }
 
+    fun updateItemListener(pos:Int,isLock:Boolean,progress:Float){
+        getItemAtPosition(pos).isLock = isLock
+        getItemAtPosition(pos).progress = progress.toInt()
+        notifyItemChanged(pos)
+    }
+
     override fun getItemCount(): Int {
         return differ.currentList.size
     }

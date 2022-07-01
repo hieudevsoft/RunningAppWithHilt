@@ -7,6 +7,6 @@ data class ItemAward(
     @DrawableRes val img:Int,
     val title:String,
     val description:String,
-    val isLock:Boolean = true,
-    val progress:Int
+    var isLock:Boolean = true,
+    var progress:Int
 )

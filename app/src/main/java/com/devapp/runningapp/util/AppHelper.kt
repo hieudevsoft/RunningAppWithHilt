@@ -168,6 +168,7 @@ object AppHelper {
     fun showDialogSkipAds(
         activity: Activity?,
         booleanCallback: BooleanCallback,
+        isOnlyUpdatePremium:Boolean = false
     ) {
         if (activity == null) return
         val builder = AlertDialog.Builder(activity, R.style.bottom_top_dialog)
@@ -179,7 +180,7 @@ object AppHelper {
         builder.setView(mView)
         val dialog = builder.create()
         if (dialog.window != null) dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
+        if(isOnlyUpdatePremium) btnContinue.toGone()
         btnContinue.setOnClickListener {
             booleanCallback.execute(false)
             dialog.dismiss() }

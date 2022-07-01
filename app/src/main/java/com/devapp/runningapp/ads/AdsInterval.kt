@@ -3,7 +3,6 @@ package com.devapp.runningapp.ads
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import com.devapp.runningapp.BuildConfig
 import com.devapp.runningapp.util.AppHelper
 import com.devapp.runningapp.util.BooleanCallback
 import com.devapp.runningapp.util.SharedPreferenceHelper
@@ -12,8 +11,6 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.internal.managers.ViewComponentManager
-import org.greenrobot.eventbus.EventBus
-import java.util.*
 
 class AdsInterval constructor(private val context: Context) : AdListener() {
 

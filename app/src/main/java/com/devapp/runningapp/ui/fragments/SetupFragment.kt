@@ -86,7 +86,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         if(!::memberUpgradePremiumAdapter.isInitialized) memberUpgradePremiumAdapter = MemberUpgradePremiumAdapter({
             try {
                 lifecycle.coroutineScope.launchWhenResumed {
-                    firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("freeClick" to it.freeClick,"isPremium" to true, "isUpgrade" to 2,"lastDate" to it.lastDate,"upgradePackage" to it.upgradePackage)).await()
+                    firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("freeClick" to it.freeClick,"isPremium" to true, "isUpgrade" to 2,"lastDate" to it.lastDate,"upgradePackage" to it.upgradePackage,"premiumExpired" to 0)).await()
                     requireContext().showStyleableToast("Confirm successfully for\n ${it.uid}",true)
                 }
             }catch (e:Exception){
@@ -95,7 +95,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         }){
             try {
                 lifecycle.coroutineScope.launchWhenResumed {
-                    firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("freeClick" to it.freeClick,"isPremium" to false, "isUpgrade" to 3,"lastDate" to it.lastDate,"upgradePackage" to it.upgradePackage)).await()
+                    firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("freeClick" to it.freeClick,"isPremium" to false, "isUpgrade" to 3,"lastDate" to it.lastDate,"upgradePackage" to it.upgradePackage,"premiumExpired" to it.lastDate+1000*60*60*24*6*30)).await()
                     requireContext().showStyleableToast("Cancel successfully for\n ${it.uid}",true)
                 }
             }catch (e:Exception){
