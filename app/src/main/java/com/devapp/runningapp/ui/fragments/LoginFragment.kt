@@ -13,12 +13,15 @@ import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.core.util.PatternsCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.devapp.runningapp.R
 import com.devapp.runningapp.databinding.FragmentLoginBinding
 import com.devapp.runningapp.model.ResourceNetwork
+import com.devapp.runningapp.model.user.UserProfile
 import com.devapp.runningapp.ui.MainActivity
+import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.widgets.DialogLoading
 import com.devapp.runningapp.util.*
 import com.devapp.runningapp.util.AppHelper.setOnClickWithScaleListener
@@ -53,6 +56,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
     private lateinit var googleSignInClient:GoogleSignInClient
     private val sharedPreferenceHelper:SharedPreferenceHelper by lazy { SharedPreferenceHelper(requireContext()) }
     private val firebaseDatabase: FirebaseDatabase by lazy { FirebaseDatabase.getInstance(Constant.URL_FIREBASE_DB) }
+    private val firebaseViewModel:FirebaseViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -194,13 +198,14 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                                     firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("isPremium" to false,"freeClick" to 3,"lastDate" to Date().time,"isUpgrade" to 0,"upgradePackage" to 0)).await()
                                 }
                                 (requireActivity() as MainActivity).fetchDataRemote()
-                                delay(500)
                                 sharedPreferenceHelper.statusSignIn = 1
                                 if (it != null) {
-                                    findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSetupFragment(it.toJson()))
+                                    firebaseViewModel.getStateFlowAdUser(UserProfile(it.uid,it.email!!,"hieudeptrai",it.phoneNumber,it.displayName, image = it.photoUrl.toString()))
+                                    addUserToProFile()
                                 }
                             }catch (e:Exception){
-                                requireContext().showErrorToast(getString(R.string.please_try_again))
+                                Log.d("TAG", "onActivityResult: ${e.message}")
+                                requireContext().showErrorToast(e.message?:"Error!!")
                             }
                         }
                     }){
@@ -216,6 +221,37 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                     showStyleableToast(e.message?:"Error login Google",false)
                     btnGoogle.toVisible()
                     pbGoogle.toGone()
+                }
+            }
+        }
+    }
+
+    private fun addUserToProFile() {
+        lifecycleScope.launchWhenStarted {
+            firebaseViewModel.stateFlowAddUser.collect(){
+                when(it){
+                    is ResourceNetwork.Loading->{
+                        DialogLoading.show(requireContext())
+                    }
+
+                    is ResourceNetwork.Success->{
+                        DialogLoading.hide()
+                        binding.btnGoogle.toVisible()
+                        binding.pbGoogle.toGone()
+                        requireContext().showStyleableToast("Login successfully",true)
+                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSetupFragment(it.toJson()))
+                    }
+
+                    is ResourceNetwork.Error->{
+                        DialogLoading.hide()
+                        showStyleableToast(it.message?:"Opps",false)
+                        binding.btnGoogle.toVisible()
+                        binding.pbGoogle.toGone()
+                    }
+
+                    else->{
+
+                    }
                 }
             }
         }
@@ -281,6 +317,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                     sharedPreferenceHelper.statusSignIn = 1
                     binding.btnLogin.toVisible()
                     binding.pbLogin.toGone()
+                    requireContext().showStyleableToast("Login successfully",true)
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSetupFragment(it.toJson()))
                 }
             }){

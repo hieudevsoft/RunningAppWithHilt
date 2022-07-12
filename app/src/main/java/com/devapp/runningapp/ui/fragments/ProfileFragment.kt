@@ -97,7 +97,7 @@ class ProfileFragment : Fragment(){
         if(!::userProfile.isInitialized) return
         binding.apply {
             onSetupUi()
-            val dob = userProfile.dob!!
+            val dob = userProfile.dob?:SimpleDateFormat("dd-MM-yyyy").format(Date())
             var dayOfBirth = dob.split("-")[0].toInt()
             var monthOfBirth = dob.split("-")[1].toInt()
             var yearOfBirth = dob.split("-")[2].toInt()

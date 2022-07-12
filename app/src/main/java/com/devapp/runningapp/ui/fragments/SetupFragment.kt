@@ -182,7 +182,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     private fun handleViewModel() {
         fireBaseViewModel.getStateFlowUserProfile(prefs.accessUid!!)
-        lifecycle.coroutineScope.launchWhenStarted {
+        lifecycle.coroutineScope.launchWhenResumed {
             fireBaseViewModel.stateFlowGetUserProfile.collect() {
                 when (it){
                     is ResourceNetwork.Loading->{
@@ -196,10 +196,12 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
                         }
                         currentUserProfile = it.data!!
                         prefs.userProfile = it.data!!.toJson()
+                        Log.d("TAG", "handleViewModel: ${it.data}")
                         initView()
                         DialogLoading.hide()
                     }
                     is ResourceNetwork.Error->{
+                        Log.d("TAG", "handleViewModel: ${it.message}")
                         if(prefs.userProfile!=null||prefs.userProfile!!.isNotEmpty()) currentUserProfile = prefs.userProfile!!.fromJson(UserProfile::class.java)
                         DialogLoading.hide()
                         initView()
@@ -209,7 +211,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
                 }
             }
         }
-        lifecycle.coroutineScope.launchWhenStarted {
+        lifecycle.coroutineScope.launchWhenResumed {
             fireBaseViewModel.stateFlowUpdateUserProfile.collect() {
                 when (it){
                     is ResourceNetwork.Loading->{
@@ -240,6 +242,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     private fun initView() {
         val user = args.user.fromJson<UserProfile>(UserProfile::class.java)
+        if(!::currentUserProfile.isInitialized) currentUserProfile = UserProfile()
         binding.apply {
             currentUserProfile.nickName.let {
                 if (it != null) {

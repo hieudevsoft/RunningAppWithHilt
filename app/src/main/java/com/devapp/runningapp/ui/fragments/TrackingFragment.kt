@@ -81,7 +81,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
             moveCameraLatestPoint()
         }
 
-        lifecycle.coroutineScope.launchWhenCreated {
+        lifecycle.coroutineScope.launchWhenResumed {
             firebaseViewModel.stateFlowAddImageToFirestore.collect(){
                 when(it){
                     is ResourceNetwork.Loading->{
@@ -89,7 +89,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
                     }
 
                     is ResourceNetwork.Success->{
-                        firebaseViewModel.getStateFlowAddRunInformation(runFirebase)
+                        if(::runFirebase.isInitialized) firebaseViewModel.getStateFlowAddRunInformation(runFirebase)
                     }
 
                     is ResourceNetwork.Error->{
