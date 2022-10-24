@@ -78,6 +78,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
          else {
              binding.lyAdmin.toGone()
              binding.lyMember.toVisible()
+             if(context==null) return
              handleViewModel()
         }
     }
@@ -86,7 +87,8 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         if(!::memberUpgradePremiumAdapter.isInitialized) memberUpgradePremiumAdapter = MemberUpgradePremiumAdapter({
             try {
                 lifecycle.coroutineScope.launchWhenResumed {
-                    firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("freeClick" to it.freeClick,"isPremium" to true, "isUpgrade" to 2,"lastDate" to it.lastDate,"upgradePackage" to it.upgradePackage,"premiumExpired" to 0)).await()
+                    if(it.upgradePackage==6L) firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("freeClick" to it.freeClick,"isPremium" to true, "isUpgrade" to 2,"lastDate" to it.lastDate,"upgradePackage" to it.upgradePackage,"premiumExpired" to it.lastDate+1000*60*60*24*6*30)).await()
+                    else firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("freeClick" to it.freeClick,"isPremium" to true, "isUpgrade" to 2,"lastDate" to it.lastDate,"upgradePackage" to it.upgradePackage,"premiumExpired" to 0)).await()
                     requireContext().showStyleableToast("Confirm successfully for\n ${it.uid}",true)
                 }
             }catch (e:Exception){
@@ -95,7 +97,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         }){
             try {
                 lifecycle.coroutineScope.launchWhenResumed {
-                    firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("freeClick" to it.freeClick,"isPremium" to false, "isUpgrade" to 3,"lastDate" to it.lastDate,"upgradePackage" to it.upgradePackage,"premiumExpired" to it.lastDate+1000*60*60*24*6*30)).await()
+                    firebaseDatabase.getReference("premium").child(it.uid).setValue(hashMapOf("freeClick" to it.freeClick,"isPremium" to false, "isUpgrade" to 3,"lastDate" to it.lastDate,"upgradePackage" to it.upgradePackage)).await()
                     requireContext().showStyleableToast("Cancel successfully for\n ${it.uid}",true)
                 }
             }catch (e:Exception){
@@ -184,6 +186,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         fireBaseViewModel.getStateFlowUserProfile(prefs.accessUid!!)
         lifecycle.coroutineScope.launchWhenResumed {
             fireBaseViewModel.stateFlowGetUserProfile.collect() {
+                if(context==null||activity==null||activity!!.isFinishing) return@collect
                 when (it){
                     is ResourceNetwork.Loading->{
                         DialogLoading.show(requireContext())

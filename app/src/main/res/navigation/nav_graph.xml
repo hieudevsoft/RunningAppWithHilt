@@ -6,7 +6,7 @@
     app:startDestination="@id/splashFragment">
 
     <action android:id="@+id/action_notification_to_trackingFragment"
-            app:destination="@id/trackingFragment"
+            app:destination="@id/viewPagerTrackingFragment"
             app:launchSingleTop="true"/>
 
     <fragment

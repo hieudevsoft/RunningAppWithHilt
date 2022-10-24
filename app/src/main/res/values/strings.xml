@@ -7,7 +7,7 @@
         <item>Calories Burned</item>
     </string-array>
     <string name="app_name">Runn</string>
-    <string name="content_notify">Hey you, it\'s time  to study!</string>
+    <string name="content_notify">Hey you, it\'s time  to running!</string>
     <string name="content_study_reminder">Be persistent!</string>
     <string name="turn_on_reminders">Turn on reminders</string>
     <string name="turn_off_reminders">Turn off reminders</string>
@@ -68,5 +68,5 @@
     <string name="running">Running</string>
     <string name="payment_success_content">Wish you have a fun and rewarding time learning with HeyChina</string>
     <string name="payment_fail">Payment fail</string>
-
+    <string name="loading">Loading...</string>
 </resources>

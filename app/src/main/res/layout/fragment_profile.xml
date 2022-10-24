@@ -25,7 +25,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintHorizontal_bias="0"
             app:riv_border_color="@color/colorGray_14"
-            android:src="@mipmap/ic_launcher_round"
+            android:src="@drawable/ic_calories_fire"
             android:layout_width="100dp"
             android:layout_height="100dp"/>
 

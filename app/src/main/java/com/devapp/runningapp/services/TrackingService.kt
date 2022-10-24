@@ -90,6 +90,7 @@ class TrackingService : LifecycleService() {
         currentNotificationBuilder = baseNotificationBuilder
         postInitialValue()
         isTracking.observe(this) {
+            Log.d("Tracking", "onCreate: $it")
             updateLocationTracking(it)
             updateTrackingNotification(it)
         }

@@ -172,7 +172,12 @@ class ProfileFragment : Fragment(){
                 if(isSuccessUpdateAvatar) ViewPhotosBSDF.show(firebaseAuthClient.getCurrentUser()?.photoUrl.toString(),childFragmentManager)
                 else binding.imgAvatar.let {
                     it.invalidate()
-                    ViewPhotosBSDF.show((it.drawable as RoundedDrawable).sourceBitmap,childFragmentManager)
+                    try{
+                        ViewPhotosBSDF.show((it.drawable as RoundedDrawable).sourceBitmap,childFragmentManager)
+                    }catch (e:Exception){
+
+                    }
+
                 }
             }
             if(sharedPreferenceHelper.isPremium) cardAward.toVisible() else cardAward.toGone()
@@ -194,7 +199,12 @@ class ProfileFragment : Fragment(){
 
     private fun onSetupUi() {
         binding.apply {
-            Glide.with(this@ProfileFragment).asBitmap().centerCrop().load(firebaseAuthClient.getCurrentUser()?.photoUrl).into(imgAvatar)
+            Glide.with(this@ProfileFragment)
+                .asBitmap().centerCrop()
+                .load(firebaseAuthClient.getCurrentUser()?.photoUrl)
+                .error(R.drawable.ic_calories_fire)
+                .placeholder(R.drawable.ic_calories_fire)
+                .into(imgAvatar)
             tvNickName.text = userProfile.nickName
             tvSlogan.text = userProfile.slogan?:"I'm Runner"
             edtName.setText(userProfile.userName?:"")

@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity() {
                 else->binding.bottomNavigationView.toGone()
             }
         }
+        navigateToTrackingFragmentIfNeeded(intent)
         fetchDataRemote()
     }
 
@@ -88,8 +89,10 @@ class MainActivity : AppCompatActivity() {
         firebaseDatabase.getReference("premium").child(sharedPref.accessUid!!).addValueEventListener(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val data = snapshot.value
-                Log.d(TAG, "onDataChange: $data")
-                if(data is HashMap<*, *>){
+                if(data is HashMap<*, *>){if(sharedPref.isUpgrade!=data["isUpgrade"] as Long) {
+                    sharedPref.isUpgrade = data["isUpgrade"] as Long
+                    if(sharedPref.isUpgrade==2L) AppHelper.showDialogPayment(this@MainActivity,true) else if(sharedPref.isUpgrade==3L) AppHelper.showDialogPayment(this@MainActivity,false)
+                }
                     if(data["premiumExpired"]!=null){
                         if((data["premiumExpired"] as Long)==0L) {
                             sharedPref.isPremium = true
@@ -97,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         else{
                             val premiumExpired = data["premiumExpired"] as Long
-                            if(premiumExpired<=System.currentTimeMillis()) {
+                            if(premiumExpired<=System.currentTimeMillis()&&premiumExpired>=0) {
                                 sharedPref.isPremium = false
                                 lifecycleScope.launchWhenResumed {
                                     firebaseDatabase.getReference("premium").child(sharedPref.accessUid?:"").setValue(hashMapOf("freeClick" to (sharedPref.freeClick),"isPremium" to sharedPref.isPremium, "isUpgrade" to sharedPref.isUpgrade,"lastDate" to sharedPref.lastDate,"upgradePackage" to sharedPref.upgradePackage)).await()
@@ -111,10 +114,6 @@ class MainActivity : AppCompatActivity() {
                     sharedPref.freeClick = data["freeClick"] as Long
                     sharedPref.lastDate = data["lastDate"] as Long
                     sharedPref.isPremium = data["isPremium"] as Boolean
-                    if(sharedPref.isUpgrade!=data["isUpgrade"] as Long) {
-                        sharedPref.isUpgrade = data["isUpgrade"] as Long
-                        if(sharedPref.isUpgrade==2L) AppHelper.showDialogPayment(this@MainActivity,true) else if(sharedPref.isUpgrade==3L) AppHelper.showDialogPayment(this@MainActivity,false)
-                    }
                     sharedPref.upgradePackage = data["upgradePackage"] as Long
                     Log.d(TAG, "onDataChange: ${sdf.format(Date(sharedPref.lastDate))} ${sdf.format(Date())}")
                     if(sdf.format(Date(sharedPref.lastDate))!=sdf.format(Date())){
@@ -224,6 +223,7 @@ class MainActivity : AppCompatActivity() {
     private fun navigateToTrackingFragmentIfNeeded(intent: Intent?){
         if(intent!=null && intent.action == ACTION_TO_TRACKING_INTENT){
             try {
+                navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
                 navHostFragment.findNavController().navigate(R.id.action_notification_to_trackingFragment)
             }catch (e:Exception){
                 navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment

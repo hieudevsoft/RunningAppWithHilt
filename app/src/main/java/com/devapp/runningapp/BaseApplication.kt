@@ -22,7 +22,7 @@ class BaseApplication: Application() {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel("default", "Daily Notification", NotificationManager.IMPORTANCE_DEFAULT)
+            val channel = NotificationChannel("default", "Daily Notification", NotificationManager.IMPORTANCE_HIGH)
             channel.description = "Daily Notification"
             val nm = NotificationManagerCompat.from(applicationContext)
             nm.createNotificationChannel(channel)

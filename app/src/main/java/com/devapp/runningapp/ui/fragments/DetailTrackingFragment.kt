@@ -5,44 +5,35 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.view.animation.Animation
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.devapp.runningapp.R
-import com.devapp.runningapp.adapters.ViewPager2Adapter
 import com.devapp.runningapp.databinding.FragmentDetailTrackingBinding
-import com.devapp.runningapp.databinding.FragmentViewPagerTrackingBinding
-import com.devapp.runningapp.model.Run
 import com.devapp.runningapp.services.Polyline
 import com.devapp.runningapp.services.TrackingService
-import com.devapp.runningapp.ui.viewmodels.FirebaseViewModel
 import com.devapp.runningapp.ui.viewmodels.SharedViewModel
-import com.devapp.runningapp.ui.widgets.CancelTrackingDialog
 import com.devapp.runningapp.util.*
 import com.devapp.runningapp.util.AppHelper.getColorContextCompat
 import com.devapp.runningapp.util.AppHelper.setOnClickWithScaleListener
-import com.devapp.runningapp.util.AppHelper.showStyleableToast
 import com.devapp.runningapp.util.AppHelper.showToastNotConnectInternet
 import com.devapp.runningapp.util.TrackingUtils.toGone
 import com.devapp.runningapp.util.TrackingUtils.toVisible
-import com.shashank.sony.fancydialoglib.Animation
 import com.shashank.sony.fancydialoglib.FancyAlertDialog
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.StringBuilder
 import java.util.*
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
-class DetailTrackingFragment:Fragment(),RunCallBack {
+class DetailTrackingFragment: androidx.fragment.app.Fragment(),RunCallBack {
     private lateinit var parentContext: Context
     private var _binding: FragmentDetailTrackingBinding?=null
     private val binding get() = _binding!!
@@ -56,10 +47,11 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
     private var currentSpeedWind = 0L
     private var stringBuilder = StringBuilder()
     private var currentWeatherFeature = 0
+    private var weightUser = 0
     private var isFirstGetApi = true
     private lateinit var mPathPoints :MutableList<Polyline>
     private lateinit var onEndTrackingCallBack:EndTrackingCallBack
-    private val sharedPreferenceHelper:SharedPreferenceHelper by lazy { SharedPreferenceHelper(context=requireContext()) }
+    private lateinit var sharedPreferenceHelper:SharedPreferenceHelper
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if(!::parentContext.isInitialized) parentContext = context
@@ -132,6 +124,8 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
     }
 
     private fun onSetupView(){
+        sharedPreferenceHelper = SharedPreferenceHelper(context!!)
+        weightUser = sharedPreferenceHelper.weightUser.toInt()
         binding.apply {
             btnLockScreen.setOnClickWithScaleListener {
                 if(imgLockScreen.drawable.constantState == ResourcesCompat.getDrawable(resources,R.drawable.ic_lock_close,null)?.constantState){
@@ -163,7 +157,7 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
                         .setPositiveBtnBackgroundRes(R.color.black)
                         .setPositiveBtnText("Yes")
                         .setNegativeBtnBackgroundRes(R.color.colorRed_5)
-                        .setAnimation(Animation.POP)
+                        .setAnimation(com.shashank.sony.fancydialoglib.Animation.POP)
                         .isCancellable(true)
                         .setIcon(R.drawable.ic_run, View.VISIBLE)
                         .onPositiveClicked { dialog: Dialog? ->
@@ -237,11 +231,12 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
             .setPositiveBtnBackgroundRes(R.color.colorPrimary)
             .setPositiveBtnText("Yes")
             .setNegativeBtnBackgroundRes(R.color.colorBgSettings)
-            .setAnimation(Animation.SIDE)
+            .setAnimation(com.shashank.sony.fancydialoglib.Animation.SIDE)
             .isCancellable(true)
             .setIcon(R.drawable.ic_warning_2, View.VISIBLE)
             .onPositiveClicked { dialog: Dialog? ->
                 stopRun()
+                (requireParentFragment() as ViewPagerTrackingFragment).navigateToRunFragment()
             }
             .onNegativeClicked {}
             .build()
@@ -276,16 +271,19 @@ class DetailTrackingFragment:Fragment(),RunCallBack {
     }
 
     override fun execute(pathPoins: MutableList<Polyline>) {
-        mPathPoints = pathPoins
-        val distanceInMeters = TrackingUtils.getDistanceForTracking(polylines = pathPoins)
-        val avgSpeedInKMH = ((distanceInMeters / 1000f) /(currentTimeInMillis/(1000f*60f*60f))*10f).roundToInt()/10f
-        val mph = avgSpeedInKMH/1.61
-        val MET:Float = if(mph<=6) 2f else if(mph<=10) 6f else 10f
-        val caloriesBurned = String.format("%.2f",(distanceInMeters/1000)*sharedPreferenceHelper.weightUser.toFloat() * MET)
-        binding.apply {
-            tvAvgSpeed.text = "${avgSpeedInKMH}km/h"
-            tvCalories.text = caloriesBurned+"kcal"
-            tvDistance.text = String.format("%.2f",distanceInMeters/1000)
-        }
+        Handler(Looper.getMainLooper()).postDelayed({
+            mPathPoints = pathPoins
+            val distanceInMeters = TrackingUtils.getDistanceForTracking(polylines = pathPoins)
+            val avgSpeedInKMH = (((distanceInMeters / 1000f) /(currentTimeInMillis/(1000f*60f*60f)))*10f).roundToInt()/10f
+            val mph = 100/1.61
+            val MET:Float = if(mph<=6) 2f else if(mph<=10) 6f else 10f
+            val caloriesBurned = String.format("%.2f",(distanceInMeters/1000)*weightUser.toFloat() * MET)
+            binding.apply {
+                tvAvgSpeed.text = "${avgSpeedInKMH}km/h"
+                tvCalories.text = caloriesBurned+"kcal"
+                tvDistance.text = String.format("%.2f",distanceInMeters/1000)
+            }
+        },500)
+
     }
 }

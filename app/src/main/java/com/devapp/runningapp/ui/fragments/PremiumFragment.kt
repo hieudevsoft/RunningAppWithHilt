@@ -65,7 +65,7 @@ class PremiumFragment : Fragment(){
             }
             item6months.skuType = "6months"
             item6months.isSelect = false
-            item6months.updateView(70,20000)
+            item6months.updateView(70,1600000)
             item6months.purchaseClickListener = object:PremiumPackageItemView.PurchaseClickListener{
                 override fun execute(skuType: String, percentSale: Int) {
                     item6months.isSelect = true

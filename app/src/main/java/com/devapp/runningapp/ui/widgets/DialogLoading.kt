@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Window
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.devapp.runningapp.R
@@ -22,7 +23,13 @@ class DialogLoading {
             progressTv.textSize = 16f
             progressDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             progressDialog.setCancelable(false)
-            progressDialog.show()
+            try {
+                progressDialog.show()
+            }catch (e:WindowManager.BadTokenException){
+
+            }catch (e:IllegalStateException){
+
+            }
 
         }
 
